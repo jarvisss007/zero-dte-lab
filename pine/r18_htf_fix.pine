@@ -1,0 +1,20 @@
+// r18 patch — non-repainting HTF bias + previous-day levels.
+// Drop-in replacement for the corresponding r17 blocks. Everything else unchanged.
+//
+// WHY: with lookahead_off and no [1] offset, every 1-min historical bar inside
+// a 15-min candle is assigned that candle's FINAL values — the backtest's HTF
+// filter sees up to 14 minutes of the future on every bar. The idiom below
+// uses only the last COMPLETED HTF bar, which is what live execution sees.
+// Expect backtest results to get worse after this patch. That is the point:
+// the new numbers are the real ones.
+
+// ═══ HTF 15-MIN BIAS (non-repainting) ═══
+htf_e9   = request.security(syminfo.tickerid, "15", ta.ema(close, 9)[1],  lookahead=barmerge.lookahead_on)
+htf_e21  = request.security(syminfo.tickerid, "15", ta.ema(close, 21)[1], lookahead=barmerge.lookahead_on)
+htf_rsi  = request.security(syminfo.tickerid, "15", ta.rsi(close, 14)[1], lookahead=barmerge.lookahead_on)
+htf_vwap = request.security(syminfo.tickerid, "15", ta.vwap(hlc3)[1],     lookahead=barmerge.lookahead_on)
+htf_cls  = request.security(syminfo.tickerid, "15", close[1],             lookahead=barmerge.lookahead_on)
+
+// ═══ PREVIOUS DAY LEVELS (non-repainting, correct day) ═══
+pdh = request.security(syminfo.tickerid, "D", high[1], lookahead=barmerge.lookahead_on)
+pdl = request.security(syminfo.tickerid, "D", low[1],  lookahead=barmerge.lookahead_on)

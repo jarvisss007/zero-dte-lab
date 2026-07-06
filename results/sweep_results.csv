@@ -1,0 +1,19 @@
+config,trades,win%,avg_R,median_R,PF,total_R,t
+BATS 5-min true OHLC (Jul-Aug 2025) | HTF LEAKY(r17) | short-only,0,,,,,,
+BATS 5-min true OHLC (Jul-Aug 2025) | HTF LEAKY(r17) | both,3,33.3,-0.219,-1.285,0.77,-0.7,-0.18
+BATS 5-min true OHLC (Jul-Aug 2025) | HTF causal | short-only,2,0.0,-1.317,-1.317,0.0,-2.6,
+BATS 5-min true OHLC (Jul-Aug 2025) | HTF causal | both,5,20.0,-0.658,-1.285,0.4,-3.3,-0.91
+BATS 5-min true OHLC (Jul-Aug 2025) | HTF no HTF filter | short-only,9,0.0,-2.116,-1.361,0.0,-19.0,-2.81
+BATS 5-min true OHLC (Jul-Aug 2025) | HTF no HTF filter | both,18,5.6,-1.304,-1.317,0.09,-23.5,-2.87
+BATS 15-min true OHLC (Sep24-Jan25) | HTF LEAKY(r17) | short-only,2,0.0,-1.873,-1.873,0.0,-3.7,
+BATS 15-min true OHLC (Sep24-Jan25) | HTF LEAKY(r17) | both,2,0.0,-1.873,-1.873,0.0,-3.7,
+BATS 15-min true OHLC (Sep24-Jan25) | HTF causal | short-only,2,50.0,-0.159,-0.159,0.88,-0.3,
+BATS 15-min true OHLC (Sep24-Jan25) | HTF causal | both,5,20.0,-0.581,-1.209,0.44,-2.9,-0.7
+BATS 15-min true OHLC (Sep24-Jan25) | HTF no HTF filter | short-only,9,22.2,-0.611,-1.113,0.46,-5.5,-1.0
+BATS 15-min true OHLC (Sep24-Jan25) | HTF no HTF filter | both,20,15.0,-0.651,-1.15,0.35,-13.0,-2.04
+pseudo 5-min from closes (Aug24-Nov25) | HTF LEAKY(r17) | short-only,16,37.5,0.261,-0.248,1.44,4.2,0.63
+pseudo 5-min from closes (Aug24-Nov25) | HTF LEAKY(r17) | both,44,31.8,0.348,-1.184,1.29,15.3,0.51
+pseudo 5-min from closes (Aug24-Nov25) | HTF causal | short-only,17,23.5,-0.394,-1.288,0.57,-6.7,-1.04
+pseudo 5-min from closes (Aug24-Nov25) | HTF causal | both,51,29.4,0.224,-1.296,1.2,11.4,0.39
+pseudo 5-min from closes (Aug24-Nov25) | HTF no HTF filter | short-only,66,30.3,-0.122,-1.196,0.88,-8.0,-0.36
+pseudo 5-min from closes (Aug24-Nov25) | HTF no HTF filter | both,144,27.1,-0.313,-1.255,0.75,-45.1,-1.01
