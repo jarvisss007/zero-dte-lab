@@ -12,12 +12,23 @@ from hope.**
 Tested on 23,087 non-overlapping 5-min returns over 302 sessions
 (Aug 2024 – Nov 2025), `src/timing_tester.py`:
 
+All times below in Anupam's clock (Pacific); market = 06:30–13:00 PT.
+
 - Big moves (top-decile |5-min return|) cluster **hard** at the open
-  (09:35–10:00, up to 21.5% frequency vs 10% baseline) and the close
-  (15:50–15:55), Bonferroni-significant. 10:25 also clears the bar.
-- The six r17 windows as a pre-registered group: 12.3% big-move frequency vs
-  10% baseline (p=0.002). Real but modest, and driven almost entirely by the
-  09:45 and 10:00 windows; 11:20 and 13:45 add nothing.
+  (06:35–07:00 PT, up to 21.5% frequency vs 10% baseline) and the close
+  (12:50–12:55 PT), Bonferroni-significant. 07:25 PT also clears the bar.
+- The six r17 windows read as **ET** (what Pine's `time()` actually tested):
+  12.3% big-move frequency vs 10% (p=0.002), driven almost entirely by the
+  9:45/10:00 ET (= 06:45/07:00 PT) windows.
+- The same window numbers read as **PT** (if they were derived from the
+  hand-logged Pacific-time xlsx): they land in the early-afternoon-ET dead
+  zone and are significantly QUIETER than baseline (7.9% big-move frequency,
+  p=0.016; mean |ret| below the rest of the day). Under this reading the
+  window list is actively counterproductive.
+- TIMEZONE ACTION ITEM: r17's `time()` windows run in exchange time (ET).
+  If the windows were meant as PT, the script has been trading different
+  times of day than intended. Either way, the only windows worth keeping are
+  the open (06:35–07:00 PT) and the close (12:50–12:55 PT).
 - **This is the textbook intraday volatility U-shape. Market makers price it
   into 0DTE options. Elevated realized movement is NOT an edge until shown to
   exceed what the options market charges for it at those times — that test
