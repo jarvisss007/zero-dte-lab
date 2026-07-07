@@ -1,0 +1,19 @@
+OVERFITTING AUDIT of the r17 sweep (see sweep_backtest.py)
+Selection rule audited: 'pick the config with the best in-sample Sharpe'
+
+== BATS 5-min true OHLC (Jul-Aug 2025) ==
+   skipped (only 5 active configs / 12 days)
+
+== BATS 15-min true OHLC (Sep24-Jan25) ==
+   skipped (only 6 active configs / 19 days)
+
+== pseudo 5-min from closes (Aug24-Nov25) ==
+   6 configs x 110 trade days · best in-sample: LEAKY(r17)|short
+   best annual Sharpe (in-sample):  +0.87
+   Deflated Sharpe (DSR):           0.341   (P[true SR>0 after 6-trial selection]; want > 0.95)
+   PBO (CSCV):                      0.60   (P[IS-best ranks below median OOS]; want < 0.5)
+   P(OOS loss of IS-best):          0.64
+   IS->OOS degradation slope:       -1.44
+   min backtest length for this N:  2.2 years
+   VERDICT: OVERFIT: not significant after deflation AND high overfitting probability
+
