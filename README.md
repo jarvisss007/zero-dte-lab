@@ -56,22 +56,51 @@ numbers on TradingView itself. Trade counts here are small (r17's filters are
 very restrictive), so this is not proof the concept can never work — but the
 burden of proof is on the strategy, and it failed everywhere it was tested.
 
+## Chain recorder + implied density engine (phase 2, built 2026-07-08)
+
+`src/chain_recorder.py` snapshots the free CBOE delayed-quotes SPY chain
+(no API key, ~15-min delay) every 5 minutes during RTH and appends today's
+0DTE contracts within spot ±5% to `data/chains/SPY_YYYY-MM-DD.csv` — quotes,
+sizes, IV, greeks, volume, OI (~150 contracts/snapshot). Free intraday chain
+history is unobtainable retroactively; recording starts the clock. Guards:
+RTH+weekday, stale-quote skip (holidays), gap-tolerant (every snapshot
+independent). NOT YET SCHEDULED — to activate:
+
+```
+cp launchd/com.anupam.zerodte-recorder.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.anupam.zerodte-recorder.plist
+```
+
+launchd does not wake a sleeping Mac: snapshots only accumulate while the
+lid is open. That's fine — the analysis treats each snapshot independently.
+
+`src/implied_density.py` turns any snapshot into the market's implied
+distribution for SPY at the close (Breeden–Litzenberger: second derivative
+of the smile-interpolated call curve), plus the ATM-straddle implied move.
+Verified on the first recorded snapshot (2026-07-08 pre-open, July-7-close
+quotes): implied std 0.55%, straddle move ±0.49%, skew −1.22, density mass
+1.008 — all sane. **The test that matters, once ~60+ days are recorded:
+is realized open/close-window movement bigger than what the straddle
+charges at the window start? Until that comparison is run, the timing
+U-shape remains NOT an edge.**
+
 ## Layout
 
 - `src/data_utils.py` — loaders (reads from `~/spy-trading/data`, ET/RTH)
 - `src/timing_tester.py` — time-of-day big-move study
 - `src/sweep_backtest.py` — r17 port: leaky vs causal vs no HTF filter
+- `src/chain_recorder.py` — 0DTE chain snapshotter (CBOE delayed, free)
+- `src/implied_density.py` — Breeden–Litzenberger density + straddle move
+- `launchd/` — plist to schedule the recorder (opt-in, see above)
 - `pine/r18_htf_fix.pine` — drop-in non-repainting fix for the TradingView script
 - `results/` — CSVs + charts (`timing_profile.png`, `timing_heatmap.png`)
+- `data/chains/` — recorded chains (gitignored; grows ~1 MB/day)
 
 ## Roadmap
 
 1. ~~Timing tester~~ DONE (above)
-2. **Chain recorder + implied density engine** — archive intraday 0DTE option
-   chains (free data is unobtainable retroactively; recording starts the
-   clock), extract Breeden–Litzenberger implied distributions, and test
-   whether the open/close vol windows are UNDERPRICED by 0DTE straddles.
-   This is the only version of the timing thesis that can make money.
+2. ~~Chain recorder + implied density engine~~ BUILT (above) — now recording;
+   the straddle-underpricing verdict needs ~60+ recorded sessions.
 3. **Paper-trade journal + verdict engine** — forced pre-trade thesis, scored
    at the close against real bid/ask. Gate: no real money without positive
    expectancy after costs over 100+ paper trades.
