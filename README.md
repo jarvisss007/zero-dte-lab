@@ -109,3 +109,13 @@ U-shape remains NOT an edge.**
 Known limitations: pseudo-OHLC bars understate wicks; BATS true-OHLC samples
 are short (30 days / 4.5 months); worst-case intrabar fill assumption
 (stop before target) is conservative by design.
+
+## Self-learning agent
+
+`agent/` holds a self-calibrating session agent (same pattern as `~/stock-radar`):
+each morning with a fresh chain snapshot it logs at most two falsifiable calls to
+`agent/ledger.csv` (close inside/outside the straddle implied move; max-pain pin
+holds/breaks), scores them same-day at the close with no excuses, and appends blunt
+takeaways to `agent/lessons.md`. **Honesty note:** calibration only, not trades —
+no claim of edge; the 60+-session straddle-underpricing test remains the project's
+real verdict. Procedure: `agent/AGENT.md`.
