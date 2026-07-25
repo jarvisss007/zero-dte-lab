@@ -17,7 +17,15 @@ Empty sections mean no scored history yet — earn the opinions.
   verdict. Nothing in this file or the ledger substitutes for it.
 
 ## Scored-call takeaways
-(none yet)
+- 2026-07-17 (scored late, 2026-07-25 catch-up): [0dte] implied_move `inside`
+  WRONG — realized -0.99% vs ±0.63% implied; the "quiet low-VIX Friday"
+  base-rate bet lost to a real down move. max_pain `breaks` RIGHT — close
+  743.29 vs pin 747 (0.50% away). Running: 1/2 overall; inside 0/1, which is
+  worse than its own favorable base rate — one call means nothing, but note
+  the losing call was the one leaning on the base rate, not reading the tape.
+- 2026-07-25: [0dte] Process: the scoring sweep was dead 2026-07-17→07-25;
+  calls sat unscored for 8 days. Late scoring is still honest scoring, but the
+  feedback loop only works if it runs — verify the sweep task is alive.
 
 ## Process lessons
 (none yet)
