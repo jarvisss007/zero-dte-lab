@@ -64,15 +64,40 @@ burden of proof is on the strategy, and it failed everywhere it was tested.
 sizes, IV, greeks, volume, OI (~150 contracts/snapshot). Free intraday chain
 history is unobtainable retroactively; recording starts the clock. Guards:
 RTH+weekday, stale-quote skip (holidays), gap-tolerant (every snapshot
-independent). NOT YET SCHEDULED — to activate:
-
-```
-cp launchd/com.anupam.zerodte-recorder.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.anupam.zerodte-recorder.plist
-```
+independent). LIVE via launchd since 2026-07-16
+(`~/Library/LaunchAgents/com.anupam.zerodte-recorder.plist`, fires every
+5 min; the plist source is in `launchd/`).
 
 launchd does not wake a sleeping Mac: snapshots only accumulate while the
 lid is open. That's fine — the analysis treats each snapshot independently.
+
+**Recording status (honest count, 2026-08-04): 9 usable full sessions**
+(Jul 17, 20, 22, 24, 27–31) **against the 60-session gate.** Losses so far,
+all machine-side, none of them the source's fault:
+
+- **2026-08-03 — LOST.** 80 consecutive fetch failures 09:31–16:06 ET, every
+  one `gaierror(8, 'nodename nor servname provided')` — the Mac could not
+  resolve DNS all day (dead/upstream-less network; the box often rides an
+  iPhone hotspot). No session file written. The old recorder logged each
+  failure and did nothing else.
+- **2026-07-23 — partial** (7 snapshots; same DNS error at the open, then
+  sleep gaps). **2026-07-21 — partial** (13 snapshots; sleep gaps).
+
+That is 2 of the last 9 trading days lost or gutted to machine network. Lost
+days stay lost — the count above is not padded with partials.
+
+Resilience patch (2026-08-04), recording behavior unchanged: each snapshot
+now retries 3x with backoff (5s/20s) and a fresh DNS resolve + TCP/TLS
+handshake per attempt; consecutive failures are counted across the 5-min
+launchd relaunches in `data/chains/.recorder_state.json`; at 6 consecutive
+failures (30 min dark) a dated `FAILURE_YYYY-MM-DD.txt` marker lands in
+`data/chains/` — lost sessions are visibly lost, not silently absent — and
+one full client re-init is attempted; after each close the log gets one
+`SESSION SUMMARY date: N fetches ok, M failed` line. Sleep during RTH remains
+a physical limit: on battery this Mac sleeps when idle (`pmset -g custom`:
+Battery `sleep 1`, AC `sleep 0`), and launchd cannot fire through it — keep
+the lid open on AC during market hours, or change the battery sleep setting
+deliberately.
 
 `src/implied_density.py` turns any snapshot into the market's implied
 distribution for SPY at the close (Breeden–Litzenberger: second derivative
