@@ -1,1 +1,2 @@
 date,instrument,horizon_days,question,p,check_date,outcome,notes
+2026-08-03,SPY,2,"SPY closes above 757.67 on 2026-08-05",0.52,2026-08-05,,"[0dte] SPY 757.67, +1.42% today and only -0.36% off its 52w high. No chain data today (recorder DNS-failed all session), so this is a pure drift prior with no information in it — 0.52 says exactly that."
