@@ -78,3 +78,36 @@ Recorded unscored, because the 60-session study is retrospective measurement
 rather than forecasting: the 09:32 straddle implied +/-0.39% and realized
 close-to-close was +1.80% (757.67 -> 771.33), a 4.6x underprice. Single thin
 session, near-zero evidentiary weight, and deliberately kept out of ledger.csv.
+
+2026-08-05 [0dte] — Nothing scored (ledger has 0 pending). Abstention logged against a
+named bar, and the bar is worth stating precisely because it is not a market judgement.
+
+THE SCHEDULE MAKES THIS LAB'S FALSIFIABLE UNIT IMPOSSIBLE TO PRODUCE HONESTLY.
+The parent sweep fires at 8:20 PDT = 11:20 ET, about 1.8 hours after the US open. The unit
+at the top of AGENT.md is a prediction made from the MORNING chain and scored at the same
+day's close. Today I had a clean 09:47 snapshot (spot 776.05, straddle implied +/-0.63%,
+skew -0.34) and could also see the tape through 11:12 ET (773.43 against an 08-04 close of
+771.33, roughly +0.27% realized). Calling `inside` off that is not a prediction, it is
+reading 30% of the answer first. Declined. This will recur on EVERY run at this schedule,
+so it needs a decision from Anupam or `[coach]`, not a judgement call each morning: either
+a separate ~06:35 PDT trigger for the 0DTE calls, or the ledger stops accepting same-day
+calls and the lab's unit is redefined. Recording it as a blocker rather than quietly
+skipping, which is how 07-31's and 08-04's schedule faults went two runs before anyone
+named them.
+
+Two other things worth carrying:
+(1) THE RECORDER IS FINE — the last three runs' failures were DNS, not design. Today: 21
+snapshots on a clean 5-minute cadence from 09:32 ET, still writing. 08-03 got zero
+snapshots and 08-04 got exactly one, both DNS. Distinguishing infrastructure failure from
+schedule failure matters, because they have different fixes and today separates them:
+same code, working data, still no honest call available.
+(2) THE SESSION GATE IS FURTHER AWAY THAN THE FILE COUNT SUGGESTS. 14 chain files exist,
+but only 9 have full intraday coverage (>=70 snapshots); 2 are partial (07-21: 9, 07-23: 7)
+and 2 are single-snapshot stubs (07-08, 08-04). So the honest count toward the 60-session
+straddle-underpricing verdict is ~10, not 14. Attrition is 4 of the last 14 calendar
+attempts lost to DNS or a sleeping Mac. Anyone reading progress off `ls | wc -l` will
+overstate it by 40%. Count snapshots, not files.
+
+A forecast row was DUE today (08-03 row, checks 08-05) and was deliberately left pending:
+the 08-05 close does not exist yet at 11:28 ET. Resolving it off an intraday mark would be
+exactly the fabrication the hard rules forbid. It resolves on the next run.
