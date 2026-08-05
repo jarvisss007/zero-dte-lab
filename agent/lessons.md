@@ -47,3 +47,34 @@ Empty sections mean no scored history yet — earn the opinions.
   full session. That is ~9 usable sessions, not 12, against the 60-session
   gate. At the current loss rate the verdict is months away, and pretending
   otherwise would be the same self-flattery this lab exists to prevent.
+
+2026-08-04 [0dte] — Nothing scored (both ledger rows closed 07-17; the open
+forecast checks 08-05). Abstention logged against a named bar, per the council
+rule. Three things worth carrying forward, none of them market reads:
+
+(1) **The session count has been overstated.** 13 chain files exist but only
+**9** carry usable intraday coverage (>=10 snapshots). 07-08, 07-21, 07-23 and
+08-04 hold 1, 9, 7 and 1 snapshots. The gate is 60 sessions of *recorded
+session*, not 60 files, so the real progress bar reads **9/60**, not 13/60.
+Counting files instead of coverage flatters this project by a third.
+
+(2) **Recorder down two days running.** 08-03 recorded nothing; 08-04 got 4
+fetches and 69 DNS failures (`gaierror(8)` on cdn.cboe.com, 69 consecutive to
+the close). `cdn.cboe.com` resolves normally now, so this is the Mac losing
+network mid-session, not a bug in chain_recorder.py. Per the council's "flag
+stale collectors instead of scoring around them" — flagged, not worked around.
+At the current attrition the 60-session gate is not months away, it is
+indefinite.
+
+(3) **Timing makes this lab unrunnable from the evening sweep.** Every metric
+here has check_date = today and is scored at today's close. This run fired
+23:43 ET, after the close. Logging a call at that hour is not a prediction, it
+is transcription of a known outcome. So on any post-close run the correct
+output is zero calls regardless of data quality — and that should be treated
+as a scheduling fact about this lab, not as a judgement call to re-make each
+time. If 0DTE calls are wanted, the sweep has to reach this lab before 09:45 ET.
+
+Recorded unscored, because the 60-session study is retrospective measurement
+rather than forecasting: the 09:32 straddle implied +/-0.39% and realized
+close-to-close was +1.80% (757.67 -> 771.33), a 4.6x underprice. Single thin
+session, near-zero evidentiary weight, and deliberately kept out of ledger.csv.
