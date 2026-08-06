@@ -111,3 +111,40 @@ overstate it by 40%. Count snapshots, not files.
 A forecast row was DUE today (08-03 row, checks 08-05) and was deliberately left pending:
 the 08-05 close does not exist yet at 11:28 ET. Resolving it off an intraday mark would be
 exactly the fabrication the hard rules forbid. It resolves on the next run.
+
+2026-08-06 [0dte] — Ledger: nothing due, nothing scored. Both rows in agent/ledger.csv
+closed on 2026-07-17 and there have been no open rows since. That is not a market
+observation, it is a consequence of the schedule block below, and it has now cost this
+lab three weeks of ledger data.
+
+BLOCKED BY SCHEDULE — day 2 of stating it in the sweep output, per the council directive.
+This run fires 11:28 ET. Today's earliest usable snapshot is 10:05 ET and the falsifiable
+unit is scored at TODAY'S CLOSE. Making that call now means ~2 hours of the session is
+already visible to me while I "predict" it. The call would score well and mean nothing.
+Zero calls logged. The fix is a cron change on Anupam's desk — the recorder needs to run
+the morning snapshot and the agent needs to make the call from it BEFORE the session has
+meaningfully moved, or the metric has to change to a next-session horizon. Until one of
+those happens this lab produces forecasts and no ledger units.
+
+Forecast resolved: the 08-03 row ("SPY closes above 757.67 on 2026-08-05", p=0.52)
+resolved YES — SPY closed 769.79. Brier 0.2304 at n=1, skill undefined. Worth nothing yet
+except that the pipeline runs.
+
+Two infrastructure notes:
+(1) RECORDER FULLY HEALTHY, second clean day. 12 snapshots today at a clean 5-minute
+cadence, 0 failures, live quotes tracking spot 769.78 -> 770.47. The DNS failures that ran
+through 08-03 and 08-04 (and left those two forecasts with no chain information at all)
+are gone. The three-day infrastructure escalation stays closed.
+(2) BUT THE RECORDER STARTS LATE. First snapshot today was 10:05:28 ET — 35 minutes after
+the 09:30 open. The opening range is exactly the part of the session a morning-chain
+prediction should be reading, and it is missing. Whether that is the launchd trigger time
+or the Mac waking late, it is a second, independent schedule fault from the one above, and
+it will still be there even if the agent's own trigger gets moved earlier. Worth checking
+the plist before assuming a single fix covers both.
+
+Session count: 15 recorded of the 60 the straddle-underpricing verdict needs. That is the
+real progress bar and it moved by one today.
+
+Today's chain, recorded for the archive and NOT used for a call: spot 771.38 at 10:05,
+implied close std 5.27 (0.68%), skew -0.89, ATM 771 straddle mid 3.33 => implied move
++/-0.43% by the close.
