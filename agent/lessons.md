@@ -148,3 +148,44 @@ real progress bar and it moved by one today.
 Today's chain, recorded for the archive and NOT used for a call: spot 771.38 at 10:05,
 implied close std 5.27 (0.68%), skew -0.89, ATM 771 straddle mid 3.33 => implied move
 +/-0.43% by the close.
+
+2026-08-07 [0dte] — Nothing scored. Both ledger rows closed 07-17. The 08-04
+forecast has check_date 2026-08-07 = TODAY and CANNOT be resolved on this run:
+the run fires 11:35 ET and the question asks for a CLOSE. Left pending
+deliberately; it resolves on the next run. Recording that because a future run
+must not read a skipped resolution as a lost one — this is the catch-up rule
+working, not failing.
+
+No calls. Blocked by schedule, NOT flat — and today the block is sharper than
+usual, so it is worth writing down exactly why.
+
+(1) THE LOOKAHEAD IS NOW MEASURABLE, not theoretical. Morning snapshot (09:50 ET,
+the earliest usable one) gave an ATM 771 straddle mid of 3.46 => implied move
++/-0.45% by the close. SPY's prior close was 768.56; at 11:31 ET spot was 772.98,
+a realized close-to-close move of +0.58%. The move is ALREADY outside the implied
+band. Logging `outside` right now would score right with near-certainty and would
+be worth precisely nothing as calibration, because it is an observation wearing a
+prediction's clothes. The council's KEEP line — never fabricate a call to fill the
+coverage line — is exactly this case, and this is the first run where I can put a
+number on what the fabrication would have been worth.
+
+(2) A REAL METHODOLOGY DEFECT IN THE `implied_move` METRIC, found while checking
+the above. The straddle implies +/-0.45% FROM THE MORNING SPOT (771.49). The
+scoring rule in AGENT.md compares it against the realized CLOSE-TO-CLOSE move,
+measured from the prior close (768.56). Those two are not the same quantity: the
+overnight gap of +0.38% was already banked before the session started, and it is
+charged in full against `inside` while the straddle never priced it. On a gappy
+morning `inside` is being asked to cover a distance the option it is quoted from
+never sold. The single closed `implied_move` row (07-17: implied +/-0.63%,
+realized -0.99%, scored wrong) is plausibly the same defect and not a bad read.
+n=1 so that is a hypothesis, not a finding. Either the call must be scored
+open-to-close, or `value_at_call` must be the implied move re-based to the prior
+close. This is a [coach]/Anupam decision — I am not changing a scoring rule
+mid-flight, and I am not logging more rows into a metric I now believe is
+mis-specified until it is settled.
+
+(3) RECORDER IS ALIVE and the data is good: 22 snapshots by 11:31 ET, ~5-minute
+cadence, real greeks. One caveat for whoever writes the density code — the FIRST
+snapshot of the day (09:45:55) had iv == 0 on all 146 rows, completely unusable,
+while 09:50:56 was clean. "Earliest post-open snapshot" must mean earliest USABLE
+snapshot; taking the literal first would have produced a straddle price of zero.
