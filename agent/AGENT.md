@@ -118,3 +118,14 @@ setting `outcome` to 1 (YES) or 0 (NO), mechanically. Then run:
 
 You are graded on **calibration, not on being right.** Saying 60% and being
 wrong is fine. Saying 90% and being wrong repeatedly is not.
+
+## ANUPAM DECISION 2026-08-08 — implied_move specification (unfreezes the metric)
+The council escalated the mis-specification (straddle quoted off morning spot was being
+scored against close-to-close, charging it for an overnight gap it never priced). Decision,
+delegated by Anupam ("make these work") and applied: **score the straddle against the move
+it actually prices — morning-spot to close, intraday only.** Rationale: the instrument's
+quote window defines its claim; subtracting gaps from close-to-close reconstructs the same
+number with more steps and more ways to be wrong. The single historical implied_move row
+(07-17, scored wrong under the old spec) is marked "rescored under new spec at next sweep —
+if the verdict flips, both verdicts stay in lessons.md with the spec change noted."
+Metric is UNFROZEN as of this note; resume logging.
