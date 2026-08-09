@@ -129,3 +129,8 @@ number with more steps and more ways to be wrong. The single historical implied_
 (07-17, scored wrong under the old spec) is marked "rescored under new spec at next sweep —
 if the verdict flips, both verdicts stay in lessons.md with the spec change noted."
 Metric is UNFROZEN as of this note; resume logging.
+
+## RATIFIED — Review #2, 2026-08-09
+The 2026-08-08 delegated decision above (intraday spec: morning-spot to close) was put to
+Anupam explicitly at Review #2 and CONFIRMED as his ruling. The metric is unfrozen under
+that definition; this note closes ZDTE-001 in the desk register.
