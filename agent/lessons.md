@@ -189,3 +189,44 @@ cadence, real greeks. One caveat for whoever writes the density code — the FIR
 snapshot of the day (09:45:55) had iv == 0 on all 146 rows, completely unusable,
 while 09:50:56 was clean. "Earliest post-open snapshot" must mean earliest USABLE
 snapshot; taking the literal first would have produced a straddle price of zero.
+
+2026-08-10 [0dte] — Scored today: the 07-17 rescore (verdict FLIPPED) and the
+overdue 08-04 forecast. Two new calls logged, the first since the metric was
+frozen. Recorder alive, 21 snapshots 09:45-11:26 ET, so this lab is NOT blocked
+today for the first time in weeks.
+Four findings:
+(1) THE MIS-SPECIFICATION WAS REAL, AND IT COST A VERDICT. The 07-17 implied_move
+row is rescored under the ratified intraday spec: morning spot 741.17 (09:49 ET
+snapshot) to close 743.29 = +0.29% against an implied +/-0.63% -> `inside` RIGHT.
+Under the old close-to-close spec the same row read -0.99% and scored WRONG. Both
+verdicts stay on this record, as the ZDTE-001 note required. The 08-07 entry filed
+this as "plausibly the same defect and not a bad read, n=1 so a hypothesis". It was
+the defect. The read was fine and the ruler was broken — and note which one this
+lab blamed first. A metric that punishes a call for an overnight gap the instrument
+never sold does not produce a hit rate, it produces noise with a sign.
+(2) NEW STRUCTURAL DEFECT: EVERY CALL THIS AGENT MAKES NOW CARRIES 1.7 HOURS OF
+LOOKAHEAD. The 08:20 PDT trigger puts the run at 11:28 ET, ~1.7h into a 6.2h
+session, while the call is priced off the 09:45 snapshot. Today SPY printed 773.78
+at run time — +0.10% off morning spot, inside the +/-0.37% band and 0.62% above the
+769 pin. Neither call was decided, so unlike 08-07 (outcome already locked, call
+correctly refused) logging is defensible. But this is now a CONSTANT bias, not an
+incident: the metric will look better than a clean 09:45 forecast would. Disclosed
+in the brief and in this file so the eventual hit rate is read with it. The fix is
+a call timestamped to the snapshot, not another change to the metric — a
+[coach]/Anupam decision, and I am not changing a rule mid-flight twice.
+(3) THE iv==0 DEFECT IS INTERMITTENT, NOT FIRST-SNAPSHOT-ONLY. The 08-07 entry
+recorded the first snapshot as unusable (all 146 rows iv==0) and inferred
+"earliest post-open" must mean "earliest USABLE". Today the counts are 09:45 -> 23
+of 144 zero, 09:50 -> 10 of 144, 09:55 -> 27 of 146. So it is scattered across the
+morning at 7-18%, not a clean first-snapshot artifact, and 09:45 was usable today.
+Both timestamps agreed anyway (+/-0.37% vs +/-0.35%), which is the useful part: the
+straddle read is not sensitive to which early snapshot you take.
+(4) MAX PAIN IS NOT PEAK OI, and reading it as such would have produced a garbage
+call. Raw peak OI today is the 740 strike (19,763), 4.3% below spot — a leftover
+far-OTM put wall, and calling `breaks` against it would have been a certainty
+dressed as a prediction. Computed max pain (the strike minimising total payout) is
+769.0, 0.52% below spot, which is an actual question. AGENT.md says "max-pain /
+peak-OI strike" as if they were interchangeable. On this chain they are 29 points
+apart. Compute the pain, never grab the peak.
+
+Session count: 16 recorded of 60.

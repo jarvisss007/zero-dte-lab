@@ -1,3 +1,5 @@
 date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome
-2026-07-17,implied_move,inside,[0dte] straddle implies ±0.63%; quiet low-VIX Fri base-rate inside bet,0.63,2026-07-17,-0.99,wrong
+2026-07-17,implied_move,inside,[0dte] straddle implies ±0.63%; quiet low-VIX Fri base-rate inside bet,0.63,2026-07-17,0.29,right
 2026-07-17,max_pain,breaks,[0dte] spot 741 sits 0.8% below max-pain 747 pin unlikely,747,2026-07-17,743.29,right
+2026-08-10,implied_move,inside,[0dte] straddle implies +/-0.37% intraday; first row under ratified spec,0.37,2026-08-10,,
+2026-08-10,max_pain,breaks,[0dte] spot 773.01 sits 0.52% above max-pain 769 and drifting away,769,2026-08-10,,
