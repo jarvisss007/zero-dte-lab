@@ -230,3 +230,42 @@ peak-OI strike" as if they were interchangeable. On this chain they are 29 point
 apart. Compute the pain, never grab the peak.
 
 Session count: 16 recorded of 60.
+
+2026-08-11 [0dte] — Scored 2 overdue rows, both from 08-10, both `right`. Ledger
+now 4/4. NO CALLS TODAY, and the reason is the point of this entry.
+(1) BOTH 08-10 ROWS RESOLVED, AND ONE OF THEM RESOLVED ON A KNIFE EDGE THAT THE
+NEW SPEC HANDLED CORRECTLY. implied_move `inside`: morning spot 773.01 -> close
+773.03, a realised intraday move of **+0.0026%** against a +/-0.37% band. Under the
+old close-to-close spec the same session would have been scored on 773.26 -> 773.03
+= -0.030%, still inside, so the verdict does not flip — but it is worth recording
+that the first row under the ratified spec landed almost exactly on the morning
+spot, which is the cleanest possible demonstration that the two specs measure
+different quantities. max_pain `breaks` at 769: close 773.03 sits well outside the
+767.08-770.92 band, right. 4/4 is n=4 and means nothing; the AGENT.md bar is 20+,
+and `inside` is expected to win 55-70% by construction anyway.
+(2) NO CALL TODAY — THE LOOKAHEAD BECAME DECISIVE RATHER THAN MARGINAL, SO I
+REFUSED BOTH. The 08-10 entry recorded the 11:28 ET lookahead as a CONSTANT bias
+that makes the metric look better than a clean 09:47 forecast. Today it stops being
+a tilt and becomes the whole call. Morning spot 773.96, straddle prices +/-0.34%,
+and SPY is trading 771.96 at run time — **-0.258%, i.e. 76% of the band already
+consumed with roughly 4.4 of 6.2 session hours left**. A clean 09:47 forecast would
+say `inside` off the 55-70% base rate; from where I am sitting `inside` is clearly
+worse than that and `outside` is clearly better, and I know this only because I can
+see two hours I was not supposed to see. Same story on max_pain: computed pain is
+771.0 and SPY at 771.96 is already INSIDE the 769.07-772.93 band, so `holds` would
+be pre-loaded. Logging either direction today contaminates the record; logging
+`inside`/`holds` would be a knowingly worse call and logging `outside`/`breaks`
+would be a knowingly better one. Neither is a forecast. This is the 08-07 precedent
+extended: that day the outcome was already locked and the call was refused; today
+the outcome is not locked but the information is decisive, and the same refusal
+applies. The fix remains a call timestamped to the snapshot rather than to the
+sweep — a [coach]/Anupam decision, not something I change mid-flight.
+(3) MAX PAIN VS PEAK OI, CONFIRMED AGAIN AND WORSE THAN LAST TIME. Computed max
+pain today is 771.0, 0.38% below spot. Raw peak OI is the **796 strike** (47,996
+contracts), 2.8% ABOVE spot — a far-OTM call wall. The two are 25 points apart and
+on opposite sides of spot, so AGENT.md's "max-pain / peak-OI strike" phrasing would
+have produced not just a worse call but a call in the wrong direction. Second
+consecutive session this has bitten; the phrasing in AGENT.md should be fixed to
+say "computed max pain" outright.
+
+Session count: 18 recorded of 60.
