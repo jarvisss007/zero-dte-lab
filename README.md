@@ -101,21 +101,41 @@ deliberately.
 
 ### Second leg: the cloud recorder (added 2026-08-11)
 
-Sleep is the binding constraint on the 60-session gate, not the code. Measured
-over the first 25 trading days of recording (Jul 8 – Aug 11), `src/merge_chains.py
---report` gives the honest picture:
+Capture, not code, is the binding constraint on the 60-session gate. The
+honest window is **Jul 17 – Aug 11**, the 18 trading days since the agent was
+actually loaded — not Jul 8, the date of a single hand-run test. `src/merge_chains.py
+--report`, counted over the live window:
 
 | | sessions |
 |---|---|
-| trading days in window | 25 |
-| any file written | 18 |
+| trading days since the agent went live | 18 |
 | **usable (≥86% of the session's books)** | **14** |
-| gutted (1–9 books: Jul 8, 21, 23, Aug 4) | 4 |
-| entirely dark (Jul 9, 10, 13–16, Aug 3) | 7 |
+| gutted (Jul 21: 9 books · Jul 23: 7 · Aug 4: 1) | 3 |
+| entirely dark (Aug 3) | 1 |
 
-**56% capture.** Six of the seven dark days are one continuous stretch,
-Jul 9–16 — the lid was shut. At that rate 60 usable sessions arrives around
-January 2027.
+**78% capture.** At that rate the 60-session gate lands around early November
+2026.
+
+A first draft of this section counted Jul 8 – Aug 11 instead, scored the
+Jul 9–16 blank as lost sessions, blamed a shut lid, and reported 56% capture
+and a January 2027 date. All of that was wrong. `~/crypto-microstructure`
+ran its collector through that same stretch and logged **24 of 24 UTC hours on
+Jul 10, 13, 14, 15 and 16** — the machine was awake and networked the whole
+week. The plist was written Jul 9 but not loaded until Jul 16, so those days
+were never being recorded and are not losses to count. A neighbouring lab's
+data killed the diagnosis; the number came down from a two-month gain to about
+three weeks.
+
+**The dominant loss cause is network, not sleep.** Of the four bad sessions,
+this README already attributes Aug 3 (80 consecutive `gaierror`), Aug 4, and
+Jul 23's open to DNS death on the iPhone hotspot; only Jul 21 is a clean sleep
+gap. The crypto collector corroborates independently — its two worst days in
+38 are **Aug 3 (4 of 24 hours) and Aug 4 (11 of 24)**, the same two days,
+which is what a machine-wide network outage looks like from a second lab and
+not what sleep looks like.
+
+That is a stronger argument for the cloud leg than sleep was, not a weaker
+one: a GitHub runner has neither a lid nor a hotspot.
 
 So the recorder now runs a second time, in `.github/workflows/chain-recorder.yml`,
 on a GitHub runner every 10 min — awake or not, hotspot or not. It runs the
@@ -137,11 +157,20 @@ Two honesty notes, both of which cap what this buys:
 - **GitHub schedules are best-effort.** Documented to be delayed under load and
   dropped at high-load boundaries. The cloud leg is a *floor* on capture, not a
   guarantee. The laptop leg stays on at 5 min as the higher-resolution overlay.
-- **The projection is a projection.** *If* the cloud leg lands ≥90% capture, 60
-  usable sessions arrives around November 2026 instead of January 2027. That
-  number gets replaced by the measured one, not defended — check the `rescued`
-  column in the merge report, which counts books no lid-open recorder saw. It
-  reads 0 until the cloud leg has actually run.
+- **The projection is a projection, and it is modest.** 46 usable sessions
+  remain. At the measured 78% that is 59 more trading days (early November
+  2026); *if* the cloud leg lands ≥95% it is 48 (mid-October) — about three
+  weeks bought, not two months. That number gets replaced by the measured one,
+  not defended: check the `rescued` column in the merge report, which counts
+  books no lid-open recorder saw. It reads 0 until the cloud leg has run.
+
+The real purchase is not the three weeks. It is that the sole copy of the
+recording stops depending on one laptop's network: every cloud snapshot is
+committed to GitHub as it is taken, whereas `data/chains/` is gitignored and
+reaches Google Drive only on the Sunday sweep — on 2026-08-11 that backup was
+current through Aug 7, leaving the Aug 10 and Aug 11 sessions single-copy.
+For data this README calls unobtainable retroactively, that is the exposure
+worth closing.
 
 `src/implied_density.py` turns any snapshot into the market's implied
 distribution for SPY at the close (Breeden–Litzenberger: second derivative
