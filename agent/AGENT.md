@@ -134,3 +134,23 @@ Metric is UNFROZEN as of this note; resume logging.
 The 2026-08-08 delegated decision above (intraday spec: morning-spot to close) was put to
 Anupam explicitly at Review #2 and CONFIRMED as his ruling. The metric is unfrozen under
 that definition; this note closes ZDTE-001 in the desk register.
+
+## Call timestamp — the 09:47 snapshot (Anupam, 2026-08-12, ZDTE-002)
+
+**Stamp every call to the 09:47 ET snapshot, not to the sweep that fires at 11:36.**
+The chain recorder captures from 09:29 every 5 minutes, so the data already exists.
+
+Why this is a correctness rule and not a convenience. The sweep runs ~2h into a
+6.2h session, so both metrics are pre-loaded by the time the lab sees them: on
+2026-08-11 SPY had already consumed 76% of the +/-0.34% implied band and sat
+inside the max-pain band, and the lab correctly refused to log either — "only
+because I can see two hours I shouldn't."
+
+The cost was never the missing row. It is that the ledger then fills up ONLY on
+mornings that happen to be quiet, so the sample is conditioned on a small morning
+move and `inside` is biased upward by selection rather than skill. At 4/4 that is
+invisible. At the lab's own 20-scored bar it would be a wrong answer wearing a
+clean number.
+
+Rows logged under the old fire-time regime are a SEPARATE pre-fix stratum and are
+never blended with post-fix rows. Report them with their own n.
