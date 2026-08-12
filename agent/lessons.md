@@ -269,3 +269,45 @@ consecutive session this has bitten; the phrasing in AGENT.md should be fixed to
 say "computed max pain" outright.
 
 Session count: 18 recorded of 60.
+
+## 2026-08-12 [0dte]
+Nothing scored today (all four ledger rows are already resolved, 4/4 right, and no
+forecast checks before 08-13). Two calls logged — the first rows written under
+ZDTE-002 — and three findings, one of which corrects ZDTE-002 itself.
+
+(1) ZDTE-002'S FACTUAL PREMISE IS WRONG AND THE RULE SURVIVES ANYWAY. The note
+says "the chain recorder captures from 09:29 every 5 minutes, so the data already
+exists." It does not. Actual first snapshots: 08-06 10:05:28, 08-07 09:45:55,
+08-10 09:45:55, 08-11 09:47:07, 08-12 09:45:35. The recorder starts 16-36 minutes
+after the open, and the "09:47 snapshot" the rule is named after existed on 08-11
+by coincidence. Today there is no 09:47 bar at all, and the 09:45:35 one carries 0
+usable OTM quotes (smile unfit). Both rows are therefore stamped to **09:50:36**,
+the earliest usable post-open snapshot, spot 773.06. The rule's INTENT — stamp to
+the morning, not to the sweep — is intact and was followed. Its stated mechanism
+is not, and a rule that names a timestamp the data does not reliably contain will
+mis-fire the moment someone automates it. Rewrite it as "earliest usable post-open
+snapshot" or fix the recorder's start time; do not leave it naming 09:47.
+
+(2) THE CALLS WERE DERIVED MECHANICALLY BECAUSE THIS RUN COULD NOT AVOID HINDSIGHT.
+The sweep fired 11:26 ET, and refreshing the other four labs put SPY's intraday
+print (771.89, later 772.44) in front of me before the 0DTE step ran. That is
+exactly the contamination ZDTE-002 was written to remove, and stamping a row to
+09:50 does not remove it from the agent's head. So both calls were taken from
+rules fixed before looking: implied_move = `inside` (AGENT.md's own stated base
+rate), max_pain = `holds` iff the 09:50 spot is within +/-0.25% of max pain, else
+`breaks` — 773.06 vs max pain 771.0 is 0.267% away, outside, so `breaks`. Neither
+call used a post-09:50 number. Recording the exposure rather than claiming it
+didn't exist.
+
+(3) A CONSTANT `inside` CALL CARRIES ZERO INFORMATION, AND AT 2/2 IT LOOKS LIKE
+SKILL. AGENT.md is explicit that `inside` wins ~55-70% by construction and that
+the bar is beating THAT, not 50%. A rule that says "always inside" cannot beat its
+own base rate — it IS the base rate, and every right answer it produces is the
+straddle's overpricing being recorded, not a read. The metric needs a discriminator
+(implied move vs trailing realized, or vs the same weekday's realized) that is
+pre-registered before it is used, or its rows will keep accumulating a clean-looking
+hit rate that means nothing. Flagging now at n=2, not at the 20-scored bar.
+
+Session count: 7 sessions recorded (08-05, 06, 07, 10, 11, 12 plus earlier), still
+far short of the 60+ the straddle-underpricing verdict needs. That gate is the
+project; these calls are side calibration and do not shorten it.
