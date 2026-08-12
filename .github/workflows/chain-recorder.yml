@@ -1,0 +1,77 @@
+# SPY 0DTE chain recorder — cloud leg.
+#
+# Why this exists: chain_recorder.py's own docstring carries the honesty note
+# "launchd does not wake a sleeping Mac — snapshots only accumulate while the
+# lid is open." That is the binding constraint on the 60-session verdict, not
+# the code. This job runs the identical script on a GitHub runner so capture
+# no longer depends on the laptop being awake.
+#
+# It writes to data/chains_ci/, NOT data/chains/. The two recorders never
+# touch the same file; src/merge_chains.py unions them and dedupes on the
+# CBOE book timestamp, so a snapshot both legs caught is counted once.
+#
+# HONESTY: GitHub documents scheduled workflows as best-effort — runs can be
+# delayed under load and dropped entirely on high-load boundaries. This leg is
+# a FLOOR on capture, not a guarantee. The laptop leg stays on at 5 min and is
+# the higher-resolution overlay whenever the lid is open.
+
+name: chain-recorder
+
+on:
+  schedule:
+    # Every 10 min, 13:00-21:50 UTC, Mon-Fri. That window brackets 09:29-16:06
+    # ET under BOTH EDT (UTC-4) and EST (UTC-5), so it needs no DST edit. The
+    # script's own RTH + staleness guards reject the out-of-window firings —
+    # those exit in ~3s and write nothing. The guards stay the authority on
+    # what counts as a session; this cron only decides when to ask.
+    - cron: '*/10 13-21 * * 1-5'
+  workflow_dispatch:        # manual run, for testing the plumbing
+
+permissions:
+  contents: write
+
+concurrency:
+  # Serialize commits. Never cancel a run in flight: a cancelled run is a
+  # silently lost snapshot, which is the exact failure this job exists to fix.
+  group: chain-recorder
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # No pip install step: chain_recorder.py imports stdlib only
+      # (argparse, csv, json, re, socket, sys, time, urllib, zoneinfo).
+      # Nothing to pin, nothing to break upstream.
+
+      - name: Snapshot the chain
+        run: python src/chain_recorder.py --out-dir data/chains_ci
+
+      - name: Commit if the snapshot wrote anything
+        run: |
+          set -euo pipefail
+          git config user.name  "chain-recorder[bot]"
+          git config user.email "chain-recorder@users.noreply.github.com"
+          if [ -z "$(git status --porcelain data/chains_ci)" ]; then
+            echo "nothing written (out of window, stale book, or fetch failed)"
+            exit 0
+          fi
+          git add data/chains_ci
+          git commit -m "chain-recorder: snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+          # The laptop leg pushes to this repo too. Rebase-retry rather than
+          # force: a push race must never discard the other leg's snapshot.
+          for i in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            echo "push rejected (attempt $i) — rebasing onto origin"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            sleep $((i * 5))
+          done
+          echo "::error::could not push after 5 attempts — snapshot is in the"
+          echo "::error::runner only and is now lost. Check for a stuck branch."
+          exit 1

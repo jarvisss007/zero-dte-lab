@@ -35,6 +35,15 @@ summary). HONESTY NOTE: launchd does not wake a sleeping Mac — snapshots only
 accumulate while the lid is open. Gap-tolerant by design: every snapshot is
 independent.
 
+Second leg (2026-08-11): this same script also runs every 10 min on a GitHub
+runner (.github/workflows/chain-recorder.yml) with
+`--out-dir data/chains_ci`, which is awake when the laptop is not. The two
+legs never write the same file; src/merge_chains.py unions them and dedupes on
+the CBOE book timestamp. Note that on an ephemeral runner the state file
+starts empty every run, so the consecutive-failure counter and the
+FAILURE_*.txt marker are effectively laptop-only — a dark stretch in the cloud
+leg shows up as absent rows in the merge report, not as a marker.
+
 Run once by hand:  /opt/anaconda3/bin/python src/chain_recorder.py [--force]
                    [--expiry YYYY-MM-DD] (test on a non-0DTE expiry)
                    [--dry-run] (fetch + parse, write nothing, touch no state)
@@ -200,7 +209,15 @@ def main() -> int:
                     help="YYYY-MM-DD expiry override (default: today = 0DTE)")
     ap.add_argument("--dry-run", action="store_true",
                     help="fetch + parse only; write no CSV, touch no state")
+    ap.add_argument("--out-dir", default=None,
+                    help="write CSV/log/state here instead of data/chains "
+                         "(the CI recorder uses data/chains_ci so the two "
+                         "recorders never write the same file)")
     args = ap.parse_args()
+
+    if args.out_dir:
+        global OUT_DIR
+        OUT_DIR = Path(args.out_dir).expanduser().resolve()
 
     now_et = datetime.now(ET)
     today = now_et.strftime("%Y-%m-%d")

@@ -99,6 +99,50 @@ Battery `sleep 1`, AC `sleep 0`), and launchd cannot fire through it — keep
 the lid open on AC during market hours, or change the battery sleep setting
 deliberately.
 
+### Second leg: the cloud recorder (added 2026-08-11)
+
+Sleep is the binding constraint on the 60-session gate, not the code. Measured
+over the first 25 trading days of recording (Jul 8 – Aug 11), `src/merge_chains.py
+--report` gives the honest picture:
+
+| | sessions |
+|---|---|
+| trading days in window | 25 |
+| any file written | 18 |
+| **usable (≥86% of the session's books)** | **14** |
+| gutted (1–9 books: Jul 8, 21, 23, Aug 4) | 4 |
+| entirely dark (Jul 9, 10, 13–16, Aug 3) | 7 |
+
+**56% capture.** Six of the seven dark days are one continuous stretch,
+Jul 9–16 — the lid was shut. At that rate 60 usable sessions arrives around
+January 2027.
+
+So the recorder now runs a second time, in `.github/workflows/chain-recorder.yml`,
+on a GitHub runner every 10 min — awake or not, hotspot or not. It runs the
+*identical* script (`--out-dir data/chains_ci`), so there is no second codebase
+to keep honest, and it needs no dependencies: `chain_recorder.py` imports
+stdlib only. The RTH and staleness guards stay the authority on what counts;
+the cron only decides when to ask.
+
+The two legs never write the same file. `src/merge_chains.py` unions them and
+dedupes on the **CBOE book timestamp**, not the fetch time — both legs poll one
+endpoint, so polls landing in the same ~5-min book return the same quotes under
+two `fetched_at` values, and deduping on fetch time would double-count one
+observation and inflate every row-based statistic here. Coverage is reported in
+distinct book timestamps, never rows: row counts move with how many strikes sat
+inside the ±5% band that day, which tracks realized vol, not capture.
+
+Two honesty notes, both of which cap what this buys:
+
+- **GitHub schedules are best-effort.** Documented to be delayed under load and
+  dropped at high-load boundaries. The cloud leg is a *floor* on capture, not a
+  guarantee. The laptop leg stays on at 5 min as the higher-resolution overlay.
+- **The projection is a projection.** *If* the cloud leg lands ≥90% capture, 60
+  usable sessions arrives around November 2026 instead of January 2027. That
+  number gets replaced by the measured one, not defended — check the `rescued`
+  column in the merge report, which counts books no lid-open recorder saw. It
+  reads 0 until the cloud leg has actually run.
+
 `src/implied_density.py` turns any snapshot into the market's implied
 distribution for SPY at the close (Breeden–Litzenberger: second derivative
 of the smile-interpolated call curve), plus the ATM-straddle implied move.
