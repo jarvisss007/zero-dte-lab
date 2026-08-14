@@ -154,3 +154,40 @@ clean number.
 
 Rows logged under the old fire-time regime are a SEPARATE pre-fix stratum and are
 never blended with post-fix rows. Report them with their own n.
+
+## AMENDED 2026-08-13 (ZDTE-003) — stamp the FIRST snapshot, not a clock time
+
+ZDTE-002 was ruled 2026-08-12 as "stamp the call to the 09:47 ET snapshot", on a
+premise I supplied and never checked: *"the chain recorder captures from 09:29
+every 5 min, so the data already exists."* **It does not.** The lab checked and
+was right. First snapshots on record: 10:05 (08-06), 09:45 (08-07), 09:45 (08-10),
+09:47 (08-11 — coincidence), 09:45 (08-12), **10:27 (08-13)**.
+
+Two causes stack, and neither is fixable by scheduling:
+
+1. **CBOE's free delayed feed does not publish a fresh book until ~09:45 ET.**
+   Before that the recorder correctly skips on stale quotes — 08-12's log shows
+   skips at 09:30 and 09:35 against a `2026-08-11T16:00:00` stamp.
+2. **The Mac sleeps.** On 08-13 there are no skip lines at all before 10:27, so
+   the recorder was not invoked. The cloud leg does not rescue this either: its
+   first run landed 10:06 (08-12) and 10:13 (08-13), because GitHub runs the
+   `*/10` cron about once every 50 minutes.
+
+So no fixed clock time is reliably available, and a rule naming one silently
+fails on the days it matters most.
+
+**THE RULE, amended:** stamp the call to the **FIRST SNAPSHOT OF THE SESSION,
+whatever time it lands**, and record that time on the row as
+`snapshot_et` plus `minutes_into_session`.
+
+This keeps everything ZDTE-002 was for. The purpose was never the clock — it was
+to stop the ledger filling only on quiet mornings, because a call made two hours
+in is conditioned on a small morning move and biases `inside` upward by selection.
+Taking the earliest available bar every session removes that selection whether it
+arrives at 09:45 or 10:27.
+
+It also does something the original could not: it **discloses the leak instead of
+pretending there is none**. A row stamped 57 minutes into the session is more
+contaminated than one stamped 15 minutes in, and now says so in a field the
+analysis can stratify on. Rows must never be blended across widely different
+`minutes_into_session` without reporting the split.
