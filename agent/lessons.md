@@ -311,3 +311,37 @@ hit rate that means nothing. Flagging now at n=2, not at the 20-scored bar.
 Session count: 7 sessions recorded (08-05, 06, 07, 10, 11, 12 plus earlier), still
 far short of the 60+ the straddle-underpricing verdict needs. That gate is the
 project; these calls are side calibration and do not shorten it.
+
+## 2026-08-13 [0dte] The first max_pain miss, and an hour of chain that never got recorded
+
+Scored the two overdue 08-12 rows. Results split.
+
+(1) `max_pain` HAS ITS FIRST WRONG, AND IT IS THE INFORMATIVE KIND. Called `breaks`
+off a 09:50 spot of 773.06 sitting 0.27% above the 771 pin — i.e. already outside the
+±0.25% band at call time — and SPY closed 772.49, back INSIDE the band (769.07–772.93).
+The call was not merely unlucky: the thesis was "already outside and drifting away",
+which is momentum reasoning applied to a mean-reverting quantity. A pin band that spot
+has just left is the setup where reversion is most likely, not least. `max_pain` is now
+2/3. Do not read that as a hit rate; read it as the first evidence that "outside the
+band now" is not a reason to call `breaks`.
+
+(2) `implied_move` WENT 3/3, AND THAT IS EXPECTED, NOT SKILL. Realized morning-spot-to-
+close was -0.07% against a ±0.41% straddle. The straddle usually overprices; `inside`
+is expected to win 55–70% by construction, so the standing bar is beating THAT, not 50%.
+Three rows cannot. Noting it before the number starts looking like a result.
+
+(3) THE RECORDER LOST THE FIRST HOUR OF TODAY'S SESSION. First snapshot 2026-08-13
+10:27:39 ET, against 09:45:35 on 08-12 and 09:47:07 on 08-11. 64 fetches, 0 failed —
+so this is not a fetch error, the recorder simply started ~58 minutes late. That
+matters more than a missing row: ZDTE-002 mandates that calls be stamped to the 09:47
+snapshot precisely so the ledger is not conditioned on quiet mornings, and today there
+was no 09:47 snapshot to stamp. Zero calls logged, for that reason and because a 20:22
+PDT run can already see the outcome. If the late start repeats, the 60-session gate is
+counting sessions that cannot produce a compliant call — check the launchd/wake timing
+before assuming the count is healthy.
+
+Session count: 20 of the 60+ gate. Forecast book: the 08-06 row resolved YES (SPY
+777.88 > 769.79), making it 3/3 YES — the same degenerate all-YES streak the India lab
+had, and today's row is the mirror fix (SPY closes BELOW 777.88 on 08-20, p=0.45).
+Third lab today to break the "closes above" monoculture; the finding is India's, not
+this lab's.
