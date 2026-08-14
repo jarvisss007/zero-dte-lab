@@ -1,7 +1,7 @@
-date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome
-2026-07-17,implied_move,inside,[0dte] straddle implies ±0.63%; quiet low-VIX Fri base-rate inside bet,0.63,2026-07-17,0.29,right
-2026-07-17,max_pain,breaks,[0dte] spot 741 sits 0.8% below max-pain 747 pin unlikely,747,2026-07-17,743.29,right
-2026-08-10,implied_move,inside,[0dte] straddle implies +/-0.37% intraday; first row under ratified spec,0.37,2026-08-10,0.00,right
-2026-08-10,max_pain,breaks,[0dte] spot 773.01 sits 0.52% above max-pain 769 and drifting away,769,2026-08-10,773.03,right
-2026-08-12,implied_move,inside,[0dte] [tech] straddle implies ±0.41% from 09:50 spot 773.06; base-rate inside,0.41,2026-08-12,-0.07,right
-2026-08-12,max_pain,breaks,[0dte] [tech] 09:50 spot 773.06 sits 0.27% above max-pain 771; outside band,771,2026-08-12,772.49,wrong
+date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome,snapshot_et,minutes_into_session,minutes_visible_at_call
+2026-07-17,implied_move,inside,[0dte] straddle implies ±0.63%; quiet low-VIX Fri base-rate inside bet,0.63,2026-07-17,0.29,right,,,
+2026-07-17,max_pain,breaks,[0dte] spot 741 sits 0.8% below max-pain 747 pin unlikely,747,2026-07-17,743.29,right,,,
+2026-08-10,implied_move,inside,[0dte] straddle implies +/-0.37% intraday; first row under ratified spec,0.37,2026-08-10,0.00,right,,,
+2026-08-10,max_pain,breaks,[0dte] spot 773.01 sits 0.52% above max-pain 769 and drifting away,769,2026-08-10,773.03,right,,,
+2026-08-12,implied_move,inside,[0dte] [tech] straddle implies ±0.41% from 09:50 spot 773.06; base-rate inside,0.41,2026-08-12,-0.07,right,,,
+2026-08-12,max_pain,breaks,[0dte] [tech] 09:50 spot 773.06 sits 0.27% above max-pain 771; outside band,771,2026-08-12,772.49,wrong,,,

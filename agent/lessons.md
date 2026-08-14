@@ -345,3 +345,50 @@ Session count: 20 of the 60+ gate. Forecast book: the 08-06 row resolved YES (SP
 had, and today's row is the mirror fix (SPY closes BELOW 777.88 on 08-20, p=0.45).
 Third lab today to break the "closes above" monoculture; the finding is India's, not
 this lab's.
+
+## 2026-08-14 [0dte] Two named-bar abstentions, and the ZDTE-003 columns that were never actually built
+
+Nothing was due; nothing was scored. Zero calls logged, for two reasons that are
+both properties of the metric specs rather than of today's tape.
+
+(1) THE 08-12 DISCRIMINATOR REQUIREMENT IS STILL UNMET, SO `implied_move` IS BARRED
+BY THIS LAB'S OWN LESSON. That entry said a constant `inside` call carries zero
+information — it IS the 55-70% base rate rather than a read of it — and that the
+metric needs a discriminator pre-registered BEFORE it is used. Two sessions later no
+discriminator exists. Logging a fourth `inside` today would have taken the record to
+4/4 and made the problem harder to see, not easier. An unmet requirement that keeps
+getting written down and never acted on eventually becomes decoration; naming the
+deadline instead: either a discriminator is pre-registered before the next
+`implied_move` row, or the metric stops accumulating rows.
+
+(2) A 1.05% DISTANCE FROM THE PIN IS NOT A CALL, IT IS ARITHMETIC. Spot 778.09 vs
+max pain 770, against a +/-0.25% band (768.08-771.92) and an implied std of 0.49% —
+`holds` would need a 2.1-sigma downside close. This is the exact mirror of the 08-13
+finding. That day taught that "already outside the band" is no reason to call
+`breaks` at a MARGINAL 0.27% distance, because reversion is most likely right where
+spot has just left. The same reasoning says a TRIVIAL 1.05% distance is not a read
+either: it is a free win, and a metric sitting at 2/3 does not need free wins, it
+needs informative ones. Both bars are session-independent, so declining on them
+introduces no selection bias — which is the whole point of ZDTE-003 and had to be
+checked before abstaining.
+
+(3) ZDTE-003 WAS RATIFIED ON 08-13 AND WAS NEVER ACTUALLY IMPLEMENTED. The rule
+mandates `snapshot_et` and `minutes_into_session` on every logged row. The ledger
+header did not have those columns — because 08-13 logged no rows, so nobody hit the
+code path, so the rule lived only in AGENT.md prose. A rule that only exists on the
+first day someone happens to use it is not a rule. Columns added today, blank for the
+five pre-rule rows, no recorded value touched. Added a THIRD column at the same time:
+`minutes_visible_at_call`. `minutes_into_session` discloses how contaminated the
+PRICE was; nothing disclosed how contaminated the CALLER was. Today those numbers
+would have been 20 and 94 — the 09:50 snapshot versus a run that fired 11:24 ET — and
+only the first was ever going to be recorded.
+
+(4) THE RECORDER RECOVERED. First snapshot 09:50:19 ET against 08-13's 10:27:39, so
+the late start was not the beginning of a trend. Session count 21 of the 60+ gate.
+Today's band is +/-0.30%, the tightest this lab has recorded (prior 0.63, 0.37, 0.41).
+
+Forecast: the due 08-05 row could NOT be resolved — the run fired mid-session and the
+08-14 close does not exist yet. Resolves next run from the settled close; recorded here
+so it does not read as a skipped catch-up. Today's new row is the first in this book to
+ask the lab's own question (realized morning-spot-to-close vs the first-snapshot
+straddle band, p=0.38) instead of a generic SPY-close question any lab could write.
