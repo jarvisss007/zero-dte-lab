@@ -136,12 +136,17 @@ Primary Trigger, short-only) produced **1 signal**, not the 1–2/day the chart
 suggests. Gate attrition: 131 sweeps → 15 survive `trend` agreement → 8 survive
 the candle filter → 2 survive the HTF bias. Sweeps are counter-trend by
 construction, so `sweep_bear and trend == -1` is nearly self-contradictory.
-`~/ie-pro-project` gets 96 trades on a comparable window only because
-`config.sweep_fresh_bars = 5` keeps a sweep live for 5 bars; the Pine fires on
-the sweep bar alone. `sweep_backtest.py` matches the Pine, ie-pro widens it —
-so ie-pro's PF 0.55 headline describes a **looser** strategy than the one
-running on the chart. Signal costing therefore has no sample yet; findings 1–3
-do not depend on it.
+
+`~/ie-pro-project/reconcile_pine.py` (2026-08-15) confirms this independently
+and pins the cause. Tightening that port toward `short_prim` one gate at a
+time, its 96 trades survive `sweep_fresh_bars=1` (92 trades) and then collapse
+to **1** the moment the trigger is restricted to sweeps alone. Roughly 95 of
+its 96 trades were fired by **BOS or FVG**, which the Pine's OB-Primary mode
+does not use as triggers at all. So ie-pro's PF 0.55 headline is a real result
+about a BOS+FVG short strategy, not about r17's sweep strategy; its faithful
+config fires ~2 signals a quarter, matching this repo's 1-in-17-sessions.
+
+Signal costing therefore has no sample yet; findings 1–4 do not depend on it.
 
 ## Chain recorder + implied density engine (phase 2, built 2026-07-08)
 
