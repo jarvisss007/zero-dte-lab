@@ -103,7 +103,34 @@ the open is the most expensive hour to hold, which is exactly when
 U-shape. That is the *cost* half of the straddle-underpricing question; the
 realized half still needs the 60-session gate.
 
-**Finding 4 — r17's active config barely fires, and the two ports disagree
+**Finding 4 — the chart setup passes Constitution Rule 1 in share space and
+fails it in option space.** Rule 1 demands a target ≥ 1.5R. In share space
+that is trivial: a 0.4-point stop with a 0.7-point target clears it.
+`rule1_target()` asks what the target must actually reach for the trade to
+pay 1.5× what the stop costs *after* real bid/ask and decay. Target as a
+multiple of the stop, for a 0.4-point stop:
+
+| | hold 15m | hold 30m | hold 60m |
+|---|---|---|---|
+| 09:30–10:00 | 2.26 | 2.99 | 4.10 |
+| 11:00–12:00 | 1.85 | 2.28 | 2.98 |
+| 14:00–15:00 | 1.45 | 1.84 | 2.57 |
+
+The labels on the live chart run a median target/stop of **1.71** (and their
+TP1 is ~0.8, below 1R). So the setup clears Rule 1 only for a sub-15-minute
+hold in the afternoon, and fails it everywhere else — worst in the first
+half hour, where it needs ~3:1 to deliver 1.5R. The displayed "RR 1:6" on
+every label is a constant string, not a computed field; no label in the
+sampled screenshots was above 4.3:1 and the median was 1.7:1.
+
+**Note on Rule 4.** The Constitution bars buying any option with ≤ 5 DTE
+outright, so 0DTE is not a live instrument for this desk regardless of what
+this lab finds. Rule 4 was written from experience ("the steady bleed — every
+DTE bucket was net negative"); findings 2–4 are the arithmetic underneath it.
+This lab remains research into what the options market charges, not a route
+to trading the thing Rule 4 forbids.
+
+**Finding 5 — r17's active config barely fires, and the two ports disagree
 50×.** Over the same 17 sessions, the literal Pine config (sweeps only, OB
 Primary Trigger, short-only) produced **1 signal**, not the 1–2/day the chart
 suggests. Gate attrition: 131 sweeps → 15 survive `trend` agreement → 8 survive

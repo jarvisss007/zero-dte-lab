@@ -385,8 +385,10 @@ def breakeven_curve(books: pd.DataFrame, holds=HOLDS) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def payoff_table(books: pd.DataFrame, moves=(-1.0, -0.75, -0.5, -0.25, 0.0,
-                                             0.25, 0.5, 0.75, 1.0),
+MOVE_GRID = tuple(np.round(np.arange(-2.0, 2.001, 0.25), 2))
+
+
+def payoff_table(books: pd.DataFrame, moves=MOVE_GRID,
                  holds=HOLDS) -> pd.DataFrame:
     """What an ATM 0DTE returns for a given SPY move, held H minutes.
 
@@ -446,6 +448,64 @@ def payoff_table(books: pd.DataFrame, moves=(-1.0, -0.75, -0.5, -0.25, 0.0,
                             "paid": paid, "got": got,
                             "ret_pct": (got - paid) / paid * 100,
                         })
+    return pd.DataFrame(rows)
+
+
+TIME_BINS = [0, 600, 630, 660, 720, 780, 840, 900, 960]
+TIME_LABELS = ["09:30-10:00", "10:00-10:30", "10:30-11:00", "11:00-12:00",
+               "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00"]
+
+
+def _bucket(minutes: pd.Series) -> pd.Series:
+    return pd.cut(minutes, bins=TIME_BINS, labels=TIME_LABELS)
+
+
+def rule1_target(pay: pd.DataFrame, rr: float = 1.5,
+                 stops=(0.25, 0.4, 0.5, 0.75)) -> pd.DataFrame:
+    """Constitution Rule 1, enforced in OPTION space.
+
+    Rule 1: "No entry without a written stop AND a target >= 1.5R." In
+    share-space R is just distance, so a 0.5-point stop and a 0.75-point
+    target satisfies it trivially. In a 0DTE option it does not, because the
+    same-sized adverse move loses more than the favourable move gains and
+    theta charges rent on both.
+
+    For each time-of-day bucket, holding time and stop distance, this returns
+    the SPY move the target must actually reach for the trade to pay `rr`
+    times what the stop costs, once real bid/ask and decay are priced in.
+
+    `req_mult` is the honest headline: how many times wider than the stop the
+    target has to be. If it reads 3.0, a "1:1.5" plan on the chart is really
+    asking for 1:3 from the market.
+    """
+    pay = pay.assign(bucket=_bucket(pay["minute"]))
+    rows = []
+    for (bucket, H), g in pay.groupby(["bucket", "hold_min"], observed=True):
+        curve = g.groupby("move_pts")["ret_pct"].median().sort_index()
+        if len(curve) < 6:
+            continue
+        mv, rt = curve.index.to_numpy(), curve.to_numpy()
+        gain_side = mv >= 0
+        for s in stops:
+            if s > mv.max() or -s < mv.min():
+                continue
+            loss = float(np.interp(-s, mv, rt))       # negative %
+            if loss >= 0:
+                continue
+            need = rr * abs(loss)
+            gm, gr = mv[gain_side], rt[gain_side]
+            keep = np.r_[True, np.diff(gr) > 0]
+            if keep.sum() < 3 or need > gr[keep].max():
+                tgt = np.nan                          # unreachable in +/-2 pts
+            else:
+                tgt = float(np.interp(need, gr[keep], gm[keep]))
+            rows.append({
+                "bucket": bucket, "hold_min": H, "stop_pts": s,
+                "loss_at_stop_%": round(loss, 1),
+                "need_gain_%": round(need, 1),
+                "req_target_pts": round(tgt, 2) if np.isfinite(tgt) else np.nan,
+                "req_mult": round(tgt / s, 2) if np.isfinite(tgt) else np.nan,
+            })
     return pd.DataFrame(rows)
 
 
@@ -596,11 +656,7 @@ def main() -> None:
     if be.empty:
         print("Not enough book depth to build the curve.")
     else:
-        be["bucket"] = pd.cut(
-            be["minute"],
-            bins=[0, 600, 630, 660, 720, 780, 840, 900, 960],
-            labels=["<10:00", "10:00-10:30", "10:30-11:00", "11:00-12:00",
-                    "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00+"])
+        be["bucket"] = _bucket(be["minute"])
         piv = be.pivot_table(index="bucket", columns="hold_min",
                              values="be_move_pts", aggfunc="median",
                              observed=True).round(3)
@@ -649,6 +705,30 @@ def main() -> None:
                     if (g + abs(ls)) > 0 else np.nan,
                 })
         print(_fmt(pd.DataFrame(arows)))
+
+    if not pay.empty:
+        print("\n" + "-" * 78)
+        print("CONSTITUTION RULE 1 IN OPTION SPACE — target must be >= 1.5R")
+        print("(how far the target must actually run, given the stop, after")
+        print(" real bid/ask and decay. req_mult = target as a multiple of stop)")
+        print("-" * 78)
+        r1 = rule1_target(pay)
+        if r1.empty:
+            print("Not enough book depth.")
+        else:
+            for H in HOLDS:
+                sub = r1[r1["hold_min"] == H]
+                if sub.empty:
+                    continue
+                t = sub.pivot_table(index="bucket", columns="stop_pts",
+                                    values="req_mult", observed=True).round(2)
+                t.columns = [f"stop {c}pt" for c in t.columns]
+                print(f"\nrequired target / stop, holding {H} min:")
+                print(_fmt(t.reset_index()))
+            unreachable = r1["req_target_pts"].isna().sum()
+            print(f"\n(blank / NaN = 1.5R unreachable within a 2-point move; "
+                  f"{unreachable} of {len(r1)} cells)")
+            r1.to_csv(RESULTS / "rule1_option_space.csv", index=False)
 
     print("\n" + "-" * 78)
     print("VALIDATION — same table from REALIZED outcomes, no interpolation")
