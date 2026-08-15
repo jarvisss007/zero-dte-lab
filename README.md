@@ -56,6 +56,66 @@ numbers on TradingView itself. Trade counts here are small (r17's filters are
 very restrictive), so this is not proof the concept can never work — but the
 burden of proof is on the strategy, and it failed everywhere it was tested.
 
+### 3. Option-space cost — MEASURED (2026-08-15), and it is worse than share-space
+`src/signal_cost.py`. Every verdict above scores strategies in SPY *points*.
+Anupam trades SPY 0DTE *options*. Those are not the same number, and the gap
+is now measured against 17 usable recorded sessions (Jul 17 – Aug 14 2026),
+using real bid/ask on the real 5-minute book grid — pay the ask, sell the bid,
+no mid fills.
+
+**Finding 1 — the spread is not the tax.** ATM 0DTE round-trip spread is a
+median **0.99% of premium** (median premium ~$109/contract). The prior
+suspicion that the bid/ask would eat a whole target was wrong; SPY 0DTE ATM
+is too liquid for that.
+
+**Finding 2 — time is the tax, and the payoff is asymmetric.** A *symmetric*
+SPY move is not symmetric in the option. ATM contract, median across all books:
+
+| favourable SPY move | hold 15m | hold 30m | hold 60m |
+|---|---|---|---|
+| −0.50 pts | −29.0% | −35.3% | −43.3% |
+| 0.00 pts | −6.7% | −11.9% | −22.2% |
+| +0.50 pts | +19.8% | +16.7% | +9.5% |
+
+(realized outcomes, `validate_payoff` — no interpolation, n = 124–544/cell.)
+
+At ±0.5 points held 30 minutes you make 16.7% and lose 35.3%. **You need a
+67.9% win rate just to break even.** The r17/r18 measured win rate is 19.8%
+(15.6% on A-grades). Flat SPY still costs 11.9% at 30 minutes and 22.2% at 60
+— that is pure theta, paid for being right about direction but slow.
+
+**Finding 3 — the break-even cost curve** (`breakeven_curve`, model-free: the
+book printed H minutes later is the pricing function, inverted for moneyness;
+no greeks, the CBOE `delta` column is never trusted). Median SPY move an ATM
+0DTE needs *just to break even*, by time of day (ET):
+
+| | hold 15m | hold 30m | hold 60m |
+|---|---|---|---|
+| 09:30–10:00 | 0.171 | 0.307 | 0.528 |
+| 11:00–12:00 | 0.096 | 0.186 | 0.309 |
+| 14:00–15:00 | 0.041 | 0.112 | 0.231 |
+
+This is a property of the **instrument, not of r18** — it outlives whatever
+strategy comes next. Any future signal whose target is below this curve cannot
+be traded in 0DTE options at that time of day regardless of its hit rate. Note
+the open is the most expensive hour to hold, which is exactly when
+`timing_tester.py` found the big moves cluster: the market maker prices the
+U-shape. That is the *cost* half of the straddle-underpricing question; the
+realized half still needs the 60-session gate.
+
+**Finding 4 — r17's active config barely fires, and the two ports disagree
+50×.** Over the same 17 sessions, the literal Pine config (sweeps only, OB
+Primary Trigger, short-only) produced **1 signal**, not the 1–2/day the chart
+suggests. Gate attrition: 131 sweeps → 15 survive `trend` agreement → 8 survive
+the candle filter → 2 survive the HTF bias. Sweeps are counter-trend by
+construction, so `sweep_bear and trend == -1` is nearly self-contradictory.
+`~/ie-pro-project` gets 96 trades on a comparable window only because
+`config.sweep_fresh_bars = 5` keeps a sweep live for 5 bars; the Pine fires on
+the sweep bar alone. `sweep_backtest.py` matches the Pine, ie-pro widens it —
+so ie-pro's PF 0.55 headline describes a **looser** strategy than the one
+running on the chart. Signal costing therefore has no sample yet; findings 1–3
+do not depend on it.
+
 ## Chain recorder + implied density engine (phase 2, built 2026-07-08)
 
 `src/chain_recorder.py` snapshots the free CBOE delayed-quotes SPY chain
@@ -187,6 +247,8 @@ U-shape remains NOT an edge.**
 - `src/data_utils.py` — loaders (reads from `~/spy-trading/data`, ET/RTH)
 - `src/timing_tester.py` — time-of-day big-move study
 - `src/sweep_backtest.py` — r17 port: leaky vs causal vs no HTF filter
+- `src/signal_cost.py` — option-space costing: break-even curve, payoff
+  asymmetry, realized-outcome validation (verdict 3 above)
 - `src/chain_recorder.py` — 0DTE chain snapshotter (CBOE delayed, free)
 - `src/implied_density.py` — Breeden–Litzenberger density + straddle move
 - `launchd/` — plist to schedule the recorder (opt-in, see above)
