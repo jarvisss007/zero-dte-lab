@@ -148,6 +148,31 @@ config fires ~2 signals a quarter, matching this repo's 1-in-17-sessions.
 
 Signal costing therefore has no sample yet; findings 1–4 do not depend on it.
 
+**Finding 6 — the TradingView *indicator*'s labels, scored for the first time
+(2026-08-15).** The script drawing `CONFIRMED LONG/SHORT [A+]/[A]/[B]` labels
+on the live chart is not in any repo — it exists only in TradingView, has never
+been backtested, and is the only thing in the stack firing 1–2×/day. Seven
+labels were transcribed **by hand from screenshots** of 12/13/14 Aug 2026
+(provenance caveat: hand-keyed, not exported; and they are the setups Anupam
+chose to screenshot, so selection runs in the strategy's favour).
+
+The robust result needs no entry-bar identification: on **14 Aug**, SPY's RTH
+range was 775.43–778.80, and *both* short labels — including the `[A+]`
+captioned "All conditions perfect" — had **TP1 and TP2 below the entire
+session's low**. 775.36 and 775.13 never traded. No entry timing or management
+could have produced a winner from either.
+
+Scoring the six with an identifiable RTH entry bar (matched on close = label
+`E`; 1–5 candidate bars each, first taken): **1 win in 6, −1.83R total,
+−0.30R average** — and the only winner was a `[B]`, the lowest grade in the
+set, repeating the A-worse-than-B inversion ie-pro found on a different sample.
+Two of the seven fired outside RTH entirely (04:40 PT premarket, ~14:30 PT
+postmarket), when SPY 0DTE options do not trade at all.
+
+n=7 is not a verdict on the indicator and is not treated as one. The real test
+needs the Pine source exported from TradingView so it can go through the same
+gates as r17/r18.
+
 ## Chain recorder + implied density engine (phase 2, built 2026-07-08)
 
 `src/chain_recorder.py` snapshots the free CBOE delayed-quotes SPY chain
