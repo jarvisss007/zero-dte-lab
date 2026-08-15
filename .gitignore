@@ -6,3 +6,4 @@ data/chains/
 # derived: union of the laptop + cloud recorder legs, rebuildable
 # by src/merge_chains.py — never the source of truth
 data/chains_merged/
+data/spy_5m_cache.csv
