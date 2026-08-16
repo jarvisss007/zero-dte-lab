@@ -1,0 +1,309 @@
+//@version=6
+// IE Pro r19 — SETUP CHECKER (not a signal generator)
+//
+// WHAT THIS IS
+// ------------
+// r17/r18 tried to predict direction. That job has been tested about as hard
+// as this desk can test it and it does not work: 38 conditions at the
+// Bonferroni bar (zero survivors), the same 38 inside 4 regime cells (zero),
+// 11 variants through the deflation gate (unproven), and 7 years / 779 events
+// on the one condition that looked real (convicted, t = -6.2).
+//
+// So r19 does a different job. It does not tell you what will happen. It tells
+// you whether a setup is even CAPABLE of paying, in the instrument you would
+// actually trade it in, before you take it.
+//
+// It answers four questions r17 never asked:
+//   1. Is this label honest? (causal HTF bias - no repainting, r18 FIX 3)
+//   2. Can I actually trade it? (RTH only, and enough session left to exit)
+//   3. What is the REAL reward:risk? (computed, never a hardcoded string)
+//   4. Does it clear Constitution Rule 1 (>= 1.5R) *after* real option costs?
+//
+// Question 4 is the one that matters and the one no chart indicator does.
+// A 0.4-point stop with a 0.7-point target is 1.75R on a ruler and is a LOSING
+// structure in a 0DTE contract, because the same-sized adverse move loses more
+// than the favourable move gains and theta charges rent on both. Measured on
+// 17 recorded SPY 0DTE sessions (Jul 17 - Aug 14 2026, real bid/ask, marketable
+// fills): at +/-0.5 points held 30 min the ATM contract makes +16.7% and loses
+// -35.3%. Flat SPY still costs -11.9%. Full method and validation:
+//   ~/zero-dte-lab/src/signal_cost.py  (breakeven_curve / payoff_table /
+//   validate_payoff / rule1_target), README verdict 3.
+//
+// TWO MODES
+//   AUTO   - detects candidate setups with r18's corrected logic and grades them
+//   MANUAL - type in E / SL / TP from ANY source (e.g. your own TradingView
+//            indicator's label) and get the same verdict. Use this to check the
+//            script you already run, without porting it.
+//
+// HONEST LIMITS
+//   - The Rule 1 table is measured on 17 sessions in one volatility regime
+//     (Aug 2026). It is a cost measurement, not an edge claim, and costs are far
+//     more stable than edge - but re-derive it if VIX regime shifts materially.
+//     Re-run signal_cost.py and replace the anchors below.
+//   - PASSING IS NOT A BUY SIGNAL. It means the structure is not arithmetically
+//     incapable of paying. Direction remains unpredicted and unpredictable.
+//   - Constitution Rule 4 bars buying any option <= 5 DTE outright, and bars
+//     live options during training. This tool does not change that. It exists so
+//     that research and sim work stop being scored in the wrong units.
+
+indicator("IE Pro r19 — Setup Checker", "r19 checker", overlay = true,
+     max_labels_count = 200, max_lines_count = 100)
+
+// ═══════════════════════════════════════════════ INPUTS
+grpM = "Manual check (overrides auto when enabled)"
+i_man    = input.bool(false, "Check a setup by hand",      group = grpM)
+i_mSide  = input.string("Short", "Side", options = ["Long", "Short"], group = grpM)
+i_mE     = input.float(0.0,  "Entry",       group = grpM, step = 0.01)
+i_mSL    = input.float(0.0,  "Stop",        group = grpM, step = 0.01)
+i_mTP    = input.float(0.0,  "Target (use TP2 / the real one)", group = grpM, step = 0.01)
+
+grpR = "Rule 1 gate"
+i_rr     = input.float(1.5,  "Rule 1 minimum R", group = grpR, step = 0.1,
+                       tooltip = "Constitution Rule 1. Raise it, never lower it.")
+i_hold   = input.string("30", "Assumed hold (minutes)", options = ["15", "30", "60"],
+                        group = grpR,
+                        tooltip = "How long you expect to be in the trade. This is " +
+                        "a first-class variable: the same +0.5 move pays 19.8% at " +
+                        "15 min and 9.5% at 60. If you do not know, assume 30.")
+i_strict = input.bool(true, "Hide setups that FAIL", group = grpR)
+
+grpS = "Session"
+i_sess   = input.session("0935-1530", "Entries allowed (exchange time)", group = grpS,
+                         tooltip = "RTH only, with room to exit. SPY 0DTE options " +
+                         "do not trade premarket or postmarket - 2 of 7 sampled " +
+                         "labels from the old indicator fired when they could not " +
+                         "be filled at all.")
+
+grpD = "Auto detection (r18 logic)"
+i_piv    = input.int(5,   "Swing pivot lookback", group = grpD, minval = 2)
+i_atrSL  = input.float(1.0, "ATR stop multiple",  group = grpD, step = 0.1)
+i_tpRR   = input.float(2.5, "Target R multiple",  group = grpD, step = 0.1)
+i_minGap = input.int(3,   "Min bars between setups", group = grpD, minval = 1)
+
+// ═══════════════════════════════════════════════ COLOURS
+cPass = color.rgb(0, 201, 167)
+cFail = color.rgb(255, 71, 87)
+cDim  = color.rgb(120, 130, 145)
+cBg   = color.rgb(13, 15, 26)
+cAmb  = color.rgb(255, 165, 2)
+
+// ═══════════════════════════════════════════════ CORE
+atr   = ta.atr(14)
+ema9  = ta.ema(close, 9)
+ema21 = ta.ema(close, 21)
+
+// ── Causal 15m HTF bias (r18 FIX 3: completed bars only, never repaints) ──
+htfE9   = request.security(syminfo.tickerid, "15", ta.ema(close, 9)[1],  lookahead = barmerge.lookahead_on)
+htfE21  = request.security(syminfo.tickerid, "15", ta.ema(close, 21)[1], lookahead = barmerge.lookahead_on)
+htfRsi  = request.security(syminfo.tickerid, "15", ta.rsi(close, 14)[1], lookahead = barmerge.lookahead_on)
+htfVwap = request.security(syminfo.tickerid, "15", ta.vwap(hlc3)[1],     lookahead = barmerge.lookahead_on)
+htfCls  = request.security(syminfo.tickerid, "15", close[1],             lookahead = barmerge.lookahead_on)
+
+htfBull = htfE9 > htfE21 and htfCls > htfVwap and htfRsi > 50
+htfBear = htfE9 < htfE21 and htfCls < htfVwap and htfRsi < 50
+
+// ═══════════════════════════════════════════════ RULE 1 IN OPTION SPACE
+// Required target/stop multiple to deliver `i_rr` R after real bid/ask + theta.
+// Anchors measured at stops of 0.25 / 0.40 / 0.50 / 0.75 SPY points.
+// Source: ~/zero-dte-lab/results/rule1_option_space.csv
+f_anchors(int mins, string hold) =>
+    float a25 = na, float a40 = na, float a50 = na, float a75 = na
+    if hold == "15"
+        if mins < 600
+            a25 := 2.94, a40 := 2.26, a50 := 2.03, a75 := 1.68
+        else if mins < 630
+            a25 := 2.66, a40 := 2.08, a50 := 1.89, a75 := 1.58
+        else if mins < 660
+            a25 := 2.69, a40 := 2.22, a50 := 2.05, a75 := 1.70
+        else if mins < 720
+            a25 := 2.28, a40 := 1.85, a50 := 1.71, a75 := 1.46
+        else if mins < 780
+            a25 := 2.09, a40 := 1.73, a50 := 1.59, a75 := 1.36
+        else if mins < 840
+            a25 := 2.11, a40 := 1.72, a50 := 1.58, a75 := 1.34
+        else if mins < 900
+            a25 := 1.70, a40 := 1.45, a50 := 1.35, a75 := 1.15
+        else
+            a25 := 1.95, a40 := 1.58, a50 := 1.45, a75 := 1.20
+    else if hold == "30"
+        if mins < 600
+            a25 := 4.14, a40 := 2.99, a50 := 2.59, a75 := 1.99
+        else if mins < 630
+            a25 := 3.58, a40 := 2.62, a50 := 2.30, a75 := 1.87
+        else if mins < 660
+            a25 := 3.79, a40 := 2.81, a50 := 2.48, a75 := 1.97
+        else if mins < 720
+            a25 := 3.04, a40 := 2.28, a50 := 2.03, a75 := 1.65
+        else if mins < 780
+            a25 := 2.71, a40 := 2.09, a50 := 1.87, a75 := 1.52
+        else if mins < 840
+            a25 := 2.76, a40 := 2.10, a50 := 1.88, a75 := 1.51
+        else if mins < 900
+            a25 := 2.32, a40 := 1.84, a50 := 1.65, a75 := 1.34
+        else
+            a25 := 2.79, a40 := 2.06, a50 := 1.82, a75 := 1.44
+    else
+        if mins < 600
+            a25 := 6.03, a40 := 4.10, a50 := 3.45, a75 := 2.57
+        else if mins < 630
+            a25 := 5.38, a40 := 3.76, a50 := 3.22, a75 := 2.47
+        else if mins < 660
+            a25 := 5.26, a40 := 3.72, a50 := 3.18, a75 := 2.43
+        else if mins < 720
+            a25 := 4.21, a40 := 2.98, a50 := 2.57, a75 := 2.00
+        else if mins < 780
+            a25 := 3.96, a40 := 2.85, a50 := 2.49, a75 := 1.90
+        else if mins < 840
+            a25 := 3.59, a40 := 2.61, a50 := 2.27, a75 := 1.76
+        else if mins < 900
+            a25 := 3.60, a40 := 2.57, a50 := 2.20, a75 := 1.67
+        else
+            a25 := na, a40 := na, a50 := na, a75 := na   // no session left to hold
+    [a25, a40, a50, a75]
+
+// Piecewise-linear in stop size; the measured table scales `i_rr` = 1.5.
+f_reqMult(float stopPts, int mins, string hold, float rr) =>
+    [a25, a40, a50, a75] = f_anchors(mins, hold)
+    float m = na
+    if not na(a25)
+        s = math.max(stopPts, 0.05)
+        m := s <= 0.25 ? a25 :
+             s <= 0.40 ? a25 + (a40 - a25) * (s - 0.25) / 0.15 :
+             s <= 0.50 ? a40 + (a50 - a40) * (s - 0.40) / 0.10 :
+             s <= 0.75 ? a50 + (a75 - a50) * (s - 0.50) / 0.25 : a75
+        m := m * rr / 1.5
+    m
+
+minOfDay = hour * 60 + minute
+inSess   = not na(time(timeframe.period, i_sess))
+
+// ═══════════════════════════════════════════════ AUTO DETECTION (r18 logic)
+ph = ta.pivothigh(i_piv, i_piv)
+pl = ta.pivotlow(i_piv, i_piv)
+var float lastSH = na
+var float lastSL = na
+var int trend = 0
+
+// FIX 5 (r18): evaluate the break BEFORE this bar updates the pivots
+crossUp = not na(lastSH) and close > lastSH and close[1] <= lastSH
+crossDn = not na(lastSL) and close < lastSL and close[1] >= lastSL
+if crossUp
+    trend := 1
+if crossDn
+    trend := -1
+
+sweepBull = not na(lastSL) and low  < lastSL and close > lastSL
+sweepBear = not na(lastSH) and high > lastSH and close < lastSH
+
+if not na(ph)
+    lastSH := ph
+if not na(pl)
+    lastSL := pl
+
+var int lastSig = -9999
+gapOk = (bar_index - lastSig) >= i_minGap
+
+autoLong  = sweepBull and trend ==  1 and close > open and htfBull and gapOk and inSess
+autoShort = sweepBear and trend == -1 and close < open and htfBear and gapOk and inSess
+
+// ═══════════════════════════════════════════════ THE CHECK
+useMan  = i_man and i_mE > 0 and i_mSL > 0 and i_mTP > 0
+isLong  = useMan ? (i_mSide == "Long") : autoLong
+fired   = useMan ? barstate.islast : (autoLong or autoShort)
+
+E   = useMan ? i_mE  : close
+SL  = useMan ? i_mSL : (isLong ? close - atr * i_atrSL : close + atr * i_atrSL)
+TP  = useMan ? i_mTP : (isLong ? close + atr * i_atrSL * i_tpRR : close - atr * i_atrSL * i_tpRR)
+
+stopPts = math.abs(E - SL)
+tgtPts  = math.abs(TP - E)
+rrReal  = stopPts > 0 ? tgtPts / stopPts : na           // the REAL number
+reqMult = f_reqMult(stopPts, minOfDay, i_hold, i_rr)
+
+// ── Target reachability, anchored to the session's realized range ──
+// On 14 Aug 2026 BOTH short labels from the old indicator had TP1 and TP2
+// below the entire session's low - 775.36 and 775.13 never traded, so neither
+// setup could pay at any entry time. You cannot know the day's future range,
+// but you DO know its range so far and how much session is left. A target
+// demanding a big extension of that range, late in the day, is the flag.
+var float dayHi = na
+var float dayLo = na
+if ta.change(time("D")) != 0
+    dayHi := high
+    dayLo := low
+else
+    dayHi := math.max(nz(dayHi, high), high)
+    dayLo := math.min(nz(dayLo, low), low)
+
+sessLeft = math.max(0.0, math.min(1.0, (930 - minOfDay) / 360.0))  // 09:30->15:30
+extNeed  = isLong ? math.max(0.0, TP - nz(dayHi, high))
+                  : math.max(0.0, nz(dayLo, low) - TP)
+extAllow = atr * 2.0 * sessLeft        // room shrinks as the session runs out
+
+// Gates
+gSess   = inSess
+gTime   = not na(reqMult)                                // enough session to hold
+gRule1  = not na(reqMult) and not na(rrReal) and rrReal >= reqMult
+gStruct = useMan ? true : (isLong ? htfBull : htfBear)
+gReach  = extNeed <= extAllow
+allPass = gSess and gTime and gRule1 and gStruct and gReach
+
+failWhy = not gSess   ? "outside tradeable session" :
+          not gTime   ? "no session left for a " + i_hold + "m hold" :
+          not gStruct ? "HTF bias disagrees" :
+          not gReach  ? "target needs " + str.tostring(extNeed, "#.##") +
+                        " pts beyond today's range, only " +
+                        str.tostring(extAllow, "#.##") + " left" :
+          not gRule1  ? "RR " + str.tostring(rrReal, "#.##") + " < required " +
+                        str.tostring(reqMult, "#.##") : ""
+
+// ═══════════════════════════════════════════════ LABELS
+if fired and (allPass or not i_strict)
+    txt = (allPass ? "✓ CLEARS RULE 1" : "✗ FAILS") +
+      "\n──────────────" +
+      "\n" + (isLong ? "LONG" : "SHORT") +
+      "\nE   " + str.tostring(E,  "#.##") +
+      "\nSL  " + str.tostring(SL, "#.##") +
+      "\nTP  " + str.tostring(TP, "#.##") +
+      "\n──────────────" +
+      "\nRR real   " + str.tostring(rrReal,  "#.##") +
+      "\nRR needed " + (na(reqMult) ? "n/a" : str.tostring(reqMult, "#.##")) +
+      (allPass ? "" : "\n\n" + failWhy)
+    label.new(bar_index, isLong ? low - atr * 1.5 : high + atr * 1.5, text = txt,
+         color = color.new(cBg, 8), textcolor = allPass ? cPass : cFail,
+         style = isLong ? label.style_label_up : label.style_label_down,
+         size = size.small, textalign = text.align_left)
+
+plotshape(fired and allPass and isLong,      "pass long",  shape.triangleup,
+     location.belowbar, cPass, size = size.tiny)
+plotshape(fired and allPass and not isLong,  "pass short", shape.triangledown,
+     location.abovebar, cPass, size = size.tiny)
+
+// ═══════════════════════════════════════════════ STATUS TABLE
+var table t = table.new(position.top_right, 2, 8, bgcolor = color.new(cBg, 5),
+     border_color = color.new(cDim, 60), border_width = 1,
+     frame_color = color.new(cAmb, 60), frame_width = 1)
+
+f_row(int r, string k, string v, color c) =>
+    table.cell(t, 0, r, k, text_color = cDim,  text_size = size.tiny,
+         bgcolor = color.new(cBg, 0), text_halign = text.align_left)
+    table.cell(t, 1, r, v, text_color = c,     text_size = size.tiny,
+         bgcolor = color.new(cBg, 0), text_halign = text.align_right)
+
+if barstate.islast
+    table.cell(t, 0, 0, "r19 CHECKER", text_color = cAmb, text_size = size.small,
+         bgcolor = color.new(cBg, 0), text_halign = text.align_left)
+    table.cell(t, 1, 0, useMan ? "manual" : "auto", text_color = cAmb,
+         text_size = size.small, bgcolor = color.new(cBg, 0),
+         text_halign = text.align_right)
+    f_row(1, "session",     gSess ? "open" : "CLOSED",  gSess ? cPass : cFail)
+    f_row(2, "hold room",   gTime ? i_hold + "m ok" : "too late", gTime ? cPass : cFail)
+    f_row(3, "HTF (causal)", htfBull ? "bull" : htfBear ? "bear" : "flat",
+          htfBull or htfBear ? cPass : cDim)
+    f_row(4, "stop (pts)",  str.tostring(stopPts, "#.##"), cDim)
+    f_row(5, "RR real",     na(rrReal)  ? "-" : str.tostring(rrReal,  "#.##"), cDim)
+    f_row(6, "RR needed",   na(reqMult) ? "-" : str.tostring(reqMult, "#.##"), cAmb)
+    f_row(7, "verdict",     allPass ? "CLEARS" : "FAILS", allPass ? cPass : cFail)
+
+// Session shading, so it is visually obvious when a label could not be filled
+bgcolor(inSess ? na : color.new(cFail, 94), title = "outside tradeable session")
