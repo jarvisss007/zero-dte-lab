@@ -173,6 +173,49 @@ n=7 is not a verdict on the indicator and is not treated as one. The real test
 needs the Pine source exported from TradingView so it can go through the same
 gates as r17/r18.
 
+### 4. Straddle underpricing — HARNESS BUILT, first reading in (2026-08-16)
+`src/straddle_test.py`. This is the question the lab was created to answer:
+the timing U-shape is only an edge if realized movement exceeds what the
+options market charges for it. Verdict 3 measured the charge; this measures
+both sides at once.
+
+**The test is exact, not modelled.** A straddle struck at K pays exactly
+|close − K|. No Black–Scholes, no greeks, no vol surface — just the recorded
+ask, the recorded strike, and the day's actual close. Buy the ATM 0DTE
+straddle at each book, hold to expiry.
+
+First reading, 17 usable sessions, 1,277 books:
+
+| bucket (ET) | implied % | realized % | net $/straddle | t |
+|---|---|---|---|---|
+| 09:30–10:00 | 0.462 | 0.401 | −47.42 | −0.99 |
+| 10:30–11:00 | 0.397 | 0.282 | −86.09 | −2.84 |
+| 13:00–14:00 | 0.264 | 0.212 | −38.18 | −2.32 |
+| 15:00–16:00 | 0.176 | 0.115 | −46.32 | −2.16 |
+| **all** | | | **−43.10** | **−2.65** |
+
+**Implied exceeds realized in all 8 time buckets, including the open.** The
+U-shape is real and the market maker has already priced it: 0.462% charged
+against 0.401% delivered in the first half hour. Direction so far:
+**movement is OVERPRICED**. This agrees with verdict 3's payoff asymmetry
+from a completely different angle — buying 0DTE premium is priced against you.
+
+**Statistics are day-clustered, n = sessions.** Every book in a session
+settles against the same close, so 1,277 books is 17 independent draws, not
+1,277. The script computes on day-level means and refuses to print a verdict
+under the 60-session gate.
+
+**Tail warning, and it is the important part.** 4 of 17 sessions were
+profitable; worst −$113, median −$59, best +$109; dropping the single best
+session moves the mean from −43 to −53. A straddle loses a little most days
+and pays hugely on the rare violent one, so *every quiet sample shows premium
+as overpriced* — that is exactly how short-vol blowups get underwritten. This
+sample has not seen a vol event. **"Overpriced" must not be read as "sell
+premium"**; the desk is debit-only (`OPTIONS_PAPER.md`) for this reason and
+Rule 4 bars live 0DTE regardless.
+
+Re-run as sessions accumulate; the harness is finished and gated.
+
 ## Chain recorder + implied density engine (phase 2, built 2026-07-08)
 
 `src/chain_recorder.py` snapshots the free CBOE delayed-quotes SPY chain
@@ -308,6 +351,8 @@ U-shape remains NOT an edge.**
   asymmetry, realized-outcome validation (verdict 3 above)
 - `src/chain_recorder.py` — 0DTE chain snapshotter (CBOE delayed, free)
 - `src/implied_density.py` — Breeden–Litzenberger density + straddle move
+- `src/straddle_test.py` — the underpricing test (verdict 4), day-clustered
+- `src/r19_log.py` — forward verdict log for the r19 checker
 - `launchd/` — plist to schedule the recorder (opt-in, see above)
 - `pine/r18_htf_fix.pine` — drop-in non-repainting fix for the TradingView script
 - `results/` — CSVs + charts (`timing_profile.png`, `timing_heatmap.png`)
