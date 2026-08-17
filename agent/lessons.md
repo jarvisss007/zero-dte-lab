@@ -392,3 +392,49 @@ Forecast: the due 08-05 row could NOT be resolved — the run fired mid-session 
 so it does not read as a skipped catch-up. Today's new row is the first in this book to
 ask the lab's own question (realized morning-spot-to-close vs the first-snapshot
 straddle band, p=0.38) instead of a generic SPY-close question any lab could write.
+
+## 2026-08-17 [0dte]
+
+THE OVERDUE ROW RESOLVED, AND THE CATCH-UP WORKED EXACTLY AS 08-14 SAID IT WOULD.
+The 08-05 forecast ("SPY closes above 771.33 on 2026-08-14", p=0.55) was left unresolved
+on 08-14 because that run fired mid-session and the close did not exist yet. It is now
+scored off the settled bar: SPY closed 776.34 on 08-14 → YES. The note written on 08-14
+predicted this resolution path and it held. Four findings:
+
+(1) THE SAME WALL IS HIT AGAIN TODAY AND WILL BE HIT EVERY SINGLE RUN. The 08-10 row
+("SPY closes above 773.26 on 2026-08-17", p=0.56) is due TODAY and cannot be resolved:
+this run fires 11:25 ET and today's close does not exist. It resolves tomorrow. This is
+not an occasional inconvenience — a sweep that fires mid-session can NEVER resolve a
+same-day check_date, so every row this lab writes with a same-day horizon is
+structurally one day late. Insider-radar hit the identical wall this morning on seven
+30-day rows. It is one problem with one owner, and it is not this lab's to fix.
+
+(2) BRIER SKILL IS `nan` AND THAT IS INFORMATION, NOT A BUG. Four resolved, all four
+YES, so the base rate is 1.000 and climatology Brier is exactly 0.0000 — dividing by it
+is undefined. The lab has never once been wrong and therefore cannot yet be measured;
+"+nan no skill vs base rate" means *unmeasurable*, not *no skill*. The 0.50-0.60 bucket
+reading "+0.462 underconfident" across all four rows is the same artifact: a forecaster
+who says 0.54 and is right four times running looks timid and is indistinguishable from
+lucky at n=4. Nobody may quote either number.
+
+(3) NO CALL AGAIN, AND THE DISCRIMINATOR DEADLINE NAMED ON 08-14 HAS NOW LAPSED.
+`implied_move` stays barred: the 08-12 lesson requires a discriminator pre-registered
+BEFORE another row, 08-14 named that as a deadline, and three sessions later none
+exists. A fourth `inside` would take the record to 4/4 on a call carrying zero
+information. `max_pain` is barred for a different and more basic reason — **today's
+chain file has no open-interest column at all** (fields: fetched_at_et, quote_ts, spot,
+expiry, type, strike, bid, ask, bid_size, ask_size, last_trade_price, iv), and
+implied_density printed no OI landscape. There is no pin strike to call. That is a data
+gap, not a judgement, and it should be checked: the metric is unusable while it persists.
+
+(4) RECORDER HEALTHY, GATE AT 22. First snapshot 09:49:37 ET — 19.6 minutes into the
+session, the second-earliest on record after 08-07/08-10's 09:45 — and 21 snapshots
+through 11:29. Session 22 of the 60+ gate. Today's band is +/-0.28% off spot 775.77,
+tighter than 08-14's +/-0.30% and now the tightest recorded; implied std 0.42%, skew
+-1.04.
+
+Today's forecast asks the lab's own question about TOMORROW, not today: with 21
+snapshots and two hours of the move already on disk, any forecast about this session
+would be contaminated in exactly the way ZDTE-003 was written to prevent. Same question
+and same p=0.38 as the 08-14 row, on purpose — repeating an uncontaminated question at
+an untilted base rate is how the 60-session sample gets built.
