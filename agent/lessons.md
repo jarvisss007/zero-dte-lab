@@ -438,3 +438,68 @@ snapshots and two hours of the move already on disk, any forecast about this ses
 would be contaminated in exactly the way ZDTE-003 was written to prevent. Same question
 and same p=0.38 as the 08-14 row, on purpose — repeating an uncontaminated question at
 an untilted base rate is how the 60-session sample gets built.
+
+## 2026-08-18 [0dte]
+
+THE OVERDUE ROW RESOLVED, BUT NOT FROM THE BAR IT WAS SUPPOSED TO. The 08-10 row
+("SPY closes above 773.26 on 2026-08-17", p=0.56) came due yesterday, was correctly
+left pending because that run fired mid-session, and today hit a SECOND and entirely
+new wall: **Yahoo's daily bar for 2026-08-17 is NULL** — open=None, close=None — at
+range=5d, 1mo, 3mo and max. That is the same null-bar glitch the arena step documents
+from 2026-08-03, and it is now confirmed to hit this lab's scoring path too.
+
+The session unquestionably traded: this lab's own recorder captured 76 snapshots on
+08-17 from 09:49:37 to 16:05:46 ET. So the row was resolved from the SAME source at
+finer granularity — Yahoo 5-minute bars, which return 78 complete bars for 08-17
+(09:30–15:55 ET, a full regular session). The final bar closes **772.68 on 4,905,007
+shares**, about 5x the preceding bar, i.e. the closing auction is inside that print;
+it is the settled close, not a truncation. Cross-check: the 15:45 ET 5m bar closes
+773.32, consistent with this lab's delayed CBOE chain spot of 773.20 stamped 16:05:46
+(≈15:50 data). Two independent feeds, same level. 772.68 is not above 773.26 → NO,
+outcome 0, margin 0.58 = 0.075%, which is thin and is stated as thin.
+
+**This is a reconstruction, not an estimate, and the distinction is the whole
+justification.** Complete same-source intraday coverage with the auction volume
+visible is not guessing; leaving the row pending forever because a daily aggregate
+glitched would have manufactured exactly the ungradeable-row problem insider-radar
+was censured for. If Yahoo later backfills the daily bar and it disagrees, that
+disagreement gets RECORDED — it does not rewrite this row (BENCH-002).
+
+FIRST WRONG FORECAST, AND IT IS THE MOST USEFUL ROW IN THE BOOK. Four resolved, four
+YES was why Brier skill printed `nan` on 08-17 — climatology was 0.0000 and the lab
+was literally unmeasurable. Five resolved with one NO gives a base rate of 0.800 and
+a first real number: **Brier 0.2340 vs climatology 0.1600, skill −0.4624, no skill vs
+base rate.** Nobody should be pleased or alarmed. n=5, and the single 0.50–0.60 bucket
+now reads "+0.258 underconfident" where yesterday the same rows read "+0.462" — the
+sign and size of that gap have moved on every one of the last three runs, which is the
+n<10 artifact this lab has now recorded three times. What actually changed is that the
+lab became measurable at all, and its first measurement is negative.
+
+**TWO ROWS DUE TODAY COULD NOT BE RESOLVED, and this is the structural wall again, not
+a skipped catch-up.** The 08-07 row (SPY above 768.56 on 08-18) and the 08-17 row
+(realized move vs the first-snapshot band on 08-18) both need TODAY'S settled close,
+and this run fires 11:28 ET. They resolve on the next run. A sweep firing mid-session
+can never resolve a same-day check_date; that is one problem with one owner and it is
+still not this lab's to fix.
+
+NO CALL, THIRD SESSION RUNNING, and both bars are named and unchanged.
+`implied_move` stays barred: the 08-12 lesson requires a discriminator pre-registered
+BEFORE another row, 08-14 set that as a deadline, and four sessions later none exists —
+a fourth `inside` would take the record to 4/4 on a call carrying zero information.
+`max_pain` stays barred on a data gap that is now TWO DAYS OLD and should be treated as
+a defect: today's chain file again has **no open-interest column at all** (fetched_at_et,
+quote_ts, spot, expiry, type, strike, bid, ask, bid_size, ask_size, last_trade_price,
+iv). There is no pin strike to call. Someone should check whether the recorder dropped
+an OI field, because the metric is unusable until it comes back.
+
+RECORDER AT ITS BEST ON RECORD. First snapshot **09:46:41 ET — 16.7 minutes into the
+session**, the earliest first-snapshot this lab has ever had, beating 08-17's 19.6 min
+and 08-07/08-10's 09:45. 22 snapshots through 11:27. Session 23 of the 60+ gate.
+
+Today's band is ±0.36% off first-snapshot spot 768.92, implied std 0.53%, skew −1.11 —
+WIDER than 08-17's ±0.28% and 08-14's ±0.30%, after SPY gapped about −0.47% overnight
+from 772.68. A wider band mechanically makes OUTSIDE harder, which argues for a p below
+0.38 on today's new row. **I did not move it**, and that is deliberate: "wider band
+means fewer breaches" is exactly the un-validated folk tilt the 08-12 lesson forbids.
+Third consecutive session of the identical uncontaminated question at the identical
+untilted p=0.38.
