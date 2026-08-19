@@ -503,3 +503,72 @@ from 772.68. A wider band mechanically makes OUTSIDE harder, which argues for a 
 means fewer breaches" is exactly the un-validated folk tilt the 08-12 lesson forbids.
 Third consecutive session of the identical uncontaminated question at the identical
 untilted p=0.38.
+
+## 2026-08-19 [0dte]
+
+**I AM RETRACTING YESTERDAY'S PREMISE FOR BARRING `max_pain`, AND THE RETRACTION IS
+THE MAIN ENTRY.** The 08-18 lesson barred the metric because "today's chain file again
+has no open-interest column at all" and listed a 12-field header ending at `iv`. That
+is wrong. `data/chains/SPY_2026-08-18.csv` carries the full 19-field header ending
+`volume,open_interest`, and the OI is POPULATED at the very first snapshot: OI sums to
+299,372 at 09:46 and to 299,450 at 16:02, non-zero on 76 of 76 snapshots. Same for
+08-17 (339,382 at 09:49, non-zero 76/76). The file mtime is 13:02 PDT — the laptop
+leg's own last write, not a later cloud merge — so the column was there when the sweep
+read it. **`max_pain` was barred for two sessions on a defect that did not exist.** Per
+BENCH-002 the 08-18 entry is left standing exactly as written; this is the correction
+beside it, not over it. The lesson for this lab: quote the header you actually read,
+from the file you actually read, or do not raise a data bar on it.
+
+**AND THE 08-17 RECONSTRUCTION IS VINDICATED — recorded, not used to rewrite anything.**
+Yahoo has now backfilled the daily bar that came back NULL on 08-18: 2026-08-17 close
+prints **772.67**. The lab had resolved that row from the same source at 5-minute
+granularity and got **772.68** — a one-cent difference, same verdict (below 773.26, NO).
+The null-bar protocol reconstructed the settled close to a cent. The 08-10 row keeps the
+772.68 it was scored on; the backfill is recorded here and changes nothing (BENCH-002).
+
+**TWO OVERDUE FORECASTS RESOLVED, both NO.** (1) The 08-07 row, SPY above 768.56 on
+08-18: settled close 767.45, margin 1.11 = 0.144%, thin and stated as thin. (2) The
+08-17 row, realized move vs the first-snapshot band on 08-18: first snapshot 09:46:41,
+spot 768.92, ATM 769 straddle mid 2.80 → band ±0.36%; close 767.45 → realized
+−0.1912%, 53% of the band consumed, INSIDE, so the OUTSIDE question resolves NO. p was
+0.38 and it leaned inside — the untilted base rate paid off in direction.
+
+Seven resolved, base rate 0.571, Brier 0.2358 vs climatology 0.2449, skill +0.0371.
+n=7. The 0.30–0.40 bin reads "−0.380 overconfident" off ONE observation, which is the
+n<10 sign artifact this lab has now logged four times; it will move again tomorrow.
+
+**TWO ROWS DUE TODAY ARE DEFERRED, NOT SKIPPED** — the 08-11 row (SPY above 773.03 on
+08-19) and the 08-18 row (realized vs band on 08-19). This run fires 11:29 ET. Yahoo
+will happily serve an 08-19 "daily" bar right now (close 770.82) and it is an unsettled
+intraday quote wearing a daily bar's clothes — using it is SCORE-001 exactly. They
+resolve on tomorrow's run and are overdue the moment they are not.
+
+**ONE CALL LOGGED, AND IT IS A CONTAMINATED ROW THAT SAYS SO.** `max_pain` = **breaks**,
+stamped to the first snapshot 09:48 ET (18.5 min into the session — second-earliest on
+record after 08-18's 16.7), value_at_call = pin strike **769**, `minutes_visible_at_call
+= 119`. First-snapshot spot 770.40 sat +0.182% above the pin, INSIDE the ±0.25% band
+(767.08–770.92); peak OI is 760 at 28,673 with 768/769/767 next, so the pin has real
+weight under it. I have seen to 11:29, where spot 771.89 is 0.376% above the pin and
+therefore already outside the band — that is a leak and it is disclosed on the row.
+It is not a giveaway: 0.13% of drift over the remaining 4.5 hours puts it back inside.
+**This row must never be blended with a clean one; stratify on `minutes_visible_at_call`.**
+Flag for whoever grades this: it is the FOURTH consecutive `breaks` call on this metric
+(3 prior: 2 right, 1 wrong). A one-sided record is the exact bias the AGENT.md names.
+I called the read, not a quota for variety, but if the fifth is also `breaks` someone
+should ask whether the metric is doing anything but restating "spot ≠ max pain".
+
+**`implied_move` STAYS BARRED, and this bar is unaffected by the retraction above.** The
+08-12 lesson requires a discriminator pre-registered BEFORE another row is logged; five
+sessions later none exists. Today's band is ±0.33% off spot 770.40 (implied std 0.47%,
+skew −0.66) and a fourth `inside` would take the record to 4/4 while carrying zero
+information. Named bar, not an abstention of convenience.
+
+Session 24 of the 60+ gate. 21 snapshots recorded through 11:29 and the recorder is
+healthy on both legs (laptop and CI both wrote 08-19 files this morning).
+
+Today's forecast is again about TOMORROW's session, same uncontaminated question, same
+untilted p=0.38 — fourth posting. Today's band is NARROWER than 08-18's, which
+mechanically makes OUTSIDE easier and would argue for a higher p. I did not move it,
+for the same reason the 08-18 entry did not move it downward: "narrower band means more
+breaches" is un-validated folk tilt, and refusing it in only one direction would be worse
+than refusing it in both.
