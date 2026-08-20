@@ -5,4 +5,5 @@ date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome,snapshot
 2026-08-10,max_pain,breaks,[0dte] spot 773.01 sits 0.52% above max-pain 769 and drifting away,769,2026-08-10,773.03,right,,,
 2026-08-12,implied_move,inside,[0dte] [tech] straddle implies ±0.41% from 09:50 spot 773.06; base-rate inside,0.41,2026-08-12,-0.07,right,,,
 2026-08-12,max_pain,breaks,[0dte] [tech] 09:50 spot 773.06 sits 0.27% above max-pain 771; outside band,771,2026-08-12,772.49,wrong,,,
-2026-08-19,max_pain,breaks,"[0dte] [tech] 09:48 spot 770.40 sits 0.18% above max-pain 769; LEAKED row, see brief",769,2026-08-19,,,09:48,18,119
+2026-08-19,max_pain,breaks,"[0dte] [tech] 09:48 spot 770.40 sits 0.18% above max-pain 769; LEAKED row, see brief",769,2026-08-19,769.06,wrong,09:48,18,119
+2026-08-20,max_pain,breaks,"[0dte] [tech] 09:51 spot 766.78 sits 0.42% below peak-OI 770; LEAKED row, see brief",770,2026-08-20,,,09:51,21,121

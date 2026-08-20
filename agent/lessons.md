@@ -572,3 +572,95 @@ mechanically makes OUTSIDE easier and would argue for a higher p. I did not move
 for the same reason the 08-18 entry did not move it downward: "narrower band means more
 breaches" is un-validated folk tilt, and refusing it in only one direction would be worse
 than refusing it in both.
+
+## 2026-08-20 [0dte]
+
+**THE FOURTH CONSECUTIVE `breaks` LOST, AND THE FLAG THAT PREDICTED IT WAS OURS.**
+The 08-19 row is scored: pin strike 769, ±0.25% band 767.08–770.92, settled close
+**769.06** — 0.008% from the pin, about as deep inside the band as a close can
+land. Call was `breaks`. **Outcome: wrong.** `max_pain` is now **2/4**. Yesterday's
+own entry said "if the fifth is also `breaks` someone should ask whether the metric
+is doing anything but restating 'spot ≠ max pain'." Today's is also `breaks`, so
+the question is now due and I am asking it here: at the first snapshot spot is
+essentially never inside a ±0.25% band around the peak-OI strike, so this metric as
+implemented produces `breaks` almost mechanically. It is therefore measuring a base
+rate — "how often does SPY close within 0.25% of the morning peak-OI strike" — and
+NOT any judgement of mine. That is still worth banking, but it must never be
+reported as a hit rate on a call. **Whoever grades this: the honest scorecard line
+for max_pain is a base rate, not skill, until a session appears where the read
+could have gone either way.**
+
+**Contamination disclosed on the leak that actually mattered yesterday.** The 08-19
+row carried `minutes_visible_at_call 119` and the brief recorded that at 11:29 spot
+was 771.89, already 0.376% above the pin and outside the band — and it explicitly
+refused the easy conclusion, writing that "0.13% of drift over the remaining 4.5
+hours puts it back inside." That is exactly what happened: it drifted back and
+closed inside. The leak looked like a giveaway and was not, which is the strongest
+argument yet for keeping `minutes_visible_at_call` on the row instead of using the
+leak as a reason to log or not log.
+
+**TODAY'S FIRST SNAPSHOT IS UNFITTABLE AND THE CALL IS STAMPED TO THE FIRST USABLE
+ONE.** `SPY_2026-08-20.csv` opens at **09:46:13** and `implied_density.py` returns
+"only 0 usable OTM quotes; smile unfit" on it. The first snapshot that fits is
+**09:51:13** — spot 766.78, 44 OTM quotes, implied std 0.77%, skew −2.10, ATM 767
+straddle mid 2.83 ⇒ band **±0.37%**. ZDTE-003 says stamp the FIRST snapshot of the
+session; where that snapshot carries no fittable book, the honest reading of the
+rule is the earliest snapshot that does, and the skipped one is named here rather
+than quietly dropped. This is now a known failure mode of the 09:45-ish CBOE
+publish: the file has rows before the book is real.
+
+**Today's `max_pain` row, logged and contaminated on its face:** pin **770** (peak
+OI 15,659; then 775 / 760 / 769), 09:51 spot 766.78 sitting **0.42% BELOW** the pin
+and outside the ±0.25% band (768.08–771.92), so the call is `breaks`.
+`snapshot_et 09:51`, `minutes_into_session 21`, `minutes_visible_at_call 121`. What
+I can see and am disclosing: at 11:31 spot is 766.66, still 0.43% below the pin, so
+121 minutes have moved it essentially nowhere. Never blend this with a clean row.
+
+**`implied_move` STAYS BARRED.** The 08-12 lesson requires a discriminator
+pre-registered before another row; six sessions on, none exists. Today's band is
+±0.37% and today's tape has consumed 0.016% of it in two hours — a fourth `inside`
+would be a near-free row carrying no information. Named bar, not convenience.
+
+**THE GATE'S OWN ARITHMETIC, as the council asked (CARD-001). Three numbers, and
+what separates them:**
+- **25 files on disk** in `data/chains/` — every day the recorder wrote anything,
+  including 07-08 (1 snapshot, 00:55, junk), 07-21 (9 snaps, dies 11:15), 07-23
+  (7 snaps), 08-04 (1 snap) and today's in-progress 22.
+- **18 sessions meet the recorder's completeness bar** — first snapshot ≤ 10:00 ET
+  AND last ≥ 15:55 ET, i.e. the session is covered open to close. The seven that
+  fail are the four stubs above plus 08-06 (first snapshot 10:05) and 08-13 (10:27),
+  where the Mac slept through the open, plus today, still running.
+- **16 are admissible to the straddle test** — complete AND the first snapshot fits
+  a smile. 08-07 and 08-12 are complete sessions whose 09:45 first snapshot returns
+  no usable OTM quotes, the same defect seen live today.
+**16 of 60, not 24 and not 1.** At the realised fill rate — 16 admissible over the
+24 trading days from 07-17 to 08-19, i.e. 0.67 per trading day — the remaining 44
+take about 66 trading days, projecting the gate to roughly **2026-11-20**. That is
+the honest progress bar and it is three months out; the calls are side calibration
+only and always were.
+
+**TWO OVERDUE FORECASTS RESOLVED, both NO, both one run late by construction.**
+(1) 08-11 row, SPY above 773.03 on 08-19: settled close 769.06 → NO, p was 0.54.
+(2) 08-18 row, realized vs band on 08-19: first snapshot 09:48:47, spot 770.40,
+band ±0.33%; close 769.06 → realized **−0.174%**, 53% of the band, INSIDE, so the
+OUTSIDE question is NO. p was 0.38 and leaned inside, correct in direction for the
+second consecutive posting. **Two INSIDE resolutions are n=2 and are NOT evidence
+the straddle overprices** — that outcome is expected 55-70% of the time by
+construction, which is precisely why this question is being repeated at a fixed p.
+Nine resolved, base rate 0.444, Brier 0.2319 vs climatology 0.2469, skill +0.0610.
+The 0.30–0.40 bin reads "−0.380 overconfident" off two observations that are the
+same question — the n<10 sign artifact this lab has now logged five times.
+
+**THREE ROWS DUE TODAY ARE DEFERRED, NOT SKIPPED**, and this is SCHED-001 rather
+than an exception: the 08-12 row (SPY above 770.56 on 08-20), the 08-13 row (SPY
+below 777.88 on 08-20) and the 08-19 row (realized vs band on 08-20). This run
+fires **11:40 ET**; the 08-20 session does not settle for another 4h20m and Yahoo
+will serve an intraday quote dressed as a daily bar (it currently prints 766.44).
+**This lab's (fire time × horizon unit) pair — 11:40 ET × US trading day — can
+NEVER resolve a row on its own check date.** Every daily row this book has written
+has been scored a run late by construction. Not fixed here; the council barred the
+labs from moving their own fire times or horizon units and it is Anupam's ruling.
+
+**Today's forecast moves to Monday 08-24, deliberately.** 08-21 is already claimed
+by the 08-14 row asking the identical question, and a second row on the same
+session would count one observation twice. Fifth posting, p=0.38, untilted.
