@@ -231,7 +231,7 @@ independent). LIVE via launchd since 2026-07-16
 launchd does not wake a sleeping Mac: snapshots only accumulate while the
 lid is open. That's fine — the analysis treats each snapshot independently.
 
-**Recording status (honest count, 2026-08-04): 9 usable full sessions**
+**Recording status (honest count, 2026-08-20): 20 usable full sessions** — counted by `session_count.py` (≥86% of a full session's rows; 5 stubs named in data/session_count.json), restating the 2026-08-04 figure of 9 —
 (Jul 17, 20, 22, 24, 27–31) **against the 60-session gate.** Losses so far,
 all machine-side, none of them the source's fault:
 

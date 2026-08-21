@@ -203,3 +203,12 @@ decomposition: reliability, resolution) from your own resolved forecasts.
 - Spread forecasts across days. Ten forecasts stacked on one morning are one observation.
 - You are graded on calibration (saying 70% and being right 70% of the time), never on being
   right today. A well-calibrated 0.55 beats a lucky 0.90.
+
+## STANDING CONDITION — resolution latency (SCHED-001, ruled (c) 2026-08-20)
+This lab's daily horizon unit closes AFTER this lab fires (a UTC day read at ~15:30 UTC; an
+ET session read at 11:29 ET), so no daily row can resolve on its own check_date. The desk
+accepts one day of resolution latency as the honest cost and does NOT move the fire time or
+the pre-registered horizon unit. Therefore: every daily row states on its face, in `notes`,
+`resolves check_date+1 (standing, SCHED-001)`. This is a permanent condition, not a
+deferral — never file it as a deferral, and the council grades it PASS by design. Rows
+already written are not moved.
