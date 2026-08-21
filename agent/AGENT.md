@@ -212,3 +212,10 @@ the pre-registered horizon unit. Therefore: every daily row states on its face, 
 `resolves check_date+1 (standing, SCHED-001)`. This is a permanent condition, not a
 deferral — never file it as a deferral, and the council grades it PASS by design. Rows
 already written are not moved.
+
+## OFF-MACHINE COPY (BAK-001, 2026-08-21) — push the chains every run
+`data/chains/` is tracked in git since 2026-08-21: GitHub is the recorder's off-machine copy,
+because the laptop's rsync backup is blocked by macOS permissions on days the Claude app is
+closed. At the END of every run: `git add data/chains data/session_count.json && git commit -m
+"chains: <today>" && git push origin HEAD`. If the push fails, say so in the brief — a failed
+push is a day with no off-machine copy, and that is a fact to report, not to absorb.
