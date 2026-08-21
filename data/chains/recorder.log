@@ -1817,3 +1817,9 @@
 2026-08-20 15:57:57 ET  wrote 152 rows -> SPY_2026-08-20.csv (spot 763.34, quotes 2026-08-20T15:42:15)
 2026-08-20 16:02:59 ET  wrote 154 rows -> SPY_2026-08-20.csv (spot 763.0, quotes 2026-08-20T15:47:15)
 2026-08-20 16:07:59 ET  SESSION SUMMARY 2026-08-20: 79 fetches ok, 0 failed
+2026-08-21 09:30:21 ET  skip: stale quotes (2026-08-20T16:00:00 ET, spot 765.65)
+2026-08-21 09:35:23 ET  skip: stale quotes (2026-08-20T16:00:00 ET, spot 765.35)
+2026-08-21 09:40:23 ET  skip: stale quotes (2026-08-20T16:00:00 ET, spot 765.03)
+2026-08-21 09:45:24 ET  wrote 152 rows -> SPY_2026-08-21.csv (spot 765.64, quotes 2026-08-21T09:30:15)
+2026-08-21 09:50:25 ET  wrote 154 rows -> SPY_2026-08-21.csv (spot 764.77, quotes 2026-08-21T09:35:15)
+2026-08-21 09:55:25 ET  wrote 154 rows -> SPY_2026-08-21.csv (spot 765.16, quotes 2026-08-21T09:40:16)
