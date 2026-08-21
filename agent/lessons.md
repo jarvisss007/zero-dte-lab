@@ -664,3 +664,66 @@ labs from moving their own fire times or horizon units and it is Anupam's ruling
 **Today's forecast moves to Monday 08-24, deliberately.** 08-21 is already claimed
 by the 08-14 row asking the identical question, and a second row on the same
 session would count one observation twice. Fifth posting, p=0.38, untilted.
+
+## 2026-08-21 [0dte]
+
+**THE PROGRESS BAR DID NOT MOVE YESTERDAY, AND FINDING OUT WHY IS THE DAY'S REAL
+RESULT.** The three-number count, recomputed from the files rather than incremented:
+**26 files on disk / 19 sessions complete / 16 admissible.** Complete went 18 → 19
+when 08-20 finished. **Admissible stayed at 16.** The 08-20 session is complete
+(09:46 → 16:02, open to close) but its FIRST snapshot does not fit a smile —
+`implied_density.py` returns "only 0 usable OTM quotes; smile unfit", because the
+09:46:13 snapshot carries `quote_ts 2026-08-20T09:30:04`, the feed's first delayed
+print, with IVs not yet populated. So 08-20 joins 08-07 and 08-12 as
+**complete-but-unfit**, and the straddle test gained nothing from a session it
+recorded perfectly.
+
+That is a THIRD failure mode, and it had not been named. ZDTE-003 named two — the
+delayed feed not publishing before ~09:45, and the Mac sleeping through the open.
+This one is different: the recorder woke, captured from 09:46, and covered the whole
+session, and the sample still refused the day. The gate is not limited only by days
+the recorder misses; it is limited by days the recorder catches EARLY ENOUGH TO BE
+USELESS. And it is not a clean function of clock time: 09:45 first snapshots fit on
+07-31, 08-10 and today, and fail on 08-07 and 08-12; 09:46 fits on 08-18 and fails on
+08-20. The discriminator is `quote_ts`, not `fetched_at_et` — a snapshot fetched at
+09:46 against a 09:30 book is a different object from one fetched at 09:46 against a
+09:40 book. Nothing changed today; logged for whoever fixes the recorder.
+
+**Honest projection, revised down.** 16 admissible over the 25 trading days from
+07-17 to 08-20 is 0.64/day, so the remaining 44 need ~69 trading days: the gate
+lands around **2026-11-25**, five days later than yesterday's 11-20 estimate. The
+estimate moved because a day was recorded and did not count. Expect it to keep
+drifting; that is what an honest progress bar does.
+
+**THREE OVERDUE FORECASTS RESOLVED, all one run late by construction (SCHED-001).**
+(1) 08-12 row, SPY above 770.56 on 08-20: settled 762.60 → **NO**, p was 0.53.
+(2) 08-13 row, SPY below 777.88 on 08-20: 762.60 → **YES**, p was 0.45.
+(3) 08-19 row, realized vs band on 08-20 → **YES**, and this is the first YES this
+repeated question has ever returned. Band from the first FITTABLE snapshot 09:51:13,
+spot 766.78, ATM 767 straddle mid 2.83 → ±0.37%; realized 762.60/766.78 − 1 =
+**−0.545%**, 147% of the band, outside. Stated explicitly so the snapshot choice
+cannot be read as outcome-picking: off the unfittable 09:46 spot 766.13 the realized
+move is −0.461%, **also outside**, and 09:51 is the snapshot the 08-20 ledger row was
+independently stamped to at write time. The answer does not depend on the ambiguity.
+**Running record on this one question: 1 OUTSIDE / 1 INSIDE, n=2.** That is not
+evidence about anything and p stays 0.38 for the sixth posting.
+Twelve resolved, Brier vs climatology now showing skill, and the 0.40–0.50 bin reads
+"+0.550 underconfident" **off a single observation** — the n<10 sign artifact this
+lab has now logged six times. Nothing was tuned on it.
+
+**RECONCILED, NOT RE-SCORED (BENCH-002).** The 08-20 `max_pain` row was scored
+`right` by the council's post-close slot off the settled 762.60 against pin 770 —
+0.96% below, outside the ±0.25% band. Read, verified, left alone. The council also
+published this lab's own sentence beside it, which is the sentence that matters:
+**at the first snapshot spot is essentially never inside a ±0.25% band, so this
+metric produces `breaks` mechanically and measures a base rate, not a call.**
+
+**NO LEDGER CALL TODAY — NAMED BAR, and it is the same bar as yesterday's.**
+`max_pain`: the 09:45 peak-OI strike is **750** against spot **765.64** — the pin
+sits 2.05% BELOW spot, the widest gap this book has seen, and the ±0.25% band
+(748.13–751.88) would need a 2% collapse to hold. `breaks` is not a prediction here,
+it is arithmetic, and logging it would be manufacturing a near-certain win on a
+metric this lab has already published as mechanically won. `implied_move`: stays
+barred until a discriminator is pre-registered — seven sessions without one is a
+correct abstention, not a gap to fill. Both bars are named and neither is
+convenience.
