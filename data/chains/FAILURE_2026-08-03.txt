@@ -1,0 +1,5 @@
+LOST SESSION 2026-08-03
+80 consecutive fetch failures 09:31:31-16:06:49 ET.
+Error every time: URLError(gaierror(8, 'nodename nor servname provided, or not known')) - machine-side DNS resolution failure.
+No SPY_2026-08-03.csv was written. This session is lost; do not count it toward the 60-session gate.
+(Marker written retroactively 2026-08-04 when the resilience patch landed.)

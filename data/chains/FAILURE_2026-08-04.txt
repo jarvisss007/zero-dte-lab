@@ -1,0 +1,4 @@
+LOST/DEGRADED SESSION 2026-08-04
+6 consecutive fetch failures as of 2026-08-04 10:19:49 ET.
+Last error: gaierror(8, 'nodename nor servname provided, or not known')
+Do not count this session toward the 60-session gate unless the CSV is verified complete.

@@ -1,7 +1,7 @@
 *.pyc
 .DS_Store
 __pycache__/
-data/chains/
+# data/chains/ — TRACKED since 2026-08-21 (BAK-001): CBOE delayed-quote snapshots, public data, ~1.2MB/session; GitHub is their off-machine copy. chains_merged stays derived and ignored.
 
 # derived: union of the laptop + cloud recorder legs, rebuildable
 # by src/merge_chains.py — never the source of truth
