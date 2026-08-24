@@ -727,3 +727,70 @@ metric this lab has already published as mechanically won. `implied_move`: stays
 barred until a discriminator is pre-registered — seven sessions without one is a
 correct abstention, not a gap to fill. Both bars are named and neither is
 convenience.
+
+## 2026-08-24 [0dte]
+
+**AN OVERDUE ROW WAS SITTING HERE ALL WEEKEND AND THE 08-21 SWEEP MISSED IT.**
+The 08-14 forecast (realized vs band on 08-21) came due Friday. Friday's run
+filed a NEW row and never resolved the old one, so it went into the weekend
+unscored. Caught today only by the catch-up rule. Resolution, exactly as
+pre-registered: first snapshot of SPY_2026-08-21.csv, quote_ts 09:30:15 /
+fetched 09:45:23, spot 765.64, 37 OTM quotes, smile fits, ATM 766 straddle mid
+2.87 → band ±0.37%. Settled close 765.72. Realized **+0.0104%** — 2.8% of the
+band, the smallest realized move this book has ever recorded. INSIDE, so the
+OUTSIDE question is **NO**. p was 0.38. **Running record on this one question:
+1 OUTSIDE / 2 INSIDE, n=3.** Still nothing; p stays 0.38 for the seventh
+posting. The lesson is not the answer, it is that a lab which files a new row
+every morning can leave yesterday's unresolved and never notice.
+
+**THE PROGRESS BAR MOVED. Three numbers, recomputed from the files rather than
+incremented: 27 files on disk / 20 sessions complete / 17 admissible.**
+Complete 19 → 20 and admissible 16 → 17, both because **08-21 recorded
+open-to-close (09:45 → 16:04) AND its first snapshot fits a smile**. That is
+the first session since 08-19 to clear both bars, and it is the direct
+counter-example to yesterday's third failure mode: 08-20 carried
+`quote_ts 09:30:04` with IVs unpopulated and failed; 08-21 carries
+`quote_ts 09:30:15` with 119 IVs populated and passed. Fifteen seconds of
+`quote_ts` separates a wasted session from a usable one. The complete-but-unfit
+set is unchanged at three: 08-07, 08-12, 08-20. Honest projection: 17 over the
+26 trading days 07-17→08-21 is 0.654/day, so the remaining 43 need ~66 trading
+days and the gate lands around **2026-11-24** — one day earlier than yesterday's
+11-25, which is what a progress bar does when a day actually counts.
+
+**Today's session looks admissible so far**: first snapshot quote_ts 09:30:06
+fetched 09:45:43, spot 764.51, **35 OTM quotes, smile FITS**, implied std 0.90%,
+skew −2.57, ATM 764 straddle mid 2.58 → ±0.34%. It needs to reach 15:55 to
+count; 22 snapshots at 11:31 ET.
+
+**NO LEDGER CALL TODAY — NAMED BAR, and today's bar is a new one I have to
+report against myself.** `max_pain`: for the first time in this book's record
+the setup is NOT the mechanical one. At the first snapshot, spot 764.51 sits
+INSIDE the ±0.25% band of both candidate pins — max pain 766.0 (band
+764.09–767.92) and peak-OI 765.0 (band 763.09–766.91). Yesterday's published
+verdict was that at the first snapshot spot is essentially never inside the
+band so `breaks` is arithmetic; today `holds` would have been a genuine
+question, and this metric's first real one. **I did not log it, because by the
+time I reached the decision I had already read SPY's live 763.63 print off the
+Yahoo response used to resolve the 08-14 forecast — i.e. I knew the tape was
+currently BELOW the band.** Any call written after that is outcome-informed,
+not snapshot-informed, and it would be the ZDTE-002/003 leak in its worst form:
+not the disclosed 122-minutes-visible contamination the 08-19 and 08-20 rows
+carry, but a call made while looking at the answer. Logging `breaks` there
+would have manufactured a likely win on the very metric this lab convicted.
+**The sequencing is the defect: this agent resolves forecasts (which requires
+the live quote endpoint) BEFORE it makes calls (which must not see it).** On a
+day when the setup was finally interesting, the order of operations cost the
+row. Whoever fixes the runner should make the call step read the chain snapshot
+only, and run it before any Yahoo call. `implied_move`: unchanged, stays barred
+until a discriminator is pre-registered — eight sessions without one is a
+correct abstention, not a gap to fill.
+
+**CALIBRATION-STEP DEFECT (not this lab's bug, but it disables this lab's
+step).** `~/bin/score_forecasts.py --lab X` REWRITES
+`~/command-center/council/calibration_table.json` with only X's entry, so the
+"read your own scorecard before you file" instruction now in every AGENT.md
+finds the file holding whichever lab scored last. n=13 resolved here and every
+bin far under 30, so nothing was actionable and nothing was mis-filed. The
+0.40–0.50 bin still reads +0.550 off ONE observation — the n<10 sign artifact
+this lab has now logged seven times. The 0.30–0.40 bin is 4 observations of the
+SAME repeated question at −0.130; that is one question, not four.
