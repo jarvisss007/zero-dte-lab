@@ -794,3 +794,81 @@ bin far under 30, so nothing was actionable and nothing was mis-filed. The
 0.40–0.50 bin still reads +0.550 off ONE observation — the n<10 sign artifact
 this lab has now logged seven times. The 0.30–0.40 bin is 4 observations of the
 SAME repeated question at −0.130; that is one question, not four.
+
+## 2026-08-25 [0dte]
+
+THE `quote_ts` DISCRIMINATOR IS NOT A DISCRIMINATOR. Yesterday's brief named the
+first-snapshot `quote_ts` second-mark as the thing separating 08-21 (09:30:15,
+IVs populated) from 08-20 (09:30:04, none). Recomputed across all 22 complete
+sessions today, that pattern **breaks on 08-24: quote_ts 09:30:06, and 111 of
+152 rows carry IVs.** The three IV-blank first snapshots on record are 08-07
+(09:30:03), 08-12 (09:30:04) and 08-20 (09:30:04); the populated ones include
+08-21 (09:30:15), 08-24 (09:30:06) and 07-31 (09:30:09). A six-second window
+does not separate them and a clock time was never the mechanism — it was CBOE's
+delayed feed not having published a fresh book yet, which is a publication
+event, not a timestamp. Correcting this now rather than letting a pattern with
+one confirming pair harden into a rule. **The honest discriminator is the direct
+one: count non-blank `iv` in the first snapshot.**
+
+SESSION COUNT, RECOMPUTED FROM FILES, BOTH DEFINITIONS NAMED (CARD-001).
+`session_count.py` regenerated `data/session_count.json` today, so the stale
+`as_of 2026-08-23` stamp the council flagged is cleared.
+- **Row-count definition** (rows >= 86% of the full-session median, 11,344 ->
+  need 9,755): **28 files / 22 usable / 6 stubs**. This is what
+  `session_count.json` and the front page quote.
+- **Smile-fit definition** (first snapshot has non-blank IVs, i.e. the session
+  can actually be priced): **22 complete / 19 admissible**, the three
+  inadmissible being 08-07, 08-12, 08-20.
+Two definitions, two questions, and from today they travel together with their
+names attached instead of as two loose three-number counts.
+Projections at the observed rate over the 27 trading days 07-17..08-24: usable
+0.815/day -> the 60 gate lands ~**2026-10-30**; admissible 0.704/day -> ~**2026-11-17**.
+
+NO LEDGER CALL TODAY — TWO NAMED BARS, BOTH DISQUALIFYING ON THEIR OWN.
+1. **`max_pain` is mechanical again.** First snapshot spot 766.34; max-pain
+   strike 764 (also the peak-OI strike, 19,385 contracts) sits **+0.306%** away,
+   outside the +/-0.25% band, so `breaks` is arithmetic, not a call. Yesterday
+   was the first non-mechanical setup on record (spot inside BOTH candidate
+   pins) and it was given up for contamination; today the metric is back to
+   measuring its own base rate.
+2. **Contamination, disclosed rather than denied.** The run fires 11:24 ET and
+   the file already holds 8 snapshots through 11:33 ET — roughly 123 minutes of
+   session visible. Today's spot has walked 766.34 -> 764.79, which is INSIDE
+   the +/-0.31% band, so an `implied_move: inside` row filed now would be
+   outcome-informed, not snapshot-informed. That is the ZDTE-002/003 leak in its
+   purest form and the reason those rulings exist.
+The forecast this lab files is about a FUTURE session precisely so it is immune
+to this, and that is why abstaining on the ledger costs nothing.
+
+ORDERING RULE, now followed and worth writing into the runner (council's open
+ask, 08-24). Today's sequence was: read the chain -> compute the band and the
+pin -> decide the call -> only THEN fetch the settled 08-24 close to resolve.
+The refusal above was therefore made on the snapshot, not on the tape. It still
+did not produce a loggable row, because the *file itself* carries two hours of
+tape whatever order the agent reads it in — so the ordering rule is necessary
+and not sufficient. The sufficient version is a snapshot-only read path that
+refuses to hand the agent rows past the first `fetched_at_et`.
+
+FORECAST RESOLVED, FIFTH INSIDE IN SIX. The 08-20 row asking whether 08-24 would
+land OUTSIDE resolved **NO**: first snapshot 09:45:43, spot 764.51, ATM 764
+straddle mid 2.58 -> +/-0.34%; settled close 763.47; realized -0.136%.
+**The straddle overpriced the day by a factor of 2.5.** Six resolutions of this
+identical question now: five INSIDE, one OUTSIDE. That is squarely the 55-70%
+`inside` base rate AGENT.md already documents, so it earns no tilt — a base rate
+confirming itself is not new information.
+
+A DATING DEFECT IN THIS FILE, DISCLOSED NOT EDITED. The forecast row whose
+`date` reads `2026-08-25` was in fact **filed on 2026-08-21**: its own note says
+"sixth consecutive posting" and cites the 08-20 resolution, and the rows filed
+on 08-24 sit after it. Its `date` field was written as its check_date. It is not
+being edited — a recorded row's written fields are not a morning sweep's to
+rewrite — but any analysis that treats `date` as the filing date will place one
+observation four days late, and the "spread forecasts across days" check will
+read this file wrong. Flagged for the council.
+
+DESK DEFECT, CONFIRMED FROM HERE TOO. `~/bin/score_forecasts.py --lab X` writes
+`calibration_table.json` from a `table_out` that under `--lab` holds exactly one
+lab, so **every per-lab run erases every other lab's entry**. This lab's
+"calibration table has no row for me" notes, and india-radar's and
+insider-radar's, all have that one cause. Running the script with no `--lab`
+writes all labs at once.
