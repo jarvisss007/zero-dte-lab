@@ -128,3 +128,4 @@
 2026-08-26 11:57:56 ET  wrote 152 rows -> SPY_2026-08-26.csv (spot 765.67, quotes 2026-08-26T11:42:16)
 2026-08-26 12:44:38 ET  wrote 154 rows -> SPY_2026-08-26.csv (spot 764.88, quotes 2026-08-26T12:29:19)
 2026-08-26 14:24:55 ET  wrote 154 rows -> SPY_2026-08-26.csv (spot 765.765, quotes 2026-08-26T14:09:21)
+2026-08-26 16:18:34 ET  SESSION SUMMARY 2026-08-26: 5 fetches ok, 0 failed
