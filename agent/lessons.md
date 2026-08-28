@@ -886,3 +886,32 @@ writes all labs at once.
 - The cheap fix that WOULD work is a run-order change, not a loader: **make the call before scoring** — move step 5 ahead of step 2, so the call-writing step runs before anything touches a price endpoint. The loader is still worth building (it closes the chain half and makes the stratum verifiable), but it must not ship first or alone, because shipping it alone converts an admitted leak into a certified one. **Flagged, not changed:** this agent does not rewrite its own run order, and the ordering question belongs to the council/Anupam alongside items (1)–(3).
 - **No ledger call today — fifth consecutive priced refusal, and the bar is now a different one.** The first four refusals were "too many minutes visible". Today's is: I have seen the actual number. SPY at 770.46 vs the 09:45 spot 768.47 means `inside` is 63% consumed and I know it. The `max_pain` metric is separately disqualified: peak OI at the first snapshot sits at **strike 747, 2.87% below spot 768.47** — a far-OTM open-interest artifact, not a pin, so `breaks` would again be arithmetic rather than a call (the lab's own 08-20 verdict).
 - Session count 23/60 usable (row-count definition, as of 08-26; today will make 24 once the file completes). Both definitions still published: the stricter smile-fit count runs behind the row count and the gate is the later of the two.
+
+## 2026-08-28 [0dte]
+- Ledger: **no rows due, no rows logged** — two named-bar refusals (below). Forecast: resolved the
+  08-27 row **NO at p 0.38** (realized +0.3422% vs a ±0.41% band, INSIDE), filed the ninth posting
+  for 09-01 at 0.38 unchanged. Book n=17, Brier skill +0.0273.
+- **83% consumed and still inside — the refusal was right and, this once, uninformative about
+  direction.** Yesterday's run refused an `implied_move` row because 63% of the band was already gone
+  at sweep time and it could see the answer forming. The band finished at 83% and the answer was still
+  INSIDE. Both facts belong in the record: the refusal was correct on procedure, and it would have
+  produced a *winning* `inside` row had it been taken. That is precisely why the rule is procedural
+  and not outcome-based — a rule that only holds when it pays is not a rule.
+- **Today the leak is worse, and the refusal is easier: 81% of the band consumed 105 minutes in.**
+  SPY 774.78 vs a 09:47 snapshot spot of 771.85 against a ±0.47% band. `max_pain` disqualified
+  separately and prior to the leak: pin 767 sits 0.63% BELOW snapshot spot, so the band was already
+  unreachable at the snapshot itself. Restating the 08-20 verdict because it keeps being true — at
+  the first snapshot spot is essentially never inside a ±0.25% band, so this metric emits `breaks`
+  mechanically. A win on it is not evidence.
+- **`ZDTE-003` did not recur for a second session: first write 09:47:03 ET.** The log shows the
+  mechanism plainly — three skips on a stale 2026-08-27T15:59:59 book at 09:32/09:37/09:42, then the
+  first real quote at 09:47. That is CBOE's free feed, not the scheduler, and it is why no fixed clock
+  time can be ruled. Two clean sessions is not a trend; 08-26's 09:57:38 is still on the record.
+- **The two session counts DIVERGED further today and the stricter one moved less.** Row-count 23 → 24
+  (08-27 cleared); smile-fit/admissible recomputed from the files at **21**. The gap is the three
+  complete-but-unfit sessions (08-07, 08-12, 08-20). Worth writing down because a naive recount of
+  "sessions whose first snapshot fits a smile" over ALL 31 files returns **28**, which is higher than
+  the row-count and would read as progress — it is not: it counts stub sessions whose first snapshot
+  happens to fit. The admissible number is the INTERSECTION (complete AND fits), and it is 21. A
+  progress bar that can be made to read 28, 24 or 21 depending on how the question is phrased is
+  exactly the kind of number that needs its definition published next to it every single day.
