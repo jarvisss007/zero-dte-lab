@@ -20,13 +20,45 @@ same-day at the close. Two allowed metrics, both deterministic:
 
 ## Run order (do all steps, in order)
 
+> **AMENDED 2026-08-29 (ZDTE-004, ruled by Anupam). THE CALL IS MADE BEFORE ANYTHING
+> READS A LIVE PRICE.** Scoring reaches a price endpoint that returns the live intraday
+> bar, and it used to run first: on 2026-08-26 it handed over 770.46 against the 09:45
+> snapshot spot of 768.47 — +0.259%, about 63% of the day's ±0.41% implied band already
+> consumed — before the call step ran at all. The lab refused to call that day on exactly
+> that ground: "logging inside now would record where price already is."
+>
+> The council's proposed chain-side fix (first-snapshot-only loader plus a `read_path`
+> column) would have hidden the later CHAIN rows, left the PRICE leak fully intact, and
+> stamped the row `read_path: snapshot-only` — turning an admitted leak into a CERTIFIED
+> one. The lab argued against its own convenience and was right.
+>
+> The steps below are PHYSICALLY reordered, not merely renumbered. Renumbering alone
+> would leave an agent reading top-to-bottom still scoring first, which is the same
+> defect wearing a new label.
+
 1. **Check today's chain data**: look for
    `data/chains/SPY_YYYY-MM-DD.csv` (today). The recorder
    (`src/chain_recorder.py`) may not be scheduled and launchd doesn't wake a
    sleeping Mac — if there is no snapshot for today, say so in the brief,
-   make ZERO calls, and skip to step 2. Never predict from stale chains.
+   make ZERO calls, and skip to step 4 (scoring). Never predict from stale chains.
 
-2. **Score due calls**: open `agent/ledger.csv`. For every row where
+2. **Read the shared lessons**: re-read `agent/lessons.md` in full before
+   making today's call. It is the SHARED brain — any coach/grader writes
+   there too. Do not repeat a pattern already flagged as underperforming
+   without noting the conflict.
+
+3. **Make today's calls (max 2, zero is fine)**: run
+   `/opt/anaconda3/bin/python /Users/anupampatil/zero-dte-lab/src/implied_density.py data/chains/SPY_YYYY-MM-DD.csv --time HH:MM`
+   with `--time` set to the earliest post-open snapshot (ET) in today's chain
+   file, to get the ATM-straddle implied move and the OI landscape. Append at most one `implied_move` row
+   and one `max_pain` row to `agent/ledger.csv`
+   (columns: date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome —
+   `check_date` = today, `value_at_call` = the implied move in % or the pin
+   strike, thesis under 15 words STARTING with `[0dte]`, last two fields
+   empty). Do not manufacture conviction: if the snapshot is stale-quoted or
+   pre-open-only, log nothing.
+
+4. **Score due calls**: open `agent/ledger.csv`. For every row where
    `check_date <= today` and `outcome` is empty: get SPY's official daily
    open/close for `check_date` from Yahoo's free chart endpoint
    (`https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=1mo&interval=1d`).
@@ -41,25 +73,9 @@ same-day at the close. Two allowed metrics, both deterministic:
    holiday session voids the row: set outcome to `void` (the only exception,
    and only for no-trading days). Never edit or delete old rows otherwise.
 
-3. **Update lessons**: if you scored anything, append dated, blunt takeaways
+5. **Update lessons**: if you scored anything, append dated, blunt takeaways
    to `agent/lessons.md` — hit rate per metric, any visible bias (always
    calling `inside`, over-trusting pins on trend days). Sign entries `[0dte]`.
-
-4. **Read the shared lessons**: re-read `agent/lessons.md` in full before
-   making today's call. It is the SHARED brain — any coach/grader writes
-   there too. Do not repeat a pattern already flagged as underperforming
-   without noting the conflict.
-
-5. **Make today's calls (max 2, zero is fine)**: run
-   `/opt/anaconda3/bin/python /Users/anupampatil/zero-dte-lab/src/implied_density.py data/chains/SPY_YYYY-MM-DD.csv --time HH:MM`
-   with `--time` set to the earliest post-open snapshot (ET) in today's chain
-   file, to get the ATM-straddle implied move and the OI landscape. Append at most one `implied_move` row
-   and one `max_pain` row to `agent/ledger.csv`
-   (columns: date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome —
-   `check_date` = today, `value_at_call` = the implied move in % or the pin
-   strike, thesis under 15 words STARTING with `[0dte]`, last two fields
-   empty). Do not manufacture conviction: if the snapshot is stale-quoted or
-   pre-open-only, log nothing.
 
 6. **Write the brief**: create `agent/briefs/YYYY-MM-DD.md` (short):
    - **Chain state** (2 lines): snapshots recorded today, spot, implied std,
