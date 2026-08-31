@@ -1,0 +1,23 @@
+[
+ {
+  "session": "2026-08-31",
+  "structure_id": "TC-SPY-20260831",
+  "track": "C",
+  "underlying": "SPY",
+  "expiry": "2026-08-31",
+  "entered_at_snapshot": "2026-08-31 09:50:17",
+  "legs": "BUY 766C @1.64 / BUY 766P @1.11",
+  "strike": 766.0,
+  "spot_at_entry": 766.5,
+  "entry_debit": 2.75,
+  "entry_basis": "EXECUTABLE (both legs at ask)",
+  "mid_debit": 2.74,
+  "breakeven_move_pct": 0.359,
+  "settle_close": "",
+  "settle_value": "",
+  "pnl": "",
+  "pnl_pct": "",
+  "outcome": "",
+  "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark."
+ }
+]
