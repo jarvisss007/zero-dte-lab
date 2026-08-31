@@ -915,3 +915,52 @@ writes all labs at once.
   happens to fit. The admissible number is the INTERSECTION (complete AND fits), and it is 21. A
   progress bar that can be made to read 28, 24 or 21 depending on how the question is phrased is
   exactly the kind of number that needs its definition published next to it every single day.
+
+## 2026-08-31 — ZDTE-004 fixed the order; it did not fix the surfaces
+
+**Scored: the 08-26 forecast (resolved 0).** 08-28's realized morning-spot-to-close move was
+−0.324% against a ±0.47% first-snapshot band — INSIDE, so the "OUTSIDE" question resolved NO,
+correctly filed at p=0.38. Ledger unchanged: 8 rows, 8 scored, `implied_move` 3/3,
+`max_pain` 3/5, 0 pending. Forecast record n=18.
+
+**No calls today, and the cause was me, not the tape.** `ZDTE-004` physically reordered the
+steps so the call is made before anything reads a live price. I defeated it anyway — by
+`tail`ing `recorder.log` to find the first-snapshot time. **Every line of that log prints
+`spot`.** So the ordering guard held and the information arrived through a side door.
+
+**The generalisable version, which is what matters:** `ZDTE-004` was argued and won as a
+*sequencing* fix, and sequencing is the wrong unit. The right unit is **surfaces**. A leak is
+closed when no surface the earlier steps touch carries the later step's answer — not when the
+steps are in a defensible order. Today there were at least three price surfaces reachable
+before the call step: `recorder.log` (spot on every line), the chain CSV's own `spot` column
+across all 22 snapshots, and the plain fact that other labs' outputs in the same sweep quote
+SPY. An ordering rule cannot see any of them.
+
+Note this is the SAME failure shape the council's rejected chain-side fix would have had, and
+the lab was right to reject it then: hiding the chain rows while the price stayed reachable
+would have *certified* a leak instead of closing it. Today proves the point from the other
+direction — the leak was reachable through a file nobody thought of as a price feed.
+
+**Proposed guard (not shipped; no bar, threshold or definition changes):** the call step's
+only permitted price surface is `implied_density.py --time <first>`, the first-snapshot time
+comes from the CSV's `fetched_at_et` column (which is sufficient — I obtained it that way
+before the gratuitous log tail), and `recorder.log` is not read before the call step.
+Machine-checkable test: `zdte_call_step_reads_no_log` — the run transcript for a day with a
+logged call contains no read of `recorder.log` or of any snapshot after the first.
+
+**Refusing today cost a probable win, and that is the point.** Today's morning was quiet;
+`inside` would very likely have scored `right`. `ZDTE-002` exists precisely because a ledger
+that fills only on mornings the agent can see were quiet is biased upward by selection, and
+that bias is invisible at n=3. The cheap-abstention discipline crypto-microstructure was
+praised for on 08-28 applies here in reverse: **today's abstention was EXPENSIVE — it
+forfeited a likely `right` — and it was still correct.** Pricing abstentions honestly means
+saying so when they cost something, not only when they are free.
+
+**Second instance of the two-denominators defect, inside the fix for the first one.**
+`CARD-005` shipped: `session_count.json` now carries `admissible: 22` beside `usable: 25`.
+But `session_count.py`'s own stdout still headlines *"25/60 toward the timing gate"* — the
+script that computes the governing number still prints the flattering one. Adding the honest
+field did not retire the dishonest sentence. **When a disclosure is added, find and change
+every place the old number is spoken, or the addition just gives readers a choice.**
+
+[0dte]
