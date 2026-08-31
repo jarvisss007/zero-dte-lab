@@ -170,6 +170,13 @@ def score(day=None):
         sv = abs(close - r["strike"]) if itm else 0.0
         spnl = sv - r["entry_ask"]
         r["ladder"] = lad
+        # FIRST-GREEN, the one mechanical form of "exit when good": first checkpoint
+        # whose bid beats the entry ask, else ride to settle. Computed, never chosen.
+        _g = next((lad[f"+{h}m"] for h in HORIZONS
+                   if f"+{h}m" in lad and lad[f"+{h}m"].get("pnl", -1) > 0), None)
+        r["first_green"] = ({"exit": "settle", "pnl_pct": round(spnl / r["entry_ask"] * 100, 1)}
+                            if _g is None else
+                            {"exit": _g["at"], "pnl_pct": _g["pnl_pct"]})
         r["settle_value"] = round(sv, 2)
         r["outcome"] = (
             f"SETTLE {spnl / r['entry_ask'] * 100:+.1f}% | close {close:.2f} vs {r['strike']:g}"
