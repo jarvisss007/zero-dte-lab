@@ -178,6 +178,13 @@ def score(day=None):
         if not rows:
             continue
         last = max(x["fetched_at_et"] for x in rows)
+        # The session must actually be OVER. Without this, a mid-day run would take the
+        # newest snapshot so far — 10:12, say — and score |mid-day spot − K| as if it were
+        # the settle. Same-day rows are scorable only once the last snapshot is from after
+        # 15:55 ET; otherwise the row waits for the next run. Caught 2026-08-30 before the
+        # first real row existed.
+        if r["session"] == day and last[-8:] < "15:55:00":
+            continue
         spots = [float(x["spot"]) for x in rows if x["fetched_at_et"] == last and x.get("spot")]
         if not spots:
             continue
