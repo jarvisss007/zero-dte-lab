@@ -12,9 +12,44 @@
   "entry_ask": 1.64,
   "entry_bid_at_entry": 1.63,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 1.45,
+    "at": "09:55:18",
+    "pnl": -0.19,
+    "pnl_pct": -11.6
+   },
+   "+10m": {
+    "exit_bid": 1.28,
+    "at": "10:00:18",
+    "pnl": -0.36,
+    "pnl_pct": -22.0
+   },
+   "+15m": {
+    "exit_bid": 1.33,
+    "at": "10:05:19",
+    "pnl": -0.31,
+    "pnl_pct": -18.9
+   },
+   "+20m": {
+    "exit_bid": 1.45,
+    "at": "10:10:20",
+    "pnl": -0.19,
+    "pnl_pct": -11.6
+   },
+   "+30m": {
+    "exit_bid": 1.04,
+    "at": "10:20:22",
+    "pnl": -0.6,
+    "pnl_pct": -36.6
+   }
+  },
+  "settle_value": 1.15,
+  "outcome": "SETTLE -29.6% | close 767.15 vs 766C -> worth 1.15 against 1.64 at the ask. Close from the session's last snapshot (16:06:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "first_green": {
+   "exit": "settle",
+   "pnl_pct": -29.6
+  }
  },
  {
   "session": "2026-08-31",
@@ -29,8 +64,43 @@
   "entry_ask": 1.11,
   "entry_bid_at_entry": 1.1,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 1.2,
+    "at": "09:55:18",
+    "pnl": 0.09,
+    "pnl_pct": 8.1
+   },
+   "+10m": {
+    "exit_bid": 1.22,
+    "at": "10:00:18",
+    "pnl": 0.11,
+    "pnl_pct": 9.9
+   },
+   "+15m": {
+    "exit_bid": 1.16,
+    "at": "10:05:19",
+    "pnl": 0.05,
+    "pnl_pct": 4.5
+   },
+   "+20m": {
+    "exit_bid": 1.0,
+    "at": "10:10:20",
+    "pnl": -0.11,
+    "pnl_pct": -9.9
+   },
+   "+30m": {
+    "exit_bid": 1.22,
+    "at": "10:20:22",
+    "pnl": 0.11,
+    "pnl_pct": 9.9
+   }
+  },
+  "settle_value": 0.0,
+  "outcome": "SETTLE -100.0% | close 767.15 vs 766P -> worth 0.00 against 1.11 at the ask. Close from the session's last snapshot (16:06:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "first_green": {
+   "exit": "09:55:18",
+   "pnl_pct": 8.1
+  }
  }
 ]
