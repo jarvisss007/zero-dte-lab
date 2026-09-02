@@ -964,3 +964,86 @@ field did not retire the dishonest sentence. **When a disclosure is added, find 
 every place the old number is spoken, or the addition just gives readers a choice.**
 
 [0dte]
+
+---
+
+## 2026-09-02 — the leak came from another lab, and the gate moved under a frozen file
+
+**Scored: three forecasts, all NO.** 08-27 row (check 08-31): realized +0.0718% against
+a +/-0.35% band, 20.5% consumed, INSIDE. 08-28 row (check 09-01): +0.0328% against
++/-0.38%, 8.6% consumed, INSIDE. 08-31 row (check 09-01): |close-to-close| was
+**-0.6870%** against a 0.55% threshold — NOT smaller — NO. The 08-27 row was a session
+overdue; the 09-01 run never reached it and the sweep's catch-up rule found it.
+
+**The third one is the honest half of this lab's story.** Nine straight resolutions had
+said the straddle overprices. This one asked the same question from the other side —
+is the morning implied std too HIGH? — and the session moved 0.687% against a 0.55%
+estimate. The estimate was too LOW. First time. One session proves nothing, and that is
+precisely why it goes in the lessons at the top rather than in a footnote: a book that
+only ever records the straddle overpricing is selecting its own conclusion, and this
+lab's entire thesis is that the straddle overprices.
+
+**ZDTE-004 DOES NOT SURVIVE THE SWEEP — a real cost, paid today.** The rule physically
+reorders this lab's steps so the call is made before anything reads a live price. It
+held perfectly *inside* a zero-dte run. It did nothing today, because zero-dte is the
+THIRD lab in a five-lab sweep sharing one agent context, and **insider-radar's step 2
+fetched a live SPY quote (766.28, ~11:32 ET) two labs earlier** — for its SPY benchmark,
+entirely correctly, under its own AGENT.md. By the time this lab's call step ran, SPY
+was +0.59% off the 09-01 close against today's +/-0.34% band: the band was already
+blown and `outside` would have been recording where price already was. **Zero calls
+logged, same refusal as 08-11 and 08-26, new cause.**
+
+The general shape, and it is Firm Brain §10 seen from a new angle: **§10 warns about a
+rule whose trigger population differs from its reading population. This is a rule whose
+ENFORCEMENT SCOPE differs from its EXECUTION SCOPE.** ZDTE-004 is written as an ordering
+constraint over one AGENT.md's steps; it is executed by an agent whose real step list is
+the concatenation of five AGENT.mds. Every ordering rule on this desk has this exposure,
+and none of them say so. **Ask any lab: is your rule about the order of YOUR steps, or
+about the order of everything the agent running you does that day?**
+Escalated to the council: either the sweep runs this lab's call step first, or ZDTE-004
+is restated as a property of the session rather than of the lab's run order.
+
+**NEW MECHANISM — a gate counted against a MOVING threshold re-judges frozen data.**
+Not an incident; a transferable law, measured today to the row:
+- `session_count.py` admits a session at >= 86% of the **current** full-session median.
+- 08-31 stamp: median 11,339 -> bar **9,751**. `2026-08-10` (**9,765 rows**) was
+  **usable AND admissible**.
+- 09-02 stamp: median 11,380 -> bar **9,786**. Same file, byte-identical, mtime Aug 10,
+  one commit in git — now a **stub**, failing by 21 rows.
+
+Nothing about 08-10 changed; the population behind it did. Consequences: **progress
+toward the 60-session gate is not monotone** (23 admissible today can be 22 next week
+with no data lost), and every historical statement of the form "N/60" in this lab's
+briefs was true only on its own date. **Guard: judge a session ONCE, at first sight,
+against the threshold in force that day, and stamp `admitted_on`, `rows` and
+`bar_at_admission` onto the session record.** A session's verdict must be a property of
+that session, not of the sessions that came after it. Not shipped unasked — proposed to
+the council. This is §6 applied to a verdict instead of a value, and it is §9's
+aggravating half inverted: §9 warns a partial captured once is frozen forever; here a
+settled artifact's judgment never settles.
+
+**Calibration, said plainly because it is now uncomfortable.** Book at n=21 resolved,
+base rate 0.286, Brier skill **-0.0528**. The 0.30-0.40 bin is **n=11, said 0.380,
+happened 0.091, gap -0.289** — ten of eleven OUTSIDE calls have not happened. It is NOT
+actionable (n=11 vs n>=30) and no adjustment was made or permitted; adjusting on eleven
+observations is the curve-fitting the rule exists to prevent. **n=30 arrives about
+2026-09-29** at one filing a weekday. Writing the date down now so that when it arrives
+the lab does not get to choose whether to look.
+
+**Track D, the council's OPEN, answered before the data arrives.** 6 legs over 3
+sessions; of the 4 completed, **2 had a green rung and 2 never did** — so "first_green
+never" is 2-of-4, not "never", and the 09-01 directive's reading of 08-31 missed that
+the put leg was +8.1% at +5m. Thresholds fixed NOW: distinguishing a true "never" from
+chance at 5% needs **>= 5 consecutive all-red legs** (0.5^5 = 3.1%), i.e. **3 more clean
+sessions minimum**; estimating the RATE to +/-0.15 needs **n >= 43 legs ~ 22 sessions,
+about 2026-10-02**. Anything said about "first_green never" before then is a story
+about four legs.
+
+**Council directive applied** (zero-dte-lab, 2026-09-01): both KEEPs carried — the
+pre-registered-loss discipline, and entry at the first snapshot at the executable debit
+scored at settle with the "settle = last snapshot 16:06:35, not an official print"
+disclosure intact. Today's first snapshot was **10:08:51 ET, 38.9 minutes in** — the
+second-latest on record — and that is stamped rather than smoothed. The OPEN is
+answered with the two numbers above.
+
+[0dte]
