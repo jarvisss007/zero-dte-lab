@@ -10,3 +10,13 @@ Track D: scored 0 legs this run; 2 legs over 1 entry days
   +30m        -13.4  1/2
   settle      -64.9  0/2
   NOT READABLE: 1/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
+REGISTERED 2026-09-02: naked 763C @1.01 + naked 763P @1.52 (spot 762.53, first snapshot 2026-09-02 10:08:51) — one entry day, ladder scores at +5/10/15/20/30min and settle
+Track D: scored 0 legs this run; 4 legs over 2 entry days
+  horizon    mean%   win     (both legs pooled — direction-free read)
+  +5m          -3.7  2/4
+  +10m         -7.0  1/4
+  +15m        -10.8  1/4
+  +20m        -14.1  0/4
+  +30m        -19.0  1/4
+  settle      -67.6  0/4
+  NOT READABLE: 2/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
