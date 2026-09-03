@@ -1,0 +1,12 @@
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+REFUSED: 2026-09-03 already registered — one entry per session
+Track D: scored 0 legs this run; 6 legs over 3 entry days
+  horizon    mean%   win     (both legs pooled — direction-free read)
+  +5m          -3.9  2/6
+  +10m         -3.8  2/6
+  +15m         -1.7  2/6
+  +20m         -6.4  1/6
+  +30m         +3.4  2/6
+  settle      -39.0  1/6
+  NOT READABLE: 3/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
