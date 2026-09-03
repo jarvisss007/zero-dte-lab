@@ -24,6 +24,9 @@ on:
     # script's own RTH + staleness guards reject the out-of-window firings —
     # those exit in ~3s and write nothing. The guards stay the authority on
     # what counts as a session; this cron only decides when to ask.
+    # ZDTE-003 (2026-09-02): a dedicated early fire that WAITS for 09:47 ET inside the job,
+    # so GitHub's cron delay cannot push the first snapshot past the 09:50 stamp rule.
+    - cron: '30 13 * * 1-5'
     - cron: '*/10 13-21 * * 1-5'
   workflow_dispatch:        # manual run, for testing the plumbing
 
@@ -52,6 +55,10 @@ jobs:
 
       - name: Snapshot the chain
         run: python src/chain_recorder.py --out-dir data/chains_ci
+      - name: wait for 09:47 ET (ZDTE-003 — first snapshot must land by 09:50)
+        run: |
+          while [ "$(TZ=America/New_York date +%H%M)" -lt 0947 ] && [ "$(TZ=America/New_York date +%H%M)" -ge 0900 ]; do sleep 20; done
+          echo "proceeding at $(TZ=America/New_York date +%H:%M:%S) ET"
 
       - name: Commit if the snapshot wrote anything
         run: |
