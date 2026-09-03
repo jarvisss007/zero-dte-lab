@@ -30,10 +30,10 @@ jobs:
       - name: Run
         run: |
           export ZDTE_CHAINS=data/chains_ci
-          python src/zero_dte_daily.py || true
-          python src/zero_dte_daily.py --score || true
-          python src/zero_dte_ladder.py || true
-          python src/zero_dte_ladder.py --score || true
+          python src/zero_dte_daily.py
+          python src/zero_dte_daily.py --score
+          python src/zero_dte_ladder.py
+          python src/zero_dte_ladder.py --score
 
       - name: Commit and push (rebase-retry, never force)
         run: |
