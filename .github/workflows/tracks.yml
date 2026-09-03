@@ -6,6 +6,8 @@ name: tracks
 on:
   schedule:
     - cron: '55 13 * * 1-5'   # 09:55 ET register (after the 09:47 first snapshot)
+    - cron: '5 14 * * 1-5'    # retry — GitHub cron is best-effort (the 13:55 fire was missing on 2026-09-03); registration is idempotent
+    - cron: '15 14 * * 1-5'   # second retry; a run after registration is a no-op
     - cron: '50 20 * * 1-5'   # 16:50 ET score the settled session
   workflow_dispatch:
 
