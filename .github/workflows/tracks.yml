@@ -1,0 +1,49 @@
+# tracks — moved to GitHub Actions 2026-09-02 (Anupam: "free"): the Mac sleeps, the cloud
+# doesn't. Pure scripts only; every judgment task stays local. Same rebase-retry push
+# as the 0DTE chain-recorder, which proved the pattern.
+name: tracks
+
+on:
+  schedule:
+    - cron: '55 13 * * 1-5'   # 09:55 ET register (after the 09:47 first snapshot)
+    - cron: '50 20 * * 1-5'   # 16:50 ET score the settled session
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tracks
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run
+        run: |
+          export ZDTE_CHAINS=data/chains_ci
+          python src/zero_dte_daily.py || true
+          python src/zero_dte_daily.py --score || true
+          python src/zero_dte_ladder.py || true
+          python src/zero_dte_ladder.py --score || true
+
+      - name: Commit and push (rebase-retry, never force)
+        run: |
+          set -euo pipefail
+          git config user.name  "desk-actions[bot]"
+          git config user.email "desk-actions@users.noreply.github.com"
+          if [ -z "$(git status --porcelain)" ]; then echo "nothing changed"; exit 0; fi
+          git add -A
+          git commit -m "actions: $(date -u +%Y-%m-%dT%H:%MZ) — ${GITHUB_WORKFLOW}"
+          for i in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            echo "push rejected (attempt $i) — rebasing onto origin"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          done
+          echo "::error::could not push after 5 attempts"; exit 1

@@ -60,7 +60,7 @@ import os
 import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CHAINS = os.path.join(BASE, "data", "chains")
+CHAINS = os.path.join(BASE, os.environ.get("ZDTE_CHAINS", os.path.join("data", "chains")))  # CI sets ZDTE_CHAINS=data/chains_ci
 BOOK = os.path.join(BASE, "data", "track_c.json")
 MIN_OI = 50
 MAX_SPREAD_PCT = 0.35
