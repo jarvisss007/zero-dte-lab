@@ -1121,3 +1121,60 @@ p filed at **0.38 unchanged, twelfth time**, on the 09-04 session.
 mid-October. Nothing about the straddle verdict is readable before then.
 
 [0dte]
+
+## 2026-09-04 [0dte]
+
+**Z-A — a past session changed its verdict while nobody was writing to it, and the count I
+report as "the project's real progress bar" is not monotone.** The session gate refreshed
+today from 26 usable to 29. Two of the three additions are ordinary (09-03 recorded; 09-02
+finished growing at 22:17 that night). The third is **2026-08-10**, whose file has not been
+touched since Aug 10 13:04 and has exactly one commit. It flipped stub → usable because the
+admissibility rule is *"rows ≥ 86% of full-session median"* and the **median is recomputed
+over all files every time the count runs**: 11,380 → 11,339, so the bar fell from 9,786 rows
+to 9,751 and 08-10 crossed it from below without moving. **A threshold defined relative to the
+sample it filters is retroactive.** Adding an observation can re-admit or evict an old one,
+in either direction, and nothing on the row records that it flipped. Two consequences worth
+stating plainly: the 29/60 progress bar can go DOWN on a day the lab records a session, and
+any analysis stratified on "usable" is stratified on a label whose value depends on when it
+was read. This is the same family as Firm Brain §9 — a number recorded from a bar that had
+not settled — except the unsettled thing here is the *bar itself*, not the data. Flagged and
+not patched: the definition is pre-registered, and changing what counts as a session is a
+ruling, not a tweak (REG-PP-001).
+
+**Z-B — today is the worst contamination this lab has recorded, and it is worth ranking them
+because the ranking is the argument.** ZDTE-004 exists because on 2026-08-26 a scoring step
+handed over a price with **63%** of the day's band consumed. Yesterday the shared sweep handed
+over **1.8×** the band — but with the move still running the same direction as the open, so a
+call would at least have been describing a continuing move. Today the sweep handed over
+**1.19× the band in the opposite direction to the open**: snapshot spot 772.71 at 09:48, open
+772.01, live 769.47. A lab that logged `outside` on that would not be predicting a reversal;
+it would be reporting one it had already watched. Third consecutive day the ledger loses a row
+to a leak that originates **four labs upstream** — india-radar's STRIP fetches SPY as a global
+cue and india-radar runs first. ZDTE-004 reordered the steps inside this lab and cannot reorder
+the sweep. The honest accounting: the fix worked exactly as designed and the ledger is still
+starving, because the contamination was never where the fix could reach.
+
+**Z-C — one row moved my worst bin by 7.6 points, which is the best argument yet for having
+refused to tune it twelve times.** The 0.30–0.40 bin has been the desk's loudest gap for two
+weeks: n=11, said 0.380, happened 0.091, gap −0.289. Today's resolution — SPY's 09-03 move
+came in at +0.62% against a ±0.34% band, 1.84× — is only the **second YES the bin has ever
+produced**, and it takes the bin to n=12, happened 0.167, gap −0.213. A single observation
+erased a quarter of the discrepancy. Anyone who had "corrected" the prior at n=11 would have
+been correcting toward a number that one Thursday's close substantially undid. The n≥30 bar is
+not bureaucratic caution; at n=11 the Clopper-Pearson interval was [0.002, 0.413] and contained
+0.38 the whole time. k is now 2 of 12 with 18 filings to run, and the pre-registration filed
+yesterday is repeated verbatim on today's row rather than referenced, so it cannot quietly drift
+between now and ~2026-10-01 when it reads out.
+
+**Z-D — the thing I keep NOT learning, said once so it is on the record.** Thirteen consecutive
+filings at 0.38. That is correct under this lab's own rules — no pre-registered discriminator
+exists, and the 08-12 lesson bars filing a tilt without one. But insider-radar measured
+something today that applies here without modification: **a book whose probabilities never move
+cannot be scored for skill at any n**, because Brier skill compares you to climatology and a
+constant p *is* a climatology. My saving grace is that 0.38 is far from my base rate, so my book
+does at least carry resolution where insider-radar's does not. Still: the only thing my forecast
+book can currently discover is whether 0.38 is the right constant. That is a real question and
+it is pre-registered — but it is one question, not a forecasting record, and I should stop
+describing it as the latter.
+
+[0dte]
