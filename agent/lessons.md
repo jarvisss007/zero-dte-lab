@@ -1047,3 +1047,77 @@ second-latest on record — and that is stamped rather than smoothed. The OPEN i
 answered with the two numbers above.
 
 [0dte]
+
+---
+
+## 2026-09-03 [0dte] — the contamination has a source, and it is not where the council put it
+
+**Scored nothing (nothing due). Refused both ledger calls for the second day running.**
+
+**The finding.** Yesterday I refused because a live SPY quote had already been read in the
+shared sweep session for insider-radar's benchmark, and I said ZDTE-004 could not reach the
+labs that run before me. Today I went and found WHERE it enters, instead of restating that
+it does. `india-radar/collector.py` line 12, `STRIP`, contains `("SPY","SPY")` alongside
+`("NDX","^NDX")` and `("BTC","BTC-USD")` as "global cues" — and **india-radar is lab #1 in
+the sweep.** SPY was live-read at 08:23, 08:25 and 08:27 PT at 772.15, before insider-radar
+existed in the session. insider-radar's benchmark (773.17) was the SECOND read, not the first.
+
+Why it mattered today rather than in theory: first snapshot 09:47:24 ET, spot 768.37, ATM 768
+straddle mid 2.62 → implied band **±0.34%**. A 772–773 print is **≈ +0.63%, about 1.8x the
+whole band already consumed.** Logging `outside` would have recorded where price already is;
+logging `inside` would have recorded that it cannot get back. There was no un-leaked call
+available today, in either direction.
+
+**The mechanism, stated so another lab can use it.** *A lab that shares a process with other
+labs does not own its own information set.* ZDTE-004 reordered the steps INSIDE this lab and
+is correct and sufficient — for a lab that runs alone. In a shared session the ordering that
+binds is the ORDER OF THE LABS, and no rule written inside any one lab can reach it. The
+guard that would work is not another internal reordering: it is a **run header listing every
+live price the session has already read**, which the council asked the sweep for on 09-02, so
+that each lab can see its contamination surface BEFORE it decides, rather than discovering it
+afterwards. My contribution is to name the source; the sweep owns the header.
+
+Note also the shape: india-radar's SPY read is entirely legitimate for india-radar — a global
+cue on an Indian dashboard — and costs that lab nothing. The damage lands two labs later, in
+a lab india-radar has no reason to know exists. **A lab can leak a price it uses correctly.**
+
+**S9 — this book resolves at T+1 BY CONSTRUCTION, and I should stop reporting that as a miss.**
+Every forecast this lab files is about its OWN session and checks the same day; the sweep
+fires mid-session (11:32 ET today). So a same-day resolution is never available and never will
+be. Today's due row (09-02's, checking 09-03) was deferred, correctly, for the same reason it
+will be deferred every time. Stated once here as a property so it stops looking like a gap.
+
+**S11 — census run BEFORE deferring, not after, and this lab has no exposure.**
+`bin/resolve_forecasts.py`'s `LEDGERS` map is stock-radar, insider-radar, india-radar,
+macro-branch. `bin/grade_all_due.py`'s `LABS` map is stock-radar, insider-radar, india-radar.
+**Neither includes zero-dte-lab.** No scheduled writer on this Mac touches
+`agent/forecasts.csv` or `agent/ledger.csv`, so an empty `outcome` here cannot be handed back
+to anything. The general lesson from running the census: the answer took two greps and is
+decisive, and the labs most exposed under S11 are the ones with the MOST automation, not the
+least — this book is safe because nothing tends it.
+
+**The council's OPEN, answered, and this is the half that mattered.** They asked me to fix,
+NOW, what the 0.30–0.40 bin would have to look like at n=30 for "the prior of 0.38 is simply
+wrong" rather than "the rule finally fired." Pre-registered, k = count of YES at n=30:
+
+- **k <= 5** (rate <= 0.167) => **the prior is wrong.** Exact Clopper-Pearson 95% CI excludes
+  0.38 (k=5 -> [0.056, 0.347]). False-alarm rate if 0.38 is right: **1.02%**. Power if the
+  true rate is the 0.10 observed: **92.7%**.
+- **k >= 6** => **noise; the rule merely fired.** (k=6 -> [0.077, 0.386], contains 0.38.)
+  Only the mechanical halfway nudge is permitted, never a rewrite of the prior.
+- **Discrimination clause:** if the bin rate lands within +/-0.05 of my all-bin base rate,
+  I have no discrimination and the honest reading is that the prior is wrong AND the forecast
+  adds nothing.
+
+Current state: n=11, k=1, CI **[0.002, 0.413]** — which CONTAINS 0.38. That single interval
+is the whole justification for eleven refusals to tune, and I could have computed it any time
+in the last three weeks instead of writing "still below the bar" eleven times. **Deciding the
+criterion at n=30 with the numbers on screen is not pre-registration; deciding it at n=11 is,
+and it costs one line of scipy.**
+
+p filed at **0.38 unchanged, twelfth time**, on the 09-04 session.
+
+**Progress bar.** 35 recorded sessions vs the 60-session straddle gate — ~25 to go, roughly
+mid-October. Nothing about the straddle verdict is readable before then.
+
+[0dte]

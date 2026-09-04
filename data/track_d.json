@@ -324,9 +324,44 @@
   "entry_ask": 1.52,
   "entry_bid_at_entry": 1.51,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 1.91,
+    "at": "09:52:25",
+    "pnl": 0.39,
+    "pnl_pct": 25.7
+   },
+   "+10m": {
+    "exit_bid": 2.28,
+    "at": "09:57:25",
+    "pnl": 0.76,
+    "pnl_pct": 50.0
+   },
+   "+15m": {
+    "exit_bid": 2.37,
+    "at": "10:02:26",
+    "pnl": 0.85,
+    "pnl_pct": 55.9
+   },
+   "+20m": {
+    "exit_bid": 2.35,
+    "at": "10:07:27",
+    "pnl": 0.83,
+    "pnl_pct": 54.6
+   },
+   "+30m": {
+    "exit_bid": 1.33,
+    "at": "10:17:33",
+    "pnl": -0.19,
+    "pnl_pct": -12.5
+   }
+  },
+  "settle_value": 5.26,
+  "outcome": "SETTLE +246.1% | close 773.26 vs 768C -> worth 5.26 against 1.52 at the ask. Close from the session's last snapshot (16:03:26), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "first_green": {
+   "exit": "09:52:25",
+   "pnl_pct": 25.7
+  }
  },
  {
   "session": "2026-09-03",
@@ -341,8 +376,43 @@
   "entry_ask": 1.11,
   "entry_bid_at_entry": 1.1,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 0.86,
+    "at": "09:52:25",
+    "pnl": -0.25,
+    "pnl_pct": -22.5
+   },
+   "+10m": {
+    "exit_bid": 0.65,
+    "at": "09:57:25",
+    "pnl": -0.46,
+    "pnl_pct": -41.4
+   },
+   "+15m": {
+    "exit_bid": 0.57,
+    "at": "10:02:26",
+    "pnl": -0.54,
+    "pnl_pct": -48.6
+   },
+   "+20m": {
+    "exit_bid": 0.53,
+    "at": "10:07:27",
+    "pnl": -0.58,
+    "pnl_pct": -52.3
+   },
+   "+30m": {
+    "exit_bid": 1.11,
+    "at": "10:17:33",
+    "pnl": 0.0,
+    "pnl_pct": 0.0
+   }
+  },
+  "settle_value": 0.0,
+  "outcome": "SETTLE -100.0% | close 773.26 vs 768P -> worth 0.00 against 1.11 at the ask. Close from the session's last snapshot (16:03:26), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "first_green": {
+   "exit": "settle",
+   "pnl_pct": -100.0
+  }
  }
 ]
