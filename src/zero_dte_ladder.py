@@ -207,6 +207,15 @@ def score(day=None):
 
 
 if __name__ == "__main__":
+    # SESSION-001 (2026-09-05): a holiday is not a session. This job fires on weekday crons
+    # (launchd 07:12/07:18 PT, CI 09:55 ET); on Labor Day it would have registered a row
+    # dated a day SPY never traded, off a chain book that was Friday's. The calendar
+    # decides, not the weekday — src/sessions.py is a byte-identical mirror of
+    # stock-radar/sessions.py (the resolver check sessions_calendar enforces that).
+    import sessions
+    if not sessions.is_session(dt.date.today()):
+        print(sessions.status_line()); print(f"{os.path.basename(__file__)}: skipped — no session today.")
+        sys.exit(0)
     if "--score" in sys.argv:
         print(score())
     else:
