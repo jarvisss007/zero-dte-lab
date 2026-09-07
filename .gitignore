@@ -8,3 +8,5 @@ __pycache__/
 data/chains_merged/
 data/spy_5m_cache.csv
 data/r19_log.csv
+*.lock
+*.tmp.*

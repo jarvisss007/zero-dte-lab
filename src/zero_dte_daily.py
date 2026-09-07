@@ -53,6 +53,7 @@ forward and out-of-sample, that the desk cannot buy a day's movement for less th
 worth. Either way the row was written before the close.
 """
 from __future__ import annotations
+import atomicio   # BOOK-001: atomic book writes (mirror of stock-radar/atomicio.py)
 import csv
 import datetime as dt
 import json
@@ -127,7 +128,8 @@ def load():
 
 
 def save(rows):
-    json.dump(rows, open(BOOK, "w"), indent=1)
+    atomicio.hold_book(BOOK)   # BOOK-001
+    atomicio.atomic_json(BOOK, rows, indent=1)
 
 
 def register(day=None):

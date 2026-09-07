@@ -33,6 +33,7 @@ is positive at n>=30, that contradicts the lab's own measurement — and the con
 would be the finding. Sim-only until the Rule 7 gate; Rule 4 bars live 0DTE regardless.
 """
 from __future__ import annotations
+import atomicio   # BOOK-001: atomic book writes (mirror of stock-radar/atomicio.py)
 import csv
 import datetime as dt
 import json
@@ -76,7 +77,8 @@ def load():
 
 
 def save(rows):
-    json.dump(rows, open(BOOK, "w"), indent=1)
+    atomicio.hold_book(BOOK)   # BOOK-001
+    atomicio.atomic_json(BOOK, rows, indent=1)
 
 
 def register(day=None):
