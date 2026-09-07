@@ -6,3 +6,5 @@ REGISTERED TC-SPY-20260904: BUY 773C @1.21 / BUY 773P @1.50 · debit 2.71 (mid 2
 Track C: scored 0 this run; 4/5 sessions closed
   n=4 sessions (rows ARE independent days) win 1/4 mean -8.2% median -31.8% mean $ -0.29/straddle
   NOT READABLE: 4/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
+MARKET: CLOSED 2026-09-07 (Labor Day) — no session; write no rows dated today; next session 2026-09-08
+zero_dte_daily.py: skipped — no session today.
