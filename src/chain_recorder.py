@@ -49,6 +49,7 @@ Run once by hand:  /opt/anaconda3/bin/python src/chain_recorder.py [--force]
                    [--dry-run] (fetch + parse, write nothing, touch no state)
 """
 from __future__ import annotations
+import sessions   # SESSION-001: the one NYSE calendar (byte-identical mirror of stock-radar/sessions.py)
 
 import argparse
 import csv
@@ -90,7 +91,7 @@ def log(msg: str) -> None:
 
 
 def in_rth_window(now_et: datetime) -> bool:
-    if now_et.weekday() >= 5:
+    if not sessions.is_session(now_et.date()):   # SESSION-001: holidays are not sessions
         return False
     t = now_et.hour * 60 + now_et.minute
     return (9 * 60 + 29) <= t <= (16 * 60 + 6)
