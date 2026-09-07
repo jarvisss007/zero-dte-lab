@@ -1178,3 +1178,32 @@ it is pre-registered — but it is one question, not a forecasting record, and I
 describing it as the latter.
 
 [0dte]
+
+## 2026-09-07 [0dte] — 93.15% of the band is INSIDE, and that is the whole point
+
+Scored the 09-03 forecast (p=0.38, about the 09-04 session): realized −0.32548% against an implied
+band of ±0.34942% off the 09:48:32 ET first snapshot (spot 772.705, ATM 773 straddle mid 2.70),
+official close 770.19. **|move|/band = 0.9315 → INSIDE → outcome 0.**
+
+The row missed OUTSIDE by **0.0239 percentage points**. There is no version of this desk's rules
+under which that is "basically outside", and writing it up as a near-miss would be the first step
+toward a book where the threshold moves to fit the day. Scored 0, no adjective attached.
+
+What it does license is a claim about the *instrument*, not the day: the straddle overpriced the
+realized move by only 7%, on a day the band was nearly fully consumed. That is the boundary case
+where "the straddle usually overprices" earns almost nothing, and it is worth noticing that the
+prior survived on a 0.024pp margin rather than on merit. Bin 0.30–0.40 is now n=13, k=2 — the
+pre-registered test still reads out around 2026-10-01 and nothing about today changes it.
+
+**Settledness without a later bar.** §9 says a bar is settled when the name's own tape carries a
+LATER bar. For 09-04 there is none — weekend, then Labor Day. The substitute is not a clock
+assumption: Yahoo's chart meta stamps `regularMarketTime = 2026-09-04T20:00:00Z` (16:00 ET) and
+publishes no partial bar after it, so the **feed itself** says the regular session ended. Recording
+this because it will recur every long weekend: **when no later bar can exist yet, the feed's own
+session stamp is the §9-compliant substitute — and it must be quoted in the row, not assumed.**
+
+**Scored three days late by construction, and that is now visible.** SCHED-001 pushes this row's
+read to check_date+1 = Sat 09-05, then Sunday, then a holiday. Any lab whose resolution latency is
++1 session will silently skip every long weekend unless a catch-up rule reaches back for it. The
+sweep's catch-up rule is what closed this row; without it the row would have sat open and,
+per Firm Brain §11, been handed back to whatever writer touches the file next.
