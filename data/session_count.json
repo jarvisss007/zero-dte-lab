@@ -1,5 +1,5 @@
 {
- "as_of": "2026-09-04",
+ "as_of": "2026-09-07",
  "definition": "rows >= 86% of full-session median (11339 rows -> need 9751)",
  "files": 36,
  "usable": 29,
