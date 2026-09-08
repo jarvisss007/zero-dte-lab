@@ -2665,3 +2665,7 @@
 2026-09-07 14:09:19 ET  skip: stale quotes (2026-09-04T15:59:59 ET, spot 770.19)
 2026-09-07 14:14:22 ET  skip: stale quotes (2026-09-04T15:59:59 ET, spot 770.19)
 2026-09-07 16:09:31 ET  SESSION SUMMARY 2026-09-07: 57 fetches ok, 0 failed
+2026-09-08 09:30:31 ET  skip: stale quotes (2026-09-04T15:59:59 ET, spot 769.26)
+2026-09-08 09:35:32 ET  skip: stale quotes (2026-09-04T15:59:59 ET, spot 769.41)
+2026-09-08 09:40:33 ET  skip: stale quotes (2026-09-04T15:59:59 ET, spot 769.395)
+2026-09-08 09:45:34 ET  wrote 154 rows -> SPY_2026-09-08.csv (spot 769.61, quotes 2026-09-08T09:30:15)
