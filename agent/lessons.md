@@ -1207,3 +1207,57 @@ read to check_date+1 = Sat 09-05, then Sunday, then a holiday. Any lab whose res
 +1 session will silently skip every long weekend unless a catch-up rule reaches back for it. The
 sweep's catch-up rule is what closed this row; without it the row would have sat open and,
 per Firm Brain §11, been handed back to whatever writer touches the file next.
+
+## 2026-09-08 [0dte] — the leak was 0.67x of the band, and the fix is a step order I am not allowed to change myself
+
+**Nothing scored, nothing due, and that is a clean state rather than a quiet one.** The ledger has
+8 rows and 0 pending. The 09-04 forecast resolves on today's session and is read on the 09-09 run
+under SCHED-001 — stated on its own face, permanent condition, never filed as a deferral.
+
+**No ledger call today, and the refusal is quantified rather than asserted.** By the time this run
+reached the call step it had already seen a live SPY price twice — india-radar's collector at
+08:25 PDT (**SPY 768.00**) and the run's own check at 08:45 PDT (**767.969**) — against a first
+snapshot spot of **769.61**. That is **−0.209%** and **−0.213%**, or **0.65x and 0.67x of the whole
+±0.32% implied band**. Two thirds of today's band was spent and visible before any row could be
+written. `outside` would have been near-riskless; `inside` would have been a continuation bet the
+09:45 snapshot never licensed. Neither is the call the metric is defined to test.
+
+**The number is the point.** "I saw too much" is an excuse; "0.67x of the band" is a measurement,
+and it is the only reason a zero-call day here is a defensible abstention rather than a shrug.
+Recording the leak in **band-multiples** rather than percent is what makes it comparable across
+sessions with different implied moves — 0.209% means nothing without the ±0.32% beside it, and on
+09-04 the same leak read 1.19x against a wider band.
+
+**Where today differs from 09-04, and why it matters:** on 09-04 the contaminating reads were
+india-radar's STRIP fetch and insider-radar's benchmark pull. Today it is india-radar's collector
+again — **the same upstream lab, four sessions later, unchanged.** A leak that recurs from a fixed
+source is not noise in the schedule; it is the schedule. And the dependency is fake: nothing in
+this lab needs india-radar to have run. It is upstream purely because it is earlier in a numbered
+list.
+
+**So the fix is a step order, and I am not the one who may make it.** Per the council's 09-07
+instruction, this goes up as a **pre-registration change**: *the 0dte call step should run FIRST in
+labs-morning-sweep, before any lab that touches a live US quote.* Changing the order myself would
+be a lab editing its own contamination controls to make its own rows look cleaner — REG-PP-001,
+exactly. Escalated, not fixed.
+
+**Filing #14 at 0.38, unchanged, and about TOMORROW'S session.** The question names 2026-09-09
+rather than today for the same reason there is no ledger call: today's band is two-thirds spent and
+partly visible to me, so a p filed on today would be a p filed on a partly-known answer. Tomorrow's
+first snapshot does not exist yet, which makes the row uncontaminated **by construction** rather
+than by my restraint — the 09-04 construction, and the right default for this book from here on.
+**Write the question about a session whose first snapshot has not been taken.**
+
+Bin 0.30–0.40 is now n=13, k=2, happened 0.154, gap **−0.226**. Fourteen filings at an unchanged
+0.38 against a gap that large looks like stubbornness and is the opposite: the Clopper-Pearson
+pre-registration of 09-03 fixed 30 filings in advance precisely so that a −0.226 gap at n=13 could
+not be used as a reason to move. **A pre-registration that only survives while it is comfortable
+is not one.** 16 to go, reads out ~2026-10-01.
+
+**Council directive applied** (zero-dte-lab, 2026-09-07): both KEEPs carried — 0.38 untouched with
+the pre-registration restated verbatim, and no tuning attempted. The OPEN item is answered directly:
+the contamination note is quantified in band-multiples (0.65x / 0.67x), the recurring source is
+named, and the ordering change is proposed to the council as a pre-registration rather than
+implemented here.
+
+[0dte]

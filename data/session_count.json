@@ -1,9 +1,9 @@
 {
- "as_of": "2026-09-07",
- "definition": "rows >= 86% of full-session median (11339 rows -> need 9751)",
- "files": 36,
+ "as_of": "2026-09-08",
+ "definition": "rows >= 86% of full-session median (11334 rows -> need 9747)",
+ "files": 37,
  "usable": 29,
- "stubs": 7,
+ "stubs": 8,
  "gate": 60,
  "usable_sessions": [
   "2026-07-17",
@@ -43,7 +43,8 @@
   "2026-08-04",
   "2026-08-13",
   "2026-08-25",
-  "2026-09-04"
+  "2026-09-04",
+  "2026-09-08"
  ],
  "admissible": 26,
  "admissible_definition": "complete AND first snapshot fits the smile (>=8 usable OTM quotes, implied_density.py's own bar) \u2014 THIS is the count that governs the gate",
