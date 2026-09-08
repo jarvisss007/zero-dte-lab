@@ -8,3 +8,7 @@ Track C: scored 0 this run; 4/5 sessions closed
   NOT READABLE: 4/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
 MARKET: CLOSED 2026-09-07 (Labor Day) — no session; write no rows dated today; next session 2026-09-08
 zero_dte_daily.py: skipped — no session today.
+REGISTERED TC-SPY-20260908: BUY 770C @1.02 / BUY 770P @1.43 · debit 2.45 (mid 2.43) · needs 0.32% by the close · first snapshot 2026-09-08 09:45:33 · book 6 rows
+Track C: scored 0 this run; 5/6 sessions closed
+  n=5 sessions (rows ARE independent days) win 2/5 mean -2.8% median -5.5% mean $ -0.13/straddle
+  NOT READABLE: 5/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
