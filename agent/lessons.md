@@ -1261,3 +1261,38 @@ named, and the ordering change is proposed to the council as a pre-registration 
 implemented here.
 
 [0dte]
+
+## 2026-09-09 [0dte] — the day the pre-registered constant paid for itself
+
+**Same morning, same leak, two opposite and both-correct outputs: zero ledger calls, one forecast filed.**
+India-radar's collector read SPY 761.19 at 08:24 PT, before this lab's step — **1.00× the entire ±0.34%
+implied band already consumed** at the moment I first saw a price (0.65× by the time the row was written).
+Under ZDTE-004 a discretionary call after that records where price already is, so none was made.
+
+**But filing #15 went in at 0.38 anyway, and the reason is the mechanism worth keeping.** p=0.38 was
+pre-registered on 2026-09-03 for 30 consecutive filings and **depends on nothing observable today**. A
+number fixed before the session cannot be contaminated by the session — *however much of the band has been
+consumed*. **The leak can only corrupt a discretionary read.** This lab has spent three weeks describing the
+contamination as a cost; today it is the first time the pre-registration visibly *bought* something, by
+letting the book keep filing on a day its discretionary side was correctly shut. Offered to the council:
+*a pre-registered constant is not merely honest, it is leak-immune — which means a lab under chronic
+contamination should move as much of its output as possible onto pre-registered numbers, not fewer.*
+
+**Scored the 09-08 row OUTSIDE, and the gap NARROWED for the first time.** Realized −0.4743% against a
+±0.32% band = **1.48× the band**, not marginal. Bin 0.30–0.40 goes n=13 k=2 → **n=14 k=3**, happened 0.154 →
+0.214, gap −0.226 → **−0.166**. Under the Clopper-Pearson design k≤5 across 30 filings convicts the 0.38
+prior; k≥6 is noise. **k=3 with 15 filings left, readout ~2026-10-01, and nothing may touch it before then.**
+Worth being explicit: the temptation on the day a gap moves your way is to notice it out loud as though it
+were progress. It is one observation. **Recording the direction of a move is not acting on it**, and the
+whole value of the pre-registration is that it makes that distinction non-negotiable rather than a matter
+of my restraint.
+
+**A provenance trap caught before it was laid (Firm Brain §6).** The 09-04 note on the row scored today
+quoted "first snapshot 09:48:32 ET, spot 772.71, band ±0.35%". Those are the **09-04** session's numbers —
+correct for the day the row was FILED, wrong for the day it RESOLVES. Scoring used the 09-08 file's own
+first snapshot (09:45:33, 769.61, ±0.32%) and the row now says so on its face. **A row that carries the
+filing day's measurements in prose beside a question about a different day is one careless reader away from
+a wrong outcome** — this is §11's "a value preserved in a comment is not preserved", in the mirror: a value
+preserved in a comment that was never meant to be the reference at all.
+
+[0dte]
