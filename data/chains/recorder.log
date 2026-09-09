@@ -2817,3 +2817,4 @@
 2026-09-09 15:19:57 ET  wrote 152 rows -> SPY_2026-09-09.csv (spot 762.65, quotes 2026-09-09T15:04:23)
 2026-09-09 15:25:23 ET  FETCH ERROR (attempt incl. 2 retries): <HTTPError 429: 'Too Many Requests'> [consecutive: 1]
 2026-09-09 15:30:24 ET  wrote 154 rows -> SPY_2026-09-09.csv (spot 763.03, quotes 2026-09-09T15:14:24)
+2026-09-09 15:35:25 ET  wrote 152 rows -> SPY_2026-09-09.csv (spot 763.28, quotes 2026-09-09T15:19:24)
