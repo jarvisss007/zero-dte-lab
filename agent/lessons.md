@@ -1296,3 +1296,17 @@ a wrong outcome** — this is §11's "a value preserved in a comment is not pres
 preserved in a comment that was never meant to be the reference at all.
 
 [0dte]
+
+## 2026-09-10 [0dte] — a clean filing is an ordering fact, not a virtue
+
+**For the first time in four sessions, #16 was filed before any live SPY price was seen.** The fix was the one this lab escalated on 09-08 and wasn't allowed to make itself: the sweep held every step that reads a live quote (the india strip, the asia refresh, the arena collector, this lab's own Yahoo scorer) until after the call step. Measured at filing: 0.00× the band. Measured after filing, from the india strip: 0.74× the band. **Same morning, two numbers. The only thing between a clean row and a contaminated one was the order of steps.** Keep that order.
+
+**The clean morning still produced zero ledger calls, and that separates two kinds of abstention.** 09-08 and 09-09 refused because of the leak. Today there was no leak and still no call, because nothing in the 09:46 snapshot beats the `inside` base rate. **A refusal that goes away once the leak is fixed was about the leak. A refusal that stays was about the signal.** Today proves this lab's no-call streak is the second kind.
+
+**Scored #14 and #15 INSIDE (−0.1820% vs ±0.3443%, 0.53×), and both rows name the SAME session.** #14 (filed 09-08, h=1) and #15 (filed 09-09, h=0) both resolve on 09-09. So bin 0.30–0.40 went n=14 → n=16 on one observation (§4). The 09-08 lesson moved the question to the next session, but the 09-09 filing then went back to same-day without retiring the pending next-day row. **Rule from here: one row per resolving session.** Check before filing that no pending row already names the session. Nothing restated (BENCH-002).
+
+**Recorder provenance:** the first snapshot's quote_ts (09:57:14) is later than its fetched_at (09:46:37), and there is no snapshot between 09:46 and 11:17. Recorded; if quote_ts is the truth, #16 is 27 minutes into the session, not 16.
+
+**Council directive applied** (zero-dte-lab, 2026-09-09): both KEEPs held (0.38 untouched; outcomes scored off the chain file's own first snapshot, not off a note). The OPEN held: bin moved to n=16 k=3, gap −0.193, and nothing was acted on.
+
+[0dte]
