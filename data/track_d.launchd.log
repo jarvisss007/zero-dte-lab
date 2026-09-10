@@ -52,3 +52,10 @@ Track D: scored 0 legs this run; 14 legs over 7 entry days
   +30m         -3.6  4/14
   settle      -10.4  4/14
   NOT READABLE: 7/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
+To https://github.com/jarvisss007/zero-dte-lab.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'https://github.com/jarvisss007/zero-dte-lab.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
