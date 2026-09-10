@@ -20,3 +20,10 @@ REFUSED: no chain file for 2026-09-10 — the recorder did not run
 Track C: scored 0 this run; 7/7 sessions closed
   n=7 sessions (rows ARE independent days) win 3/7 mean -3.9% median -5.5% mean $ -0.15/straddle
   NOT READABLE: 7/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
+To https://github.com/jarvisss007/zero-dte-lab.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'https://github.com/jarvisss007/zero-dte-lab.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.

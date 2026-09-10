@@ -2825,3 +2825,5 @@
 2026-09-09 16:00:30 ET  wrote 152 rows -> SPY_2026-09-09.csv (spot 762.76, quotes 2026-09-09T15:44:25)
 2026-09-09 16:05:31 ET  wrote 154 rows -> SPY_2026-09-09.csv (spot 762.86, quotes 2026-09-09T15:49:25)
 2026-09-09 16:10:32 ET  SESSION SUMMARY 2026-09-09: 76 fetches ok, 2 failed
+2026-09-10 10:13:20 ET  fetch recovered on retry 1 (prior: TimeoutError('The read operation timed out'))
+2026-09-10 10:13:21 ET  wrote 150 rows -> SPY_2026-09-10.csv (spot 757.0, quotes 2026-09-10T09:57:14)
