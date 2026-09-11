@@ -27,3 +27,7 @@ hint: Updates were rejected because the tip of your current branch is behind
 hint: its remote counterpart. If you want to integrate the remote changes,
 hint: use 'git pull' before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+REGISTERED TC-SPY-20260911: BUY 765C @1.41 / BUY 765P @1.72 · debit 3.13 (mid 3.12) · needs 0.41% by the close · first snapshot 2026-09-11 09:47:21 · book 8 rows
+Track C: scored 0 this run; 7/8 sessions closed
+  n=7 sessions (rows ARE independent days) win 3/7 mean -3.9% median -5.5% mean $ -0.15/straddle
+  NOT READABLE: 7/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
