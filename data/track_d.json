@@ -740,9 +740,44 @@
   "entry_ask": 1.03,
   "entry_bid_at_entry": 1.02,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 1.52,
+    "at": "13:06:26",
+    "pnl": 0.49,
+    "pnl_pct": 47.6
+   },
+   "+10m": {
+    "exit_bid": 1.52,
+    "at": "13:06:26",
+    "pnl": 0.49,
+    "pnl_pct": 47.6
+   },
+   "+15m": {
+    "exit_bid": 1.52,
+    "at": "13:06:26",
+    "pnl": 0.49,
+    "pnl_pct": 47.6
+   },
+   "+20m": {
+    "exit_bid": 1.52,
+    "at": "13:06:26",
+    "pnl": 0.49,
+    "pnl_pct": 47.6
+   },
+   "+30m": {
+    "exit_bid": 0.52,
+    "at": "15:17:02",
+    "pnl": -0.51,
+    "pnl_pct": -49.5
+   }
+  },
+  "settle_value": 0.0,
+  "outcome": "SETTLE -100.0% | close 757.66 vs 758C -> worth 0.00 against 1.03 at the ask. Close from the session's last snapshot (15:17:02), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "first_green": {
+   "exit": "13:06:26",
+   "pnl_pct": 47.6
+  }
  },
  {
   "session": "2026-09-10",
@@ -756,6 +791,75 @@
   "entered_at_snapshot": "2026-09-10 12:43:42",
   "entry_ask": 1.0,
   "entry_bid_at_entry": 0.99,
+  "entry_basis": "EXECUTABLE (bought at the ask)",
+  "ladder": {
+   "+5m": {
+    "exit_bid": 0.58,
+    "at": "13:06:26",
+    "pnl": -0.42,
+    "pnl_pct": -42.0
+   },
+   "+10m": {
+    "exit_bid": 0.58,
+    "at": "13:06:26",
+    "pnl": -0.42,
+    "pnl_pct": -42.0
+   },
+   "+15m": {
+    "exit_bid": 0.58,
+    "at": "13:06:26",
+    "pnl": -0.42,
+    "pnl_pct": -42.0
+   },
+   "+20m": {
+    "exit_bid": 0.58,
+    "at": "13:06:26",
+    "pnl": -0.42,
+    "pnl_pct": -42.0
+   },
+   "+30m": {
+    "exit_bid": 0.86,
+    "at": "15:17:02",
+    "pnl": -0.14,
+    "pnl_pct": -14.0
+   }
+  },
+  "settle_value": 0.34,
+  "outcome": "SETTLE -66.0% | close 757.66 vs 758P -> worth 0.34 against 1.00 at the ask. Close from the session's last snapshot (15:17:02), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "first_green": {
+   "exit": "settle",
+   "pnl_pct": -66.0
+  }
+ },
+ {
+  "session": "2026-09-11",
+  "structure_id": "TD-SPY-20260911-C",
+  "track": "D",
+  "underlying": "SPY",
+  "expiry": "2026-09-11",
+  "type": "C",
+  "strike": 765.0,
+  "spot_at_entry": 765.04,
+  "entered_at_snapshot": "2026-09-11 12:47:53",
+  "entry_ask": 0.84,
+  "entry_bid_at_entry": 0.83,
+  "entry_basis": "EXECUTABLE (bought at the ask)",
+  "ladder": {},
+  "settle_value": "",
+  "outcome": ""
+ },
+ {
+  "session": "2026-09-11",
+  "structure_id": "TD-SPY-20260911-P",
+  "track": "D",
+  "underlying": "SPY",
+  "expiry": "2026-09-11",
+  "type": "P",
+  "strike": 765.0,
+  "spot_at_entry": 765.04,
+  "entered_at_snapshot": "2026-09-11 12:47:53",
+  "entry_ask": 0.8,
+  "entry_bid_at_entry": 0.79,
   "entry_basis": "EXECUTABLE (bought at the ask)",
   "ladder": {},
   "settle_value": "",
