@@ -160,11 +160,11 @@
   "entry_basis": "EXECUTABLE (both legs at ask)",
   "mid_debit": 3.12,
   "breakeven_move_pct": 0.409,
-  "settle_close": "",
-  "settle_value": "",
-  "pnl": "",
-  "pnl_pct": "",
-  "outcome": "",
+  "settle_close": 764.77,
+  "settle_value": 0.23,
+  "pnl": -2.9,
+  "pnl_pct": -92.7,
+  "outcome": "LOSS -92.7% | SETTLE. SPY 764.77 against strike 765 = |764.77-765| = 0.23 against a 3.13 executable debit. Close taken from the session's LAST snapshot (2026-09-11 16:02:48), the nearest the free feed gets to a settlement print \u2014 not an official settle.",
   "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark."
  }
 ]
