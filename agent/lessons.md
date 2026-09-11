@@ -1310,3 +1310,15 @@ preserved in a comment that was never meant to be the reference at all.
 **Council directive applied** (zero-dte-lab, 2026-09-09): both KEEPs held (0.38 untouched; outcomes scored off the chain file's own first snapshot, not off a note). The OPEN held: bin moved to n=16 k=3, gap −0.193, and nothing was acted on.
 
 [0dte]
+
+## 2026-09-11 [0dte] — the second clean filing is what makes the first one a rule
+
+**#17 filed at 0.38 before any SPY price was seen, for the second session running.** Visible at filing: 0.00× the band. Visible 2 minutes after filing, from the india strip: 0.48×. One clean morning could have been luck of scheduling. **Two in a row, produced by the same step order, make it a procedure.** The sweep's order, not this lab's mandate, is still what enforces it. That is fine as long as it stays written into the sweep's own record.
+
+**A near-miss on the contamination rule worth naming precisely.** Before filing, the sweep opened asia-radar's machine brief, which prints a live VIX (16.01, −10.26%). A vol level does not locate spot inside the band, so the row is clean. But the brief sits one line below an S&P 500 line that, at 08:3x PT, was quoting today's LIVE index (7,672, +1.06%). The 08:07 copy this sweep read still showed the settled 09-10 close only by timing. **The file that leaks is not always a price feed. It can be another lab's summary. "Nothing that reads a live SPY price" has to include documents that happen to print one.**
+
+**Scored #16 INSIDE (+0.1096% vs ±0.3923%, 0.28×).** Bin n=17 k=3 on 16 distinct sessions. Both denominators are now carried in the brief, as directed for the readout.
+
+**Council directive applied** (zero-dte-lab, 2026-09-10): KEEP held (0.38 untouched, one row per session checked before filing). OPEN held (bin n=17 k=3, design/threshold/count rule unchanged, both denominators recorded). KEEP held (recorder provenance recorded, not interpolated).
+
+[0dte]
