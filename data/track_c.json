@@ -178,9 +178,9 @@
   "settle_value": "",
   "pnl": "",
   "pnl_pct": "",
-  "outcome": "VOID | entered by the CLOUD leg at 2026-09-10 12:43:42 ET, hours after ZDTE-003's first-snapshot entry; the local leg refused this session (no chain file). Voided 2026-09-12 under ZDTE-005 (Anupam, 'correct all'): kept for the record, excluded from every statistic.",
+  "outcome": "VOID",
   "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark.",
-  "void_reason": "late cloud entry (ZDTE-005)"
+  "void_reason": "entered by the CLOUD leg at 2026-09-10 12:43:42 ET, hours after ZDTE-003's first-snapshot entry; the local leg refused this session (no chain file). Voided 2026-09-12 under ZDTE-005 (Anupam, 'correct all'): kept for the record, excluded from every statistic."
  },
  {
   "session": "2026-09-11",
