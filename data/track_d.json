@@ -44,12 +44,14 @@
     "pnl_pct": -36.6
    }
   },
-  "settle_value": 1.15,
-  "outcome": "SETTLE -29.6% | close 767.15 vs 766C -> worth 1.15 against 1.64 at the ask. Close from the session's last snapshot (16:06:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 1.05,
+  "outcome": "SETTLE -36.0% | close 767.05 vs 766C -> worth 1.05 against 1.64 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 767.05; the session's last chain snapshot read 767.15. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
-   "pnl_pct": -29.6
-  }
+   "pnl_pct": -36.0
+  },
+  "settle_value_snapshot": 1.15,
+  "outcome_snapshot": "SETTLE -29.6% | close 767.15 vs 766C -> worth 1.15 against 1.64 at the ask. Close from the session's last snapshot (16:06:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-08-31",
@@ -97,11 +99,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 767.15 vs 766P -> worth 0.00 against 1.11 at the ask. Close from the session's last snapshot (16:06:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 767.05 vs 766P -> worth 0.00 against 1.11 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 767.05; the session's last chain snapshot read 767.15. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "09:55:18",
    "pnl_pct": 8.1
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 767.15 vs 766P -> worth 0.00 against 1.11 at the ask. Close from the session's last snapshot (16:06:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-01",
@@ -149,11 +153,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 761.11 vs 762C -> worth 0.00 against 1.42 at the ask. Close from the session's last snapshot (16:06:29), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 761.78 vs 762C -> worth 0.00 against 1.42 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 761.78; the session's last chain snapshot read 761.11. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "09:50:35",
    "pnl_pct": 0.7
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 761.11 vs 762C -> worth 0.00 against 1.42 at the ask. Close from the session's last snapshot (16:06:29), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-01",
@@ -200,12 +206,14 @@
     "pnl_pct": -26.0
    }
   },
-  "settle_value": 0.89,
-  "outcome": "SETTLE -40.7% | close 761.11 vs 762P -> worth 0.89 against 1.50 at the ask. Close from the session's last snapshot (16:06:29), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 0.22,
+  "outcome": "SETTLE -85.3% | close 761.78 vs 762P -> worth 0.22 against 1.50 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 761.78; the session's last chain snapshot read 761.11. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
-   "pnl_pct": -40.7
-  }
+   "pnl_pct": -85.3
+  },
+  "settle_value_snapshot": 0.89,
+  "outcome_snapshot": "SETTLE -40.7% | close 761.11 vs 762P -> worth 0.89 against 1.50 at the ask. Close from the session's last snapshot (16:06:29), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-02",
@@ -252,12 +260,14 @@
     "pnl_pct": 162.4
    }
   },
-  "settle_value": 2.39,
-  "outcome": "SETTLE +136.6% | close 765.39 vs 763C -> worth 2.39 against 1.01 at the ask. Close from the session's last snapshot (16:04:52), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 2.16,
+  "outcome": "SETTLE +113.9% | close 765.16 vs 763C -> worth 2.16 against 1.01 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 765.16; the session's last chain snapshot read 765.39. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "10:18:53",
    "pnl_pct": 35.6
-  }
+  },
+  "settle_value_snapshot": 2.39,
+  "outcome_snapshot": "SETTLE +136.6% | close 765.39 vs 763C -> worth 2.39 against 1.01 at the ask. Close from the session's last snapshot (16:04:52), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-02",
@@ -305,11 +315,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 765.39 vs 763P -> worth 0.00 against 1.52 at the ask. Close from the session's last snapshot (16:04:52), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 765.16 vs 763P -> worth 0.00 against 1.52 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 765.16; the session's last chain snapshot read 765.39. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
    "pnl_pct": -100.0
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 765.39 vs 763P -> worth 0.00 against 1.52 at the ask. Close from the session's last snapshot (16:04:52), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-03",
@@ -356,12 +368,14 @@
     "pnl_pct": -12.5
    }
   },
-  "settle_value": 5.26,
-  "outcome": "SETTLE +246.1% | close 773.26 vs 768C -> worth 5.26 against 1.52 at the ask. Close from the session's last snapshot (16:03:26), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 5.17,
+  "outcome": "SETTLE +240.1% | close 773.17 vs 768C -> worth 5.17 against 1.52 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 773.17; the session's last chain snapshot read 773.26. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "09:52:25",
    "pnl_pct": 25.7
-  }
+  },
+  "settle_value_snapshot": 5.26,
+  "outcome_snapshot": "SETTLE +246.1% | close 773.26 vs 768C -> worth 5.26 against 1.52 at the ask. Close from the session's last snapshot (16:03:26), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-03",
@@ -409,11 +423,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 773.26 vs 768P -> worth 0.00 against 1.11 at the ask. Close from the session's last snapshot (16:03:26), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 773.17 vs 768P -> worth 0.00 against 1.11 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 773.17; the session's last chain snapshot read 773.26. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
    "pnl_pct": -100.0
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 773.26 vs 768P -> worth 0.00 against 1.11 at the ask. Close from the session's last snapshot (16:03:26), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-04",
@@ -461,11 +477,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 769.78 vs 773C -> worth 0.00 against 1.21 at the ask. Close from the session's last snapshot (15:20:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 770.19 vs 773C -> worth 0.00 against 1.21 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 770.19; the session's last chain snapshot read 769.78. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
    "pnl_pct": -100.0
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 769.78 vs 773C -> worth 0.00 against 1.21 at the ask. Close from the session's last snapshot (15:20:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-04",
@@ -512,12 +530,14 @@
     "pnl_pct": 5.3
    }
   },
-  "settle_value": 3.22,
-  "outcome": "SETTLE +114.7% | close 769.78 vs 773P -> worth 3.22 against 1.50 at the ask. Close from the session's last snapshot (15:20:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 2.81,
+  "outcome": "SETTLE +87.3% | close 770.19 vs 773P -> worth 2.81 against 1.50 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 770.19; the session's last chain snapshot read 769.78. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "09:53:32",
    "pnl_pct": 4.7
-  }
+  },
+  "settle_value_snapshot": 3.22,
+  "outcome_snapshot": "SETTLE +114.7% | close 769.78 vs 773P -> worth 3.22 against 1.50 at the ask. Close from the session's last snapshot (15:20:35), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-08",
@@ -565,11 +585,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 766.48 vs 770C -> worth 0.00 against 1.02 at the ask. Close from the session's last snapshot (16:02:01), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 765.96 vs 770C -> worth 0.00 against 1.02 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 765.96; the session's last chain snapshot read 766.48. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
    "pnl_pct": -100.0
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 766.48 vs 770C -> worth 0.00 against 1.02 at the ask. Close from the session's last snapshot (16:02:01), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-08",
@@ -616,12 +638,14 @@
     "pnl_pct": 93.0
    }
   },
-  "settle_value": 3.52,
-  "outcome": "SETTLE +146.2% | close 766.48 vs 770P -> worth 3.52 against 1.43 at the ask. Close from the session's last snapshot (16:02:01), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 4.04,
+  "outcome": "SETTLE +182.5% | close 765.96 vs 770P -> worth 4.04 against 1.43 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 765.96; the session's last chain snapshot read 766.48. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "09:50:34",
    "pnl_pct": 32.2
-  }
+  },
+  "settle_value_snapshot": 3.52,
+  "outcome_snapshot": "SETTLE +146.2% | close 766.48 vs 770P -> worth 3.52 against 1.43 at the ask. Close from the session's last snapshot (16:02:01), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-09",
@@ -669,11 +693,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 762.86 vs 764C -> worth 0.00 against 1.24 at the ask. Close from the session's last snapshot (16:05:31), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 762.40 vs 764C -> worth 0.00 against 1.24 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 762.40; the session's last chain snapshot read 762.86. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
    "pnl_pct": -100.0
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 762.86 vs 764C -> worth 0.00 against 1.24 at the ask. Close from the session's last snapshot (16:05:31), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-09",
@@ -720,12 +746,14 @@
     "pnl_pct": -6.4
    }
   },
-  "settle_value": 1.14,
-  "outcome": "SETTLE -19.1% | close 762.86 vs 764P -> worth 1.14 against 1.41 at the ask. Close from the session's last snapshot (16:05:31), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 1.6,
+  "outcome": "SETTLE +13.5% | close 762.40 vs 764P -> worth 1.60 against 1.41 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 762.40; the session's last chain snapshot read 762.86. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "10:07:56",
    "pnl_pct": 0.7
-  }
+  },
+  "settle_value_snapshot": 1.14,
+  "outcome_snapshot": "SETTLE -19.1% | close 762.86 vs 764P -> worth 1.14 against 1.41 at the ask. Close from the session's last snapshot (16:05:31), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-10",
@@ -772,12 +800,14 @@
     "pnl_pct": 55.6
    }
   },
-  "settle_value": 0.85,
-  "outcome": "SETTLE -43.7% | close 757.85 vs 757C -> worth 0.85 against 1.51 at the ask. Close from the session's last snapshot (16:03:41), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 0.83,
+  "outcome": "SETTLE -45.0% | close 757.83 vs 757C -> worth 0.83 against 1.51 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 757.83; the session's last chain snapshot read 757.85. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "11:17:47",
    "pnl_pct": 55.6
-  }
+  },
+  "settle_value_snapshot": 0.85,
+  "outcome_snapshot": "SETTLE -43.7% | close 757.85 vs 757C -> worth 0.85 against 1.51 at the ask. Close from the session's last snapshot (16:03:41), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-10",
@@ -825,11 +855,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 757.85 vs 757P -> worth 0.00 against 1.47 at the ask. Close from the session's last snapshot (16:03:41), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 757.83 vs 757P -> worth 0.00 against 1.47 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 757.83; the session's last chain snapshot read 757.85. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
    "pnl_pct": -100.0
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 757.85 vs 757P -> worth 0.00 against 1.47 at the ask. Close from the session's last snapshot (16:03:41), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-11",
@@ -877,11 +909,13 @@
    }
   },
   "settle_value": 0.0,
-  "outcome": "SETTLE -100.0% | close 764.77 vs 765C -> worth 0.00 against 1.41 at the ask. Close from the session's last snapshot (16:02:48), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "outcome": "SETTLE -100.0% | close 764.29 vs 765C -> worth 0.00 against 1.41 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 764.29; the session's last chain snapshot read 764.77. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "09:52:22",
    "pnl_pct": 36.2
-  }
+  },
+  "settle_value_snapshot": 0.0,
+  "outcome_snapshot": "SETTLE -100.0% | close 764.77 vs 765C -> worth 0.00 against 1.41 at the ask. Close from the session's last snapshot (16:02:48), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  },
  {
   "session": "2026-09-11",
@@ -928,11 +962,13 @@
     "pnl_pct": -39.0
    }
   },
-  "settle_value": 0.23,
-  "outcome": "SETTLE -86.6% | close 764.77 vs 765P -> worth 0.23 against 1.72 at the ask. Close from the session's last snapshot (16:02:48), not an official settle. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_value": 0.71,
+  "outcome": "SETTLE -58.7% | close 764.29 vs 765P -> worth 0.71 against 1.72 at the ask. RESTATED 2026-09-12 under ZDTE-006 (Anupam): settled at SPY's official close 764.29; the session's last chain snapshot read 764.77. Original outcome kept in outcome_snapshot.",
   "first_green": {
    "exit": "settle",
-   "pnl_pct": -86.6
-  }
+   "pnl_pct": -58.7
+  },
+  "settle_value_snapshot": 0.23,
+  "outcome_snapshot": "SETTLE -86.6% | close 764.77 vs 765P -> worth 0.23 against 1.72 at the ask. Close from the session's last snapshot (16:02:48), not an official settle. Ladder holds the +5/10/15/20/30min executable exits."
  }
 ]

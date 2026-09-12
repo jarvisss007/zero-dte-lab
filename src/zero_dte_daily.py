@@ -168,6 +168,17 @@ def register(day=None):
             f"· first snapshot {stamp} · book {len(book)} rows")
 
 
+def _official_close(day):
+    """ZDTE-006 (Anupam 2026-09-12): SPY's OFFICIAL close for `day`, from the same function the options book and
+    Track A settle on. None if unreachable (a CI runner has no stock-radar), and the row then waits."""
+    try:
+        import importlib.util as _iu
+        _sp = _iu.spec_from_file_location("_options_settle", os.path.expanduser("~/stock-radar/options_settle.py"))
+        _m = _iu.module_from_spec(_sp); _sp.loader.exec_module(_m)
+        return _m.close_on("SPY", day)
+    except Exception:
+        return None
+
 def score(day=None):
     """Score any matured row off the day's SETTLE. |close - K| is arithmetic, not a mark."""
     day = day or dt.date.today().isoformat()
@@ -190,7 +201,11 @@ def score(day=None):
         spots = [float(x["spot"]) for x in rows if x["fetched_at_et"] == last and x.get("spot")]
         if not spots:
             continue
-        close = spots[0]
+        snapshot_close = spots[0]
+        close = _official_close(r["session"])   # ZDTE-006
+        if close is None:
+            continue
+        r["settle_close_snapshot"] = round(snapshot_close, 2)
         # The final snapshot is ~16:04 ET, after the 16:00 settle. It is the closest the
         # free feed gets to a settlement print, and the row says so rather than implying
         # an official settle it does not have.
@@ -203,13 +218,12 @@ def score(day=None):
         r["outcome"] = (
             f"{'WIN' if pnl > 0 else 'LOSS'} {pnl / r['entry_debit'] * 100:+.1f}% | SETTLE. "
             f"SPY {close:.2f} against strike {r['strike']:g} = |{close:.2f}-{r['strike']:g}| "
-            f"= {value:.2f} against a {r['entry_debit']:.2f} executable debit. Close taken "
-            f"from the session's LAST snapshot ({last}), the nearest the free feed gets to "
-            f"a settlement print — not an official settle.")
+            f"= {value:.2f} against a {r['entry_debit']:.2f} executable debit. Settled at SPY's "
+            f"official close (ZDTE-006); the last chain snapshot read {snapshot_close:.2f} at {last}.")
         done.append(r["structure_id"])
     if done:
         save(book)
-    sc = [r for r in book if r.get("outcome")]
+    sc = [r for r in book if str(r.get("outcome") or "").startswith(("WIN", "LOSS"))]   # a VOID row is not a session result
     out = [f"Track C: scored {len(done)} this run; {len(sc)}/{len(book)} sessions closed"]
     if sc:
         import statistics as st

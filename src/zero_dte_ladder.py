@@ -127,6 +127,17 @@ def register(day=None):
             f"day, ladder scores at +{'/'.join(map(str, HORIZONS))}min and settle")
 
 
+def _official_close(day):
+    """ZDTE-006 (Anupam 2026-09-12): SPY's OFFICIAL close for `day`, from the same function the options book and
+    Track A settle on. None if unreachable (a CI runner has no stock-radar), and the row then waits."""
+    try:
+        import importlib.util as _iu
+        _sp = _iu.spec_from_file_location("_options_settle", os.path.expanduser("~/stock-radar/options_settle.py"))
+        _m = _iu.module_from_spec(_sp); _sp.loader.exec_module(_m)
+        return _m.close_on("SPY", day)
+    except Exception:
+        return None
+
 def score(day=None):
     day = day or dt.date.today().isoformat()
     book = load()
@@ -167,7 +178,11 @@ def score(day=None):
             lad[f"+{h}m"] = {"exit_bid": bid, "at": at[-8:],
                              "pnl": round(pnl, 2),
                              "pnl_pct": round(pnl / r["entry_ask"] * 100, 1)}
-        close = float(snaps[last][0]["spot"])
+        snapshot_close = float(snaps[last][0]["spot"])
+        close = _official_close(r["session"])   # ZDTE-006
+        if close is None:
+            continue
+        r["settle_close_snapshot"] = round(snapshot_close, 2)
         itm = (close > r["strike"]) if r["type"] == "C" else (close < r["strike"])
         sv = abs(close - r["strike"]) if itm else 0.0
         spnl = sv - r["entry_ask"]
@@ -182,13 +197,13 @@ def score(day=None):
         r["settle_value"] = round(sv, 2)
         r["outcome"] = (
             f"SETTLE {spnl / r['entry_ask'] * 100:+.1f}% | close {close:.2f} vs {r['strike']:g}"
-            f"{r['type']} -> worth {sv:.2f} against {r['entry_ask']:.2f} at the ask. Close "
-            f"from the session's last snapshot ({last[-8:]}), not an official settle. "
+            f"{r['type']} -> worth {sv:.2f} against {r['entry_ask']:.2f} at the ask. Settled at "
+            f"SPY's official close (ZDTE-006); last chain snapshot {snapshot_close:.2f} at {last[-8:]}. "
             f"Ladder holds the +{'/'.join(map(str, HORIZONS))}min executable exits.")
         done += 1
     if done:
         save(book)
-    sc = [r for r in book if r.get("outcome")]
+    sc = [r for r in book if str(r.get("outcome") or "").startswith("SETTLE")]   # a VOID leg is not a result
     days = len({r["session"] for r in sc})
     out = [f"Track D: scored {done} legs this run; {len(sc)} legs over {days} entry days"]
     if sc:
