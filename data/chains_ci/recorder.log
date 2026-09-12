@@ -151,3 +151,15 @@
 2026-09-08 13:22:26 ET  wrote 154 rows -> SPY_2026-09-08.csv (spot 767.89, quotes 2026-09-08T13:06:23)
 2026-09-08 15:38:13 ET  wrote 152 rows -> SPY_2026-09-08.csv (spot 766.65, quotes 2026-09-08T15:22:27)
 2026-09-08 18:00:37 ET  SESSION SUMMARY 2026-09-08: 3 fetches ok, 0 failed
+2026-09-09 12:55:39 ET  wrote 152 rows -> SPY_2026-09-09.csv (spot 762.23, quotes 2026-09-09T12:40:18)
+2026-09-09 13:14:19 ET  wrote 152 rows -> SPY_2026-09-09.csv (spot 762.665, quotes 2026-09-09T12:58:19)
+2026-09-09 15:33:21 ET  wrote 154 rows -> SPY_2026-09-09.csv (spot 763.155, quotes 2026-09-09T15:17:24)
+2026-09-09 17:54:45 ET  SESSION SUMMARY 2026-09-09: 3 fetches ok, 0 failed
+2026-09-10 12:43:42 ET  wrote 150 rows -> SPY_2026-09-10.csv (spot 757.99, quotes 2026-09-10T12:28:19)
+2026-09-10 13:06:27 ET  wrote 150 rows -> SPY_2026-09-10.csv (spot 758.97, quotes 2026-09-10T12:50:20)
+2026-09-10 15:17:03 ET  wrote 152 rows -> SPY_2026-09-10.csv (spot 757.66, quotes 2026-09-10T15:01:24)
+2026-09-10 17:39:59 ET  SESSION SUMMARY 2026-09-10: 3 fetches ok, 0 failed
+2026-09-11 12:47:54 ET  wrote 154 rows -> SPY_2026-09-11.csv (spot 765.04, quotes 2026-09-11T12:32:10)
+2026-09-11 13:06:34 ET  wrote 152 rows -> SPY_2026-09-11.csv (spot 765.34, quotes 2026-09-11T12:51:10)
+2026-09-11 15:18:51 ET  wrote 154 rows -> SPY_2026-09-11.csv (spot 765.12, quotes 2026-09-11T15:03:16)
+2026-09-11 17:45:32 ET  SESSION SUMMARY 2026-09-11: 3 fetches ok, 0 failed
