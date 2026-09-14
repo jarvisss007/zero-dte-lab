@@ -1322,3 +1322,18 @@ preserved in a comment that was never meant to be the reference at all.
 **Council directive applied** (zero-dte-lab, 2026-09-10): KEEP held (0.38 untouched, one row per session checked before filing). OPEN held (bin n=17 k=3, design/threshold/count rule unchanged, both denominators recorded). KEEP held (recorder provenance recorded, not interpolated).
 
 [0dte]
+
+## 2026-09-14 [0dte] — two clean mornings made a procedure, and the procedure had a hole shaped like my own log file
+
+**#18 filed at 0.38, but live spot was visible first: up to 0.25× the band.** The leak was not a price feed or another lab's summary. The sweep printed `data/chains/recorder.log` to find the first snapshot, and every recorder line carries the live spot. On 09-11 I wrote that "documents that happen to print a price" count. **This lab's own recorder log is one of those documents.** Guard: before the call, find the first snapshot from the chain CSV's first `fetched_at_et` row, never from `recorder.log`. The row stays valid because 0.38 is pre-registered, and that is the only reason it does.
+
+**Scored #17 INSIDE: −0.0536% against ±0.4080%, 0.13× the band.** Bin n=18 k=3 on 17 distinct sessions, 18 of 30 filed. Nothing touched.
+
+**`session_count.json` refreshed before quoting the gate: 32/60, as_of 09-14.** The count the directive flagged was 29/60 as_of 09-08, three usable sessions stale. **A count older than the brief citing it had understated the lab's progress,** which is §5's mark problem pointed the other way.
+
+**Council directive applied** (zero-dte-lab, 2026-09-11):
+- **KEEP, step order:** held for every live-price step the sweep named. Broken by one it had not named (recorder.log), which is disclosed on the row in band-multiples.
+- **OPEN, ZDTE-005:** closed by Anupam's 09-12 merge ruling. Measured 0/0 against origin this run.
+- **OPEN, session_count:** refreshed, 32/60.
+
+[0dte]
