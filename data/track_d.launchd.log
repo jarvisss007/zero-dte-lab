@@ -76,3 +76,13 @@ hint: Updates were rejected because the tip of your current branch is behind
 hint: its remote counterpart. If you want to integrate the remote changes,
 hint: use 'git pull' before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+REGISTERED 2026-09-14: naked 759C @1.33 + naked 759P @1.37 (spot 758.92, first snapshot 2026-09-14 09:48:35) — one entry day, ladder scores at +5/10/15/20/30min and settle
+Track D: scored 0 legs this run; 18 legs over 9 entry days
+  horizon    mean%   win     (both legs pooled — direction-free read)
+  +5m          -3.4  7/18
+  +10m         -3.3  7/18
+  +15m         -2.5  6/18
+  +20m         -5.4  7/18
+  +30m         -4.1  6/18
+  settle      -27.1  5/18
+  NOT READABLE: 9/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
