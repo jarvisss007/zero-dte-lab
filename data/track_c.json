@@ -204,5 +204,26 @@
   "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark.",
   "settle_close_snapshot": 764.77,
   "outcome_snapshot": "LOSS -92.7% | SETTLE. SPY 764.77 against strike 765 = |764.77-765| = 0.23 against a 3.13 executable debit. Close taken from the session's LAST snapshot (2026-09-11 16:02:48), the nearest the free feed gets to a settlement print \u2014 not an official settle."
+ },
+ {
+  "session": "2026-09-14",
+  "structure_id": "TC-SPY-20260914",
+  "track": "C",
+  "underlying": "SPY",
+  "expiry": "2026-09-14",
+  "entered_at_snapshot": "2026-09-14 09:48:35",
+  "legs": "BUY 759C @1.33 / BUY 759P @1.37",
+  "strike": 759.0,
+  "spot_at_entry": 758.92,
+  "entry_debit": 2.7,
+  "entry_basis": "EXECUTABLE (both legs at ask)",
+  "mid_debit": 2.69,
+  "breakeven_move_pct": 0.356,
+  "settle_close": "",
+  "settle_value": "",
+  "pnl": "",
+  "pnl_pct": "",
+  "outcome": "",
+  "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark."
  }
 ]
