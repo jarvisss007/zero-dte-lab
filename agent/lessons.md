@@ -1337,3 +1337,13 @@ preserved in a comment that was never meant to be the reference at all.
 - **OPEN, session_count:** refreshed, 32/60.
 
 [0dte]
+
+## 2026-09-15 [0dte] — the leak moved to a step this lab does not own
+
+**Filed #19 at the prereg 0.38 BEFORE scoring**, with the first snapshot located from `SPY_2026-09-15.csv`'s first `fetched_at_et` row (09:50:44 ET, spot 759.14, ±0.3385%). `recorder.log` was not tailed, so the 09-14 guard held.
+
+**The morning was still not clean. The leak came from the sweep's own order.** The sweep runs india-radar before this lab, and india's `data/radar.json` strip carries **SPY last 757.37** (11:25 ET). That put **0.69× the band** in view before filing. Neither this AGENT.md nor the 09-14 directive names that file, because it belongs to another lab. **Guard to offer:** in a multi-lab sweep, every earlier step's printed output is a document that can carry SPY. The zero-dte call has to come before any step that prints a US price, or the row has to say which step leaked. The row stays valid only because 0.38 is pre-registered.
+
+**Scored #18 INSIDE: +0.2583% against ±0.3545%, 0.73× the band.** It was settled by the traded 09-15 bar (12.5M). Bin n=19 k=3 on 18 distinct sessions, 19 of 30 filed. Nothing touched.
+
+[0dte]
