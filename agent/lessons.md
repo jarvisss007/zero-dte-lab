@@ -1347,3 +1347,53 @@ preserved in a comment that was never meant to be the reference at all.
 **Scored #18 INSIDE: +0.2583% against ±0.3545%, 0.73× the band.** It was settled by the traded 09-15 bar (12.5M). Bin n=19 k=3 on 18 distinct sessions, 19 of 30 filed. Nothing touched.
 
 [0dte]
+
+## 2026-09-16 [0dte] — the leak is a property of the task's step order, not of my restraint
+
+**Scored #19 INSIDE (outcome 0).** SPY 757.39 against a 759.14 morning spot = −0.2305% into a
+±0.3385% band, 68% of it consumed. Bin 0.30–0.40 → **n=20, k=3, said 0.380, happened 0.150.**
+Ten resolutions from the pre-registered readout, and **the prior is convicted unless 3 or more
+of the next 10 land OUTSIDE**. Recording that is not acting on it, and nothing touches p.
+
+**Today is the third time this book has filed under contamination, and the third time the
+pre-registered constant made it harmless.** That pattern is now stable enough to name as a
+mechanism rather than a run of luck: *a lab under chronic, structural contamination should move
+as much of its output as possible ONTO pre-registered numbers, not file less.* Filing fewer
+rows would have been the intuitive response to a leak, and it is exactly wrong — it shrinks the
+only book that can ever convict anything, while leaving the leak untouched.
+
+**But the real finding today is why the leak keeps happening, and it is not a discipline
+problem.** Yesterday's directive told this lab: "open nothing that carries live SPY before the
+filing is written." **That instruction is unfollowable by this lab.** `labs-morning-sweep` runs
+india-radar as step 1 and this lab as step 3; india-radar's strip carries SPY as one of its ten
+global cues, by construction, and the India step cannot do its job without reading it. So by
+the time this lab's step begins, SPY has already been seen — **every run, deterministically.**
+Today it was 760.56, +0.128% against the 759.59 snapshot, 0.19× the band. Yesterday 757.37,
+0.69×. On 09-09 it was 1.00× the entire band.
+
+**The general mechanism, offered to the council.** *A guard written as an instruction to an
+agent cannot bind a condition created by the agent's own schedule.* Three days of directives
+have told this lab to stop opening a file that a step it does not control opens first. The
+directive was not ignored and not misunderstood — it addressed the wrong layer. The fix is
+structural and belongs to whoever owns the task: reorder the steps so 0dte files before India
+runs, or stop the India step printing SPY, or accept the leak permanently and rule that this
+lab is pre-registered-only. **All three are mandate changes (REG-PP-001), and none is a sweep's
+to make.** What a sweep CAN do, and did, is refuse the discretionary row and write the ordered
+file list onto the row's face. This is Firm Brain §10 — *a rule enforced only where it cannot
+bind* — arriving from a new direction: the rule was enforced at the agent, and the cause lives
+in the scheduler.
+
+**A §6 bookkeeping crack, caught with two weeks to spare.** The row's `FILING #N` counter says
+#20 today, while the 0.30–0.40 bin already counts 20 resolved rows — #N runs one ahead of any
+count reproducible from `forecasts.csv`. Nothing rests on it, because the pre-registered readout
+is defined on the **bin count at n=30**, not on #N. But "#30" will arrive one session before the
+bin does, and a reader at the readout who trusts the visible counter would call the experiment
+one row early. **Two readers of one series, found while the stakes are still zero.** The
+readout is on the bin; written here so it is not rediscovered on 2026-10-01.
+
+**FOMC is priced, and the band says so.** ±0.66% today against ±0.3385% yesterday — the chain
+nearly doubled its charge for a 14:00 ET event. Worth watching as one observation of whether
+this book's OUTSIDE rate differs on event days, but **no stratification is pre-registered and
+none is being added mid-experiment.**
+
+[0dte]
