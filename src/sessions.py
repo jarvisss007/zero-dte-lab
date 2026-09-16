@@ -23,6 +23,72 @@ CLI:   python sessions.py            -> status line; exit 0 = session today, 1 =
 import datetime as dt, sys
 
 HOLIDAYS = {
+    # SESSION-005 (2026-09-16): this dict held 2026-27 only, and is_session() has NO
+    # horizon guard — so every NYSE holiday before 2026 answered is_session=True.
+    # Christmas 2019, July 4 2017 and 95 others read as trading sessions. Verified two
+    # independent ways before being added, the standard this estate already demands:
+    # (1) the SPX tape has no bar on the date, (2) the date is reproduced by the standard
+    # US market holiday rules computed WITHOUT reference to the tape. 95 of 97 matched
+    # both; the 2 that matched only the tape are the presidential days of mourning below,
+    # named explicitly rather than smuggled in.
+    # 2016  — tape-verified from 2016-09-02 (SPX history begins here)
+    "2016-09-05": "Labor Day", "2016-11-24": "Thanksgiving Day",
+    "2016-12-26": "Christmas Day (observed)",
+    # 2017
+    "2017-01-02": "New Year's Day (observed)", "2017-01-16": "Martin Luther King Jr. Day",
+    "2017-02-20": "Presidents' Day", "2017-04-14": "Good Friday",
+    "2017-05-29": "Memorial Day", "2017-07-04": "Independence Day",
+    "2017-09-04": "Labor Day", "2017-11-23": "Thanksgiving Day",
+    "2017-12-25": "Christmas Day",
+    # 2018
+    "2018-01-01": "New Year's Day", "2018-01-15": "Martin Luther King Jr. Day",
+    "2018-02-19": "Presidents' Day", "2018-03-30": "Good Friday",
+    "2018-05-28": "Memorial Day", "2018-07-04": "Independence Day",
+    "2018-09-03": "Labor Day", "2018-11-22": "Thanksgiving Day",
+    "2018-12-05": "National Day of Mourning (George H. W. Bush)", "2018-12-25": "Christmas Day",
+    # 2019
+    "2019-01-01": "New Year's Day", "2019-01-21": "Martin Luther King Jr. Day",
+    "2019-02-18": "Presidents' Day", "2019-04-19": "Good Friday",
+    "2019-05-27": "Memorial Day", "2019-07-04": "Independence Day",
+    "2019-09-02": "Labor Day", "2019-11-28": "Thanksgiving Day",
+    "2019-12-25": "Christmas Day",
+    # 2020
+    "2020-01-01": "New Year's Day", "2020-01-20": "Martin Luther King Jr. Day",
+    "2020-02-17": "Presidents' Day", "2020-04-10": "Good Friday",
+    "2020-05-25": "Memorial Day", "2020-07-03": "Independence Day (observed)",
+    "2020-09-07": "Labor Day", "2020-11-26": "Thanksgiving Day",
+    "2020-12-25": "Christmas Day",
+    # 2021
+    "2021-01-01": "New Year's Day", "2021-01-18": "Martin Luther King Jr. Day",
+    "2021-02-15": "Presidents' Day", "2021-04-02": "Good Friday",
+    "2021-05-31": "Memorial Day", "2021-07-05": "Independence Day (observed)",
+    "2021-09-06": "Labor Day", "2021-11-25": "Thanksgiving Day",
+    "2021-12-24": "Christmas Day (observed)",
+    # 2022
+    "2022-01-17": "Martin Luther King Jr. Day", "2022-02-21": "Presidents' Day",
+    "2022-04-15": "Good Friday", "2022-05-30": "Memorial Day",
+    "2022-06-20": "Juneteenth (observed)", "2022-07-04": "Independence Day",
+    "2022-09-05": "Labor Day", "2022-11-24": "Thanksgiving Day",
+    "2022-12-26": "Christmas Day (observed)",
+    # 2023
+    "2023-01-02": "New Year's Day (observed)", "2023-01-16": "Martin Luther King Jr. Day",
+    "2023-02-20": "Presidents' Day", "2023-04-07": "Good Friday",
+    "2023-05-29": "Memorial Day", "2023-06-19": "Juneteenth",
+    "2023-07-04": "Independence Day", "2023-09-04": "Labor Day",
+    "2023-11-23": "Thanksgiving Day", "2023-12-25": "Christmas Day",
+    # 2024
+    "2024-01-01": "New Year's Day", "2024-01-15": "Martin Luther King Jr. Day",
+    "2024-02-19": "Presidents' Day", "2024-03-29": "Good Friday",
+    "2024-05-27": "Memorial Day", "2024-06-19": "Juneteenth",
+    "2024-07-04": "Independence Day", "2024-09-02": "Labor Day",
+    "2024-11-28": "Thanksgiving Day", "2024-12-25": "Christmas Day",
+    # 2025
+    "2025-01-01": "New Year's Day", "2025-01-09": "National Day of Mourning (Jimmy Carter)",
+    "2025-01-20": "Martin Luther King Jr. Day", "2025-02-17": "Presidents' Day",
+    "2025-04-18": "Good Friday", "2025-05-26": "Memorial Day",
+    "2025-06-19": "Juneteenth", "2025-07-04": "Independence Day",
+    "2025-09-01": "Labor Day", "2025-11-27": "Thanksgiving Day",
+    "2025-12-25": "Christmas Day",
     # 2026
     "2026-01-01": "New Year's Day", "2026-01-19": "Martin Luther King Jr. Day",
     "2026-02-16": "Presidents' Day", "2026-04-03": "Good Friday", "2026-05-25": "Memorial Day",
