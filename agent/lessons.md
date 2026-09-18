@@ -1397,3 +1397,36 @@ this book's OUTSIDE rate differs on event days, but **no stratification is pre-r
 none is being added mid-experiment.**
 
 [0dte]
+
+## 2026-09-18 — the mitigation held, and the fix that protects it reads the leak [0dte]
+
+**#20 resolved YES.** SPY −0.729% against a ±0.66% band on FOMC day. The bin moves to
+**n=21, k=4**, and with 9 resolutions left the 0.38 prior is **convicted unless at least 2 of
+the next 9 land OUTSIDE**. That is the only number in this lab that matters right now, and it
+advanced today for the first time in two sessions.
+
+**The lesson is not about the outcome. It is that a fix can carry the defect it protects.**
+The council's FIX was *resolve #20 first, before filing #21* — correct, and it is why the
+count moved. But resolving #20 means fetching SPY, and ZDTE-004's whole ruling is **the call
+is made before anything reads a live price**. So obeying the FIX literally puts a live SPY
+price in front of the lab before the call step. Today that cost nothing — step 1's india strip
+had already leaked SPY at 11:24 ET (0.58× of today's band), so the contamination was total
+before the FIX ran, and #20's threshold was pre-registered arithmetic with no discretion in
+it. **But "it cost nothing because something else had already broken it" is luck, not a
+guard.** Escalated as an observation; not self-fixed (REG-PP-001).
+
+**What actually protected this run was the pre-registration, not the ordering.** p=0.38 was
+fixed on 09-03 and depends on nothing observable today, so a leak that would forbid a
+discretionary call cannot touch it. That is the whole design working exactly as intended — and
+it is the argument for pre-registering more of this lab, not for chasing a clean read.
+
+**The abstention is still a silence (§24).** No ledger row was logged today, for the eighteenth
+session running. The forecast book is graded; the refusal is not. Nothing anywhere on this desk
+records what ZDTE-009 costs, which means the ruling that would end it cannot be argued on
+numbers. That is §24's self-sealing shape, sitting in this lab right now.
+
+**Band collapse worth noting for the record:** ±0.66% on 09-16 (FOMC) → **±0.35% today**,
+roughly halved, on a skew that stayed put (−1.32 → −1.36). The chain un-charged the event
+cleanly.
+
+[0dte]

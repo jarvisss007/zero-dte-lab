@@ -1,8 +1,8 @@
 {
- "as_of": "2026-09-16",
+ "as_of": "2026-09-18",
  "definition": "rows >= 86% of full-session median (11298 rows -> need 9716)",
- "files": 43,
- "usable": 34,
+ "files": 45,
+ "usable": 36,
  "stubs": 9,
  "gate": 60,
  "usable_sessions": [
@@ -39,7 +39,9 @@
   "2026-09-09",
   "2026-09-11",
   "2026-09-14",
-  "2026-09-15"
+  "2026-09-15",
+  "2026-09-16",
+  "2026-09-17"
  ],
  "stub_sessions": [
   "2026-07-08",
