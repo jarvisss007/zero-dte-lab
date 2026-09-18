@@ -23,6 +23,43 @@ CLI:   python sessions.py            -> status line; exit 0 = session today, 1 =
 import datetime as dt, sys
 
 HOLIDAYS = {
+    # SESSION-005 EXTENDED 2026-09-18: coverage pushed back to the price panel's own
+    # start (2011-09-12) so the horizon guard, when ruled, raises on nothing the estate
+    # actually reads. Same two-source rule: no SPY bar on the tape AND reproduced by the
+    # standard holiday rules computed without it. 45 of 47 matched both; the 2 that
+    # matched only the tape are Hurricane Sandy, named below.
+    # 2011
+    "2011-11-24": "Thanksgiving Day", "2011-12-26": "Christmas Day (observed)",
+    # 2012
+    "2012-01-02": "New Year's Day (observed)", "2012-01-16": "Martin Luther King Jr. Day",
+    "2012-02-20": "Presidents' Day", "2012-04-06": "Good Friday",
+    "2012-05-28": "Memorial Day", "2012-07-04": "Independence Day",
+    "2012-09-03": "Labor Day", "2012-10-29": "Hurricane Sandy (NYSE closed 2 days)",
+    "2012-10-30": "Hurricane Sandy (NYSE closed 2 days)", "2012-11-22": "Thanksgiving Day",
+    "2012-12-25": "Christmas Day",
+    # 2013
+    "2013-01-01": "New Year's Day", "2013-01-21": "Martin Luther King Jr. Day",
+    "2013-02-18": "Presidents' Day", "2013-03-29": "Good Friday",
+    "2013-05-27": "Memorial Day", "2013-07-04": "Independence Day",
+    "2013-09-02": "Labor Day", "2013-11-28": "Thanksgiving Day",
+    "2013-12-25": "Christmas Day",
+    # 2014
+    "2014-01-01": "New Year's Day", "2014-01-20": "Martin Luther King Jr. Day",
+    "2014-02-17": "Presidents' Day", "2014-04-18": "Good Friday",
+    "2014-05-26": "Memorial Day", "2014-07-04": "Independence Day",
+    "2014-09-01": "Labor Day", "2014-11-27": "Thanksgiving Day",
+    "2014-12-25": "Christmas Day",
+    # 2015
+    "2015-01-01": "New Year's Day", "2015-01-19": "Martin Luther King Jr. Day",
+    "2015-02-16": "Presidents' Day", "2015-04-03": "Good Friday",
+    "2015-05-25": "Memorial Day", "2015-07-03": "Independence Day (observed)",
+    "2015-09-07": "Labor Day", "2015-11-26": "Thanksgiving Day",
+    "2015-12-25": "Christmas Day",
+    # 2016
+    "2016-01-01": "New Year's Day", "2016-01-18": "Martin Luther King Jr. Day",
+    "2016-02-15": "Presidents' Day", "2016-03-25": "Good Friday",
+    "2016-05-30": "Memorial Day", "2016-07-04": "Independence Day",
+    "2016-09-05": "Labor Day",
     # SESSION-005 (2026-09-16): this dict held 2026-27 only, and is_session() has NO
     # horizon guard — so every NYSE holiday before 2026 answered is_session=True.
     # Christmas 2019, July 4 2017 and 95 others read as trading sessions. Verified two
