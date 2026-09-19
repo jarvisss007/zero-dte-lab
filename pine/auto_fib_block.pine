@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════
-// AUTO FIB RETRACEMENT v2 — any symbol, scales with the timeframe
+// AUTO FIB RETRACEMENT v2.1 — any symbol, scales with the timeframe
 // Paste at the very END of the IE Pro script (Pine v6), REPLACING the v1 block.
 // DISPLAY ONLY: it changes no entry, no exit and no Strategy Tester number.
 //
@@ -21,7 +21,7 @@ fib_auto_len() =>
     int s = timeframe.in_seconds()
     s <= 60 ? 240 : s <= 300 ? 156 : s <= 900 ? 130 : s <= 14400 ? 120 : s <= 86400 ? 126 : s <= 604800 ? 52 : 36
 
-fib_want = i_fib_len > 0 ? i_fib_len : fib_auto_len()
+fib_want = math.min(480, i_fib_len > 0 ? i_fib_len : fib_auto_len())
 fib_len  = math.max(2, math.min(fib_want, bar_index + 1))
 
 // the window's two extremes, and which of them is the more recent
@@ -32,7 +32,13 @@ w_lo_off = ta.lowestbars(low, fib_len)
 hi_recent = w_hi_off > w_lo_off
 
 // the furthest price reached SINCE that more recent extreme (all four computed every bar)
-fib_since  = math.max(1, (hi_recent ? -w_hi_off : -w_lo_off) + 1)
+// v2.1: on the first bars the offsets are na, and an na LENGTH is a runtime error that halts the
+// script (the red "!" on the chart) - nz() guards it. max_bars_back sizes the buffers a varying
+// length needs.
+max_bars_back(high, 500)
+max_bars_back(low, 500)
+int fib_back = hi_recent ? -w_hi_off : -w_lo_off
+fib_since  = math.max(1, nz(fib_back, 0) + 1)
 leg_lo     = ta.lowest(low, fib_since)
 leg_lo_off = ta.lowestbars(low, fib_since)
 leg_hi     = ta.highest(high, fib_since)
