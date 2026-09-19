@@ -1,0 +1,74 @@
+// ═══════════════════════════════════════════════
+// AUTO FIB RETRACEMENT — any symbol, scales with the timeframe
+// Paste this whole block at the very END of the IE Pro script (Pine v6).
+// DISPLAY ONLY: it changes no entry, no exit and no Strategy Tester number.
+//
+// How it anchors: the highest high and lowest low of the last N bars, where N is chosen
+// from the chart's timeframe so the swing covers a comparable stretch of real time.
+// Whichever extreme is MORE RECENT is the swing's end (level 0); the other is its start
+// (level 1). When price prints a new extreme the anchors move and every level moves with it.
+// ═══════════════════════════════════════════════
+i_fib_on   = input.bool(true, "Show auto Fib",                                  group="Auto Fib")
+i_fib_len  = input.int(0,     "Swing lookback in bars (0 = auto by timeframe)", group="Auto Fib", minval=0)
+i_fib_minr = input.bool(true, "Show 0.236 and 0.786",                           group="Auto Fib")
+i_fib_ext  = input.bool(true, "Show targets (-0.272 / -0.618)",                 group="Auto Fib")
+i_fib_zone = input.bool(true, "Shade the 0.5 - 0.618 zone",                     group="Auto Fib")
+i_fib_xr   = input.bool(true, "Extend lines right",                             group="Auto Fib")
+
+fib_auto_len() =>
+    int s = timeframe.in_seconds()
+    s <= 60 ? 240 : s <= 300 ? 156 : s <= 900 ? 130 : s <= 14400 ? 120 : s <= 86400 ? 126 : s <= 604800 ? 52 : 36
+
+fib_want = i_fib_len > 0 ? i_fib_len : fib_auto_len()
+fib_len  = math.max(2, math.min(fib_want, bar_index + 1))
+
+fib_hi     = ta.highest(high, fib_len)
+fib_lo     = ta.lowest(low, fib_len)
+fib_hi_off = ta.highestbars(high, fib_len)
+fib_lo_off = ta.lowestbars(low, fib_len)
+
+// Hook for later use — NOT wired into any signal. True while price sits in the 0.382-0.618 pullback zone.
+fib_up      = fib_hi_off > fib_lo_off
+fib_rng     = fib_hi - fib_lo
+fib_z382    = fib_up ? fib_hi - 0.382 * fib_rng : fib_lo + 0.382 * fib_rng
+fib_z618    = fib_up ? fib_hi - 0.618 * fib_rng : fib_lo + 0.618 * fib_rng
+in_fib_zone = close <= math.max(fib_z382, fib_z618) and close >= math.min(fib_z382, fib_z618)
+
+var float[]  fib_lv   = array.from(0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0, -0.272, -0.618)
+var line[]   fib_ln   = array.new<line>()
+var label[]  fib_lb   = array.new<label>()
+var linefill fib_fill = na
+
+if i_fib_on and barstate.islast and not na(fib_hi) and not na(fib_lo) and fib_hi > fib_lo
+    int hiBar = bar_index + fib_hi_off
+    int loBar = bar_index + fib_lo_off
+    int x1    = math.min(hiBar, loBar)
+
+    if array.size(fib_ln) == 0
+        for i = 0 to array.size(fib_lv) - 1
+            array.push(fib_ln, line.new(x1, fib_lo, bar_index, fib_lo, xloc=xloc.bar_index, width=1))
+            array.push(fib_lb, label.new(bar_index, fib_lo, "", style=label.style_label_left, color=color.new(color.black, 100), size=size.small))
+
+    for i = 0 to array.size(fib_lv) - 1
+        float r       = array.get(fib_lv, i)
+        bool  isMinor = i == 1 or i == 5
+        bool  isKey   = i == 3 or i == 4
+        bool  isExt   = i >= 7
+        bool  isEnd   = i == 0 or i == 6
+        bool  show    = (not isMinor or i_fib_minr) and (not isExt or i_fib_ext)
+        float px      = fib_up ? fib_hi - r * fib_rng : fib_lo + r * fib_rng
+        color base    = isKey ? c_amber : isExt ? c_long : isEnd ? c_neut : c_ema_s
+        color col     = show ? base : color.new(base, 100)
+        line  ln      = array.get(fib_ln, i)
+        label lb      = array.get(fib_lb, i)
+        line.set_xy1(ln, x1, px)
+        line.set_xy2(ln, bar_index, px)
+        line.set_extend(ln, i_fib_xr ? extend.right : extend.none)
+        line.set_color(ln, col)
+        line.set_style(ln, isKey or isEnd ? line.style_solid : line.style_dashed)
+        label.set_xy(lb, bar_index + 3, px)
+        label.set_text(lb, show ? str.tostring(r, "0.###") + "   " + str.tostring(px, format.mintick) : "")
+        label.set_textcolor(lb, col)
+
+    if i_fib_zone and na(fib_fill)
+        fib_fill := linefill.new(array.get(fib_ln, 3), array.get(fib_ln, 4), color.new(c_amber, 88))
