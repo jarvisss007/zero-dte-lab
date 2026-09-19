@@ -1,0 +1,754 @@
+//@version=6
+// ═══════════════════════════════════════════════════════════════════════════
+// IE Pro ONE — everything that was on the chart, in a single script (2026-09-19)
+//
+//   1. the r17 SWEEP strategy engine, unchanged (entries, exits, Strategy Tester)
+//   2. the IE PRO dashboard (15m bias, stage, the five score legs, grade, verdict)
+//   3. trade-plan labels on every confirmed signal + a "zone" pre-alert
+//   4. smart-money drawings, written from scratch: BOS / CHoCH lines, order blocks,
+//      breaker blocks, fair value gaps, volume order blocks, strong/weak swing labels,
+//      premium / equilibrium / discount zones
+//   5. previous day and previous week high / low
+//   6. the auto Fib (v2.1), scaled to the timeframe
+//
+// The drawings are original implementations of public concepts. They will look close
+// to, but not identical to, the LuxAlgo tools they replace.
+// Remove the old indicators from the chart after adding this, or everything draws twice.
+// ═══════════════════════════════════════════════════════════════════════════
+strategy("IE Pro ONE — r17 engine + dashboard + SMC + levels + fib",
+     shorttitle              = "IE Pro ONE",
+     overlay                 = true,
+     initial_capital         = 25000,
+     default_qty_type        = strategy.percent_of_equity,
+     default_qty_value       = 5,
+     commission_type         = strategy.commission.percent,
+     commission_value        = 0.01,
+     slippage                = 1,
+     process_orders_on_close = true,
+     max_labels_count        = 500,
+     max_lines_count         = 500,
+     max_boxes_count         = 500)
+
+// ═══════════════════════════════════════════════
+// INPUTS — the r17 engine (same names, same defaults)
+// ═══════════════════════════════════════════════
+i_mode      = input.string("OB Primary Trigger", "SMC mode", options=["Confluence", "OB Primary Trigger"], group="SMC")
+i_dir       = input.string("Short only", "Trade direction", options=["Both", "Long only", "Short only"], group="SMC")
+i_piv       = input.int(5,      "Swing pivot lookback",  group="SMC",     minval=2)
+i_ob_lookbk = input.int(20,     "OB search depth (bars)", group="SMC",    minval=3)
+i_use_ob    = input.bool(false, "Use Order Blocks",       group="SMC")
+i_use_sweep = input.bool(true,  "Use Liquidity Sweeps",   group="SMC")
+i_use_bos   = input.bool(true,  "Use BOS / CHoCH",        group="SMC")
+i_use_fvg   = input.bool(true,  "Use Fair Value Gaps",    group="SMC")
+i_use_brk   = input.bool(false, "Use Breaker Blocks",     group="SMC")
+i_draw_smc  = input.bool(true,  "Draw SMC (master switch)", group="SMC")
+
+i_ema_fast  = input.int(9,      "Fast EMA",              group="Core")
+i_ema_slow  = input.int(21,     "Slow EMA",              group="Core")
+i_vol_len   = input.int(10,     "Volume MA length",      group="Core")
+i_rsi_bull  = input.int(50,     "RSI threshold (bull)",  group="Core")
+i_rsi_bear  = input.int(50,     "RSI threshold (bear)",  group="Core")
+i_atr_sl    = input.float(1.0,  "ATR SL multiplier",     group="RR",      step=0.1)
+i_tp        = input.float(2.5,  "TP RR multiple",        group="RR",      step=0.1)
+i_vol_mult  = input.float(1.3,  "Volume multiplier",     group="Filters", step=0.1)
+i_min_bars  = input.int(3,      "Min bars between sigs", group="Filters", minval=1)
+
+i_use_win   = input.bool(false, "Restrict to time windows (equities only)", group="Backtest")
+i_eod_close = input.bool(false, "Force close EOD (3:55 PM ET)",            group="Backtest")
+i_show_perf = input.bool(true,  "Show performance table",                  group="Backtest")
+
+// ═══════════════════════════════════════════════
+// INPUTS — everything new
+// ═══════════════════════════════════════════════
+i_fix_htf   = input.bool(false, "Non-repainting 15m bias + PDH/PDL (the r18 fix)", group="Fixes",
+     tooltip="OFF = exactly what r17 does today: on history the 15m filter sees each 15m bar's FINAL values early, which inflates the backtest. ON = only completed 15m bars. Expect worse, real numbers.")
+
+i_dash      = input.bool(true,  "Show IE PRO dashboard",          group="Dashboard")
+i_plan      = input.bool(true,  "Trade-plan label on each signal", group="Plan labels")
+i_zone_lbl  = input.bool(true,  "Zone pre-alert (3/5 or 4/5)",     group="Plan labels")
+
+i_d_struct  = input.bool(true,  "BOS / CHoCH lines",                group="SMC drawings")
+i_d_ob      = input.bool(true,  "Order blocks + breakers",          group="SMC drawings")
+i_d_fvg     = input.bool(true,  "Fair value gaps",                  group="SMC drawings")
+i_fvg_min   = input.float(0.25, "Smallest FVG to draw (x ATR)",     group="SMC drawings", step=0.05, minval=0)
+i_d_vob     = input.bool(true,  "Volume order blocks",              group="SMC drawings")
+i_vob_len   = input.int(5,      "Volume pivot length",              group="SMC drawings", minval=2)
+i_d_swing   = input.bool(true,  "Strong / weak swing labels + premium-discount zones", group="SMC drawings")
+i_keep      = input.int(8,      "Zones kept per type",              group="SMC drawings", minval=1, maxval=40)
+
+i_pd        = input.bool(true,  "Previous day high / low",          group="Levels")
+i_pw        = input.bool(true,  "Previous week high / low",         group="Levels")
+
+// ═══════════════════════════════════════════════
+// COLORS
+// ═══════════════════════════════════════════════
+c_long  = color.rgb(0,   201, 167)
+c_short = color.rgb(255,  71,  87)
+c_amber = color.rgb(255, 165,   2)
+c_ema_f = color.rgb(236, 204, 104)
+c_ema_s = color.rgb(87,   96, 111)
+c_dark  = color.rgb(13,   15,  26)
+c_dark2 = color.rgb(18,   21,  31)
+c_dim   = color.rgb(47,   53,  66)
+c_neut  = color.rgb(164, 176, 190)
+c_none  = color.new(color.black, 100)
+
+f_px(float x) => str.tostring(x, format.mintick)
+
+// ═══════════════════════════════════════════════
+// CORE INDICATORS
+// ═══════════════════════════════════════════════
+ema9     = ta.ema(close, i_ema_fast)
+ema21    = ta.ema(close, i_ema_slow)
+vwap_val = ta.vwap(hlc3)
+vol_ma   = ta.sma(volume, i_vol_len)
+atr      = ta.atr(14)
+rsi      = ta.rsi(close, 14)
+
+// ═══════════════════════════════════════════════
+// HTF 15-MIN BIAS + PREVIOUS DAY — r17's form, or the r18 fix behind a switch
+// ═══════════════════════════════════════════════
+[lk_e9, lk_e21, lk_rsi, lk_vwap, lk_cls] = request.security(syminfo.tickerid, "15", [ta.ema(close, 9), ta.ema(close, 21), ta.rsi(close, 14), ta.vwap(hlc3), close], lookahead=barmerge.lookahead_off)
+[fx_e9, fx_e21, fx_rsi, fx_vwap, fx_cls] = request.security(syminfo.tickerid, "15", [ta.ema(close, 9)[1], ta.ema(close, 21)[1], ta.rsi(close, 14)[1], ta.vwap(hlc3)[1], close[1]], lookahead=barmerge.lookahead_on)
+htf_e9   = i_fix_htf ? fx_e9   : lk_e9
+htf_e21  = i_fix_htf ? fx_e21  : lk_e21
+htf_rsi  = i_fix_htf ? fx_rsi  : lk_rsi
+htf_vwap = i_fix_htf ? fx_vwap : lk_vwap
+htf_cls  = i_fix_htf ? fx_cls  : lk_cls
+
+htf_bull = htf_e9 > htf_e21 and htf_cls > htf_vwap and htf_rsi > 50
+htf_bear = htf_e9 < htf_e21 and htf_cls < htf_vwap and htf_rsi < 50
+
+[lk_pdh, lk_pdl] = request.security(syminfo.tickerid, "D", [high[1], low[1]], lookahead=barmerge.lookahead_off)
+[fx_pdh, fx_pdl] = request.security(syminfo.tickerid, "D", [high[1], low[1]], lookahead=barmerge.lookahead_on)
+pdh = i_fix_htf ? fx_pdh : lk_pdh
+pdl = i_fix_htf ? fx_pdl : lk_pdl
+[pwh, pwl] = request.security(syminfo.tickerid, "W", [high[1], low[1]], lookahead=barmerge.lookahead_on)
+
+// ═══════════════════════════════════════════════
+// MOMENTUM SCORING — 5 conditions each side
+// ═══════════════════════════════════════════════
+ema_bull = ema9 > ema21
+ema_bear = ema9 < ema21
+abv_vwap = close > vwap_val
+blw_vwap = close < vwap_val
+rsi_b_ok = rsi > i_rsi_bull
+rsi_s_ok = rsi < (100 - i_rsi_bear)
+vol_ok   = volume > vol_ma * i_vol_mult
+
+long_score  = (ema_bull ? 1 : 0) + (abv_vwap ? 1 : 0) + (rsi_b_ok ? 1 : 0) + (vol_ok ? 1 : 0) + (close > ema9 ? 1 : 0)
+short_score = (ema_bear ? 1 : 0) + (blw_vwap ? 1 : 0) + (rsi_s_ok ? 1 : 0) + (vol_ok ? 1 : 0) + (close < ema9 ? 1 : 0)
+
+// ═══════════════════════════════════════════════
+// STRUCTURE / FILTERS (kept from r16)
+// ═══════════════════════════════════════════════
+in_discount = close < (pdl + (pdh - pdl) * 0.382)
+in_premium  = close > (pdh - (pdh - pdl) * 0.382)
+near_pdh    = math.abs(close - pdh) < atr * 1.5
+near_pdl    = math.abs(close - pdl) < atr * 1.5
+above_pdh   = close > pdh
+below_pdl   = close < pdl
+fvg_bull    = low  > high[2]
+fvg_bear    = high < low[2]
+
+long_struct_pts  = (in_discount ? 1 : 0) + (near_pdl ? 1 : 0) + (above_pdh ? 1 : 0) + (fvg_bull ? 1 : 0)
+short_struct_pts = (in_premium  ? 1 : 0) + (near_pdh ? 1 : 0) + (below_pdl ? 1 : 0) + (fvg_bear ? 1 : 0)
+
+rsi_not_exhausted_bull = rsi < 65
+rsi_not_exhausted_bear = rsi > 35
+bull_candle = close > open
+bear_candle = close < open
+
+// ═══════════════════════════════════════════════
+// SMART MONEY CONCEPTS — the r17 engine
+// ═══════════════════════════════════════════════
+ph = ta.pivothigh(i_piv, i_piv)
+pl = ta.pivotlow(i_piv, i_piv)
+
+var float lastSH     = na
+var float lastSL     = na
+var int   lastSH_bar = na
+var int   lastSL_bar = na
+if not na(ph)
+    lastSH     := ph
+    lastSH_bar := bar_index - i_piv
+if not na(pl)
+    lastSL     := pl
+    lastSL_bar := bar_index - i_piv
+
+var int trend = 0   // 1 = bullish structure, -1 = bearish
+bos_bull   = false
+bos_bear   = false
+choch_bull = false
+choch_bear = false
+
+cross_up   = not na(lastSH) and close > lastSH and close[1] <= lastSH
+cross_down = not na(lastSL) and close < lastSL and close[1] >= lastSL
+
+if cross_up
+    if trend == -1
+        choch_bull := true
+    else
+        bos_bull := true
+    trend := 1
+if cross_down
+    if trend == 1
+        choch_bear := true
+    else
+        bos_bear := true
+    trend := -1
+
+// --- Order Blocks ---
+var float bullOB_top = na
+var float bullOB_bot = na
+var float bearOB_top = na
+var float bearOB_bot = na
+var int   bullOB_bar = na
+var int   bearOB_bar = na
+
+if bos_bull or choch_bull
+    found = false
+    for j = 1 to i_ob_lookbk
+        if not found and close[j] < open[j]
+            bullOB_top := high[j]
+            bullOB_bot := low[j]
+            bullOB_bar := bar_index - j
+            found := true
+if bos_bear or choch_bear
+    found2 = false
+    for j = 1 to i_ob_lookbk
+        if not found2 and close[j] > open[j]
+            bearOB_top := high[j]
+            bearOB_bot := low[j]
+            bearOB_bar := bar_index - j
+            found2 := true
+
+// drawing: one live box per order block, extended right until it fails
+var box bx_bullOB  = na
+var box bx_bearOB  = na
+var box bx_bullBrk = na
+var box bx_bearBrk = na
+if i_draw_smc and i_d_ob and (bos_bull or choch_bull) and not na(bullOB_bot)
+    box.delete(bx_bullOB)
+    bx_bullOB := box.new(bullOB_bar, bullOB_top, bar_index + 8, bullOB_bot, xloc=xloc.bar_index, extend=extend.right, border_color=c_long, bgcolor=color.new(c_long, 85))
+if i_draw_smc and i_d_ob and (bos_bear or choch_bear) and not na(bearOB_bot)
+    box.delete(bx_bearOB)
+    bx_bearOB := box.new(bearOB_bar, bearOB_top, bar_index + 8, bearOB_bot, xloc=xloc.bar_index, extend=extend.right, border_color=c_short, bgcolor=color.new(c_short, 85))
+
+// --- Breaker blocks (failed OB flips polarity) ---
+var float bullBrk_top = na
+var float bullBrk_bot = na
+var float bearBrk_top = na
+var float bearBrk_bot = na
+
+if not na(bullOB_bot) and close < bullOB_bot
+    bearBrk_top := bullOB_top
+    bearBrk_bot := bullOB_bot
+    box.delete(bx_bullOB)
+    box.delete(bx_bearBrk)
+    if i_draw_smc and i_d_ob
+        bx_bearBrk := box.new(bar_index, bearBrk_top, bar_index + 8, bearBrk_bot, xloc=xloc.bar_index, extend=extend.right, border_color=color.new(c_short, 40), border_style=line.style_dashed, bgcolor=color.new(c_short, 93))
+    bullOB_top := na
+    bullOB_bot := na
+if not na(bearOB_top) and close > bearOB_top
+    bullBrk_top := bearOB_top
+    bullBrk_bot := bearOB_bot
+    box.delete(bx_bearOB)
+    box.delete(bx_bullBrk)
+    if i_draw_smc and i_d_ob
+        bx_bullBrk := box.new(bar_index, bullBrk_top, bar_index + 8, bullBrk_bot, xloc=xloc.bar_index, extend=extend.right, border_color=color.new(c_long, 40), border_style=line.style_dashed, bgcolor=color.new(c_long, 93))
+    bearOB_top := na
+    bearOB_bot := na
+
+// --- Zone taps ---
+tap_bull_ob  = not na(bullOB_bot)  and low  <= bullOB_top  and high >= bullOB_bot
+tap_bear_ob  = not na(bearOB_bot)  and high >= bearOB_bot  and low  <= bearOB_top
+tap_bull_brk = not na(bullBrk_bot) and low  <= bullBrk_top and high >= bullBrk_bot
+tap_bear_brk = not na(bearBrk_bot) and high >= bearBrk_bot and low  <= bearBrk_top
+
+// --- Liquidity sweeps (wick takes the level, body rejects) ---
+sweep_bull = not na(lastSL) and low  < lastSL and close > lastSL
+sweep_bear = not na(lastSH) and high > lastSH and close < lastSH
+
+// --- Combined SMC agreement ---
+smc_bull = (i_use_ob and tap_bull_ob) or (i_use_brk and tap_bull_brk) or (i_use_sweep and sweep_bull) or (i_use_fvg and fvg_bull) or (i_use_bos and (bos_bull or choch_bull))
+smc_bear = (i_use_ob and tap_bear_ob) or (i_use_brk and tap_bear_brk) or (i_use_sweep and sweep_bear) or (i_use_fvg and fvg_bear) or (i_use_bos and (bos_bear or choch_bear))
+
+// ═══════════════════════════════════════════════
+// TIME WINDOWS (optional — equities only)
+// ═══════════════════════════════════════════════
+in_w1 = not na(time(timeframe.period, "0945-0950:23456"))
+in_w2 = not na(time(timeframe.period, "1000-1005:23456"))
+in_w3 = not na(time(timeframe.period, "1045-1050:23456"))
+in_w4 = not na(time(timeframe.period, "1120-1125:23456"))
+in_w5 = not na(time(timeframe.period, "1345-1350:23456"))
+in_w6 = not na(time(timeframe.period, "1520-1525:23456"))
+in_window  = in_w1 or in_w2 or in_w3 or in_w4 or in_w5 or in_w6
+in_session = i_use_win ? in_window : true
+
+eod_bar = not na(time(timeframe.period, "1555-1600:23456"))
+
+// ═══════════════════════════════════════════════
+// SIGNAL CONSTRUCTION
+// ═══════════════════════════════════════════════
+var int last_sig_bar = -999
+gap_ok = (bar_index - last_sig_bar) >= i_min_bars
+
+long_base  = long_score  >= 5 and htf_bull and long_struct_pts  >= 1 and rsi_not_exhausted_bull and bull_candle and not (long_score[1]  >= 5)
+short_base = short_score >= 4 and htf_bear and short_struct_pts >= 1 and rsi_not_exhausted_bear and bear_candle and not (short_score[1] >= 4)
+
+long_conf  = long_base  and smc_bull
+short_conf = short_base and smc_bear
+
+long_prim  = ((i_use_ob and tap_bull_ob) or (i_use_brk and tap_bull_brk) or (i_use_sweep and sweep_bull)) and trend == 1  and bull_candle and htf_bull
+short_prim = ((i_use_ob and tap_bear_ob) or (i_use_brk and tap_bear_brk) or (i_use_sweep and sweep_bear)) and trend == -1 and bear_candle and htf_bear
+
+long_raw  = i_mode == "Confluence" ? long_conf  : long_prim
+short_raw = i_mode == "Confluence" ? short_conf : short_prim
+
+allow_long   = i_dir != "Short only"
+allow_short  = i_dir != "Long only"
+long_signal  = long_raw  and gap_ok and in_session and allow_long
+short_signal = short_raw and gap_ok and in_session and allow_short
+
+if long_signal or short_signal
+    last_sig_bar := bar_index
+
+// ═══════════════════════════════════════════════
+// STOP LOSS & TARGETS
+// ═══════════════════════════════════════════════
+long_sl    = close - atr * i_atr_sl
+short_sl   = close + atr * i_atr_sl
+long_risk  = close  - long_sl
+short_risk = short_sl - close
+long_tp    = close + long_risk  * i_tp
+short_tp   = close - short_risk * i_tp
+
+var float locked_long_sl  = na
+var float locked_long_tp  = na
+var float locked_short_sl = na
+var float locked_short_tp = na
+var bool  long_be_done    = false
+var bool  short_be_done   = false
+
+// ═══════════════════════════════════════════════
+// ENTRIES, EXITS & EOD
+// ═══════════════════════════════════════════════
+if i_eod_close and eod_bar and strategy.position_size != 0
+    strategy.close_all(comment="EOD")
+
+if long_signal
+    locked_long_sl := long_sl
+    locked_long_tp := long_tp
+    long_be_done   := false
+    strategy.entry("Long", strategy.long, comment="L")
+    strategy.exit("LX", "Long", stop=locked_long_sl, limit=locked_long_tp)
+
+if short_signal
+    locked_short_sl := short_sl
+    locked_short_tp := short_tp
+    short_be_done   := false
+    strategy.entry("Short", strategy.short, comment="S")
+    strategy.exit("SX", "Short", stop=locked_short_sl, limit=locked_short_tp)
+
+// Breakeven stop after +1R
+if strategy.position_size > 0 and not long_be_done and not na(locked_long_sl)
+    ep    = strategy.position_avg_price
+    one_r = ep - locked_long_sl
+    if close >= ep + one_r
+        strategy.exit("LX", "Long", stop=ep, limit=locked_long_tp)
+        long_be_done := true
+
+if strategy.position_size < 0 and not short_be_done and not na(locked_short_sl)
+    ep    = strategy.position_avg_price
+    one_r = locked_short_sl - ep
+    if close <= ep - one_r
+        strategy.exit("SX", "Short", stop=ep, limit=locked_short_tp)
+        short_be_done := true
+
+if strategy.position_size == 0
+    locked_long_sl  := na
+    locked_long_tp  := na
+    locked_short_sl := na
+    locked_short_tp := na
+    long_be_done    := false
+    short_be_done   := false
+
+// ═══════════════════════════════════════════════
+// PERFORMANCE TRACKER (long vs short split)
+// ═══════════════════════════════════════════════
+var int   l_w       = 0
+var int   l_l       = 0
+var float l_pnl     = 0.0
+var int   s_w       = 0
+var int   s_l       = 0
+var float s_pnl     = 0.0
+var int   processed = 0
+
+if strategy.closedtrades > processed
+    for idx = processed to strategy.closedtrades - 1
+        c   = strategy.closedtrades.entry_comment(idx)
+        pnl = strategy.closedtrades.profit(idx)
+        g1  = str.length(c) >= 1 ? str.substring(c, 0, 1) : ""
+        if g1 == "L"
+            if pnl > 0
+                l_w += 1
+            else
+                l_l += 1
+            l_pnl += pnl
+        else if g1 == "S"
+            if pnl > 0
+                s_w += 1
+            else
+                s_l += 1
+            s_pnl += pnl
+    processed := strategy.closedtrades
+
+// ═══════════════════════════════════════════════
+// PLOTS
+// ═══════════════════════════════════════════════
+plot(ema9,     "EMA 9",  color=c_ema_f, linewidth=1)
+plot(ema21,    "EMA 21", color=c_ema_s, linewidth=1)
+plot(vwap_val, "VWAP",   color=c_amber, linewidth=1, style=plot.style_circles)
+
+bgcolor(in_session and i_use_win ? color.new(c_long, 96) : na, title="Active Windows")
+
+plotshape(i_draw_smc and sweep_bull, title="Sweep Bull", style=shape.triangleup,   location=location.belowbar, color=c_long,  size=size.tiny)
+plotshape(i_draw_smc and sweep_bear, title="Sweep Bear", style=shape.triangledown, location=location.abovebar, color=c_short, size=size.tiny)
+
+// ═══════════════════════════════════════════════
+// SMC DRAWINGS — BOS / CHoCH
+// ═══════════════════════════════════════════════
+var line[]  st_ln = array.new<line>()
+var label[] st_lb = array.new<label>()
+
+if i_draw_smc and i_d_struct and (bos_bull or choch_bull) and not na(lastSH_bar)
+    array.push(st_ln, line.new(lastSH_bar, lastSH, bar_index, lastSH, xloc=xloc.bar_index, color=c_long, style=line.style_dashed, width=1))
+    array.push(st_lb, label.new(math.round((lastSH_bar + bar_index) / 2), lastSH, choch_bull ? "CHoCH" : "BOS", style=label.style_label_down, color=c_none, textcolor=c_long, size=size.tiny))
+if i_draw_smc and i_d_struct and (bos_bear or choch_bear) and not na(lastSL_bar)
+    array.push(st_ln, line.new(lastSL_bar, lastSL, bar_index, lastSL, xloc=xloc.bar_index, color=c_short, style=line.style_dashed, width=1))
+    array.push(st_lb, label.new(math.round((lastSL_bar + bar_index) / 2), lastSL, choch_bear ? "CHoCH" : "BOS", style=label.style_label_up, color=c_none, textcolor=c_short, size=size.tiny))
+if array.size(st_ln) > i_keep * 3
+    line.delete(array.shift(st_ln))
+    label.delete(array.shift(st_lb))
+
+// ═══════════════════════════════════════════════
+// SMC DRAWINGS — fair value gaps (removed once fully filled)
+// ═══════════════════════════════════════════════
+var box[] fvg_up = array.new<box>()
+var box[] fvg_dn = array.new<box>()
+fvg_min = atr * i_fvg_min
+
+if i_draw_smc and i_d_fvg and fvg_bull and (low - high[2]) >= fvg_min
+    array.push(fvg_up, box.new(bar_index - 2, low, bar_index + 6, high[2], xloc=xloc.bar_index, extend=extend.right, border_color=color.new(c_long, 70), bgcolor=color.new(c_long, 90)))
+if i_draw_smc and i_d_fvg and fvg_bear and (low[2] - high) >= fvg_min
+    array.push(fvg_dn, box.new(bar_index - 2, low[2], bar_index + 6, high, xloc=xloc.bar_index, extend=extend.right, border_color=color.new(c_short, 70), bgcolor=color.new(c_short, 90)))
+
+if array.size(fvg_up) > 0
+    for i = array.size(fvg_up) - 1 to 0
+        box b = array.get(fvg_up, i)
+        if low <= box.get_bottom(b)
+            box.delete(b)
+            array.remove(fvg_up, i)
+if array.size(fvg_dn) > 0
+    for i = array.size(fvg_dn) - 1 to 0
+        box b = array.get(fvg_dn, i)
+        if high >= box.get_top(b)
+            box.delete(b)
+            array.remove(fvg_dn, i)
+if array.size(fvg_up) > i_keep
+    box.delete(array.shift(fvg_up))
+if array.size(fvg_dn) > i_keep
+    box.delete(array.shift(fvg_dn))
+
+// ═══════════════════════════════════════════════
+// SMC DRAWINGS — volume order blocks (a volume pivot marks the candle; gone once closed through)
+// ═══════════════════════════════════════════════
+var box[] vob_up = array.new<box>()
+var box[] vob_dn = array.new<box>()
+vol_ph = ta.pivothigh(volume, i_vob_len, i_vob_len)
+
+if i_draw_smc and i_d_vob and not na(vol_ph)
+    bool  upBar = close[i_vob_len] > open[i_vob_len]
+    float mid   = hl2[i_vob_len]
+    if upBar
+        array.push(vob_up, box.new(bar_index - i_vob_len, mid, bar_index + 6, low[i_vob_len], xloc=xloc.bar_index, extend=extend.right, border_color=color.new(c_long, 55), bgcolor=color.new(c_long, 92)))
+    else
+        array.push(vob_dn, box.new(bar_index - i_vob_len, high[i_vob_len], bar_index + 6, mid, xloc=xloc.bar_index, extend=extend.right, border_color=color.new(c_short, 55), bgcolor=color.new(c_short, 92)))
+
+if array.size(vob_up) > 0
+    for i = array.size(vob_up) - 1 to 0
+        box b = array.get(vob_up, i)
+        if close < box.get_bottom(b)
+            box.delete(b)
+            array.remove(vob_up, i)
+if array.size(vob_dn) > 0
+    for i = array.size(vob_dn) - 1 to 0
+        box b = array.get(vob_dn, i)
+        if close > box.get_top(b)
+            box.delete(b)
+            array.remove(vob_dn, i)
+if array.size(vob_up) > i_keep
+    box.delete(array.shift(vob_up))
+if array.size(vob_dn) > i_keep
+    box.delete(array.shift(vob_dn))
+
+// ═══════════════════════════════════════════════
+// TRADE-PLAN LABELS — the numbers are the strategy's own, so label and backtest agree
+// TP1 is +1R, where the stop moves to breakeven. TP2 is the final target.
+// ═══════════════════════════════════════════════
+f_grade(int score, bool htf_ok, int pts) =>
+    score >= 5 and htf_ok and pts >= 2 ? "A+" : score >= 5 ? "A" : score >= 4 ? "B" : "C"
+f_note(string g) =>
+    g == "A+" ? "All conditions perfect" : g == "A" ? "Strong setup" : g == "B" ? "Standard setup" : "Marginal setup"
+
+if i_plan and long_signal
+    string g = f_grade(long_score, htf_bull, long_struct_pts)
+    label.new(bar_index, low - atr * 2, "CONFIRMED LONG [" + g + "]\n----------------\nE    " + f_px(close) + "\nSL   " + f_px(long_sl) + "\nTP1  " + f_px(close + long_risk) + "\nTP2  " + f_px(long_tp) + "\nRR   1:" + str.tostring(i_tp) + "\n----------------\n" + f_note(g), color=color.new(c_dark, 5), textcolor=c_amber, style=label.style_label_up, size=size.small, textalign=text.align_left)
+
+if i_plan and short_signal
+    string g = f_grade(short_score, htf_bear, short_struct_pts)
+    label.new(bar_index, high + atr * 2, "CONFIRMED SHORT [" + g + "]\n----------------\nE    " + f_px(close) + "\nSL   " + f_px(short_sl) + "\nTP1  " + f_px(close - short_risk) + "\nTP2  " + f_px(short_tp) + "\nRR   1:" + str.tostring(i_tp) + "\n----------------\n" + f_note(g), color=color.new(c_dark, 5), textcolor=c_amber, style=label.style_label_down, size=size.small, textalign=text.align_left)
+
+var label zoneLbl = na
+if barstate.islast
+    label.delete(zoneLbl)
+    zoneLbl := na
+    if i_zone_lbl and strategy.position_size == 0
+        if allow_long and long_score >= 3 and long_score < 5 and not na(bullOB_top)
+            zoneLbl := label.new(bar_index + 6, bullOB_top, "LONG ZONE\nLimit: " + f_px(bullOB_top) + "\n" + str.tostring(long_score) + "/5 confirmed\nWait for 5", xloc=xloc.bar_index, style=label.style_label_left, color=color.new(c_dark, 5), textcolor=c_long, size=size.small, textalign=text.align_left)
+        else if allow_short and short_score >= 3 and short_score < 5 and not na(bearOB_bot)
+            zoneLbl := label.new(bar_index + 6, bearOB_bot, "SHORT ZONE\nLimit: " + f_px(bearOB_bot) + "\n" + str.tostring(short_score) + "/5 confirmed\nWait for 5", xloc=xloc.bar_index, style=label.style_label_left, color=color.new(c_dark, 5), textcolor=c_short, size=size.small, textalign=text.align_left)
+
+// ═══════════════════════════════════════════════
+// PREVIOUS DAY / WEEK LEVELS
+// ═══════════════════════════════════════════════
+var line  ln_pdh = na
+var line  ln_pdl = na
+var line  ln_pwh = na
+var line  ln_pwl = na
+var label lb_pdh = na
+var label lb_pdl = na
+var label lb_pwh = na
+var label lb_pwl = na
+
+if barstate.islast
+    line.delete(ln_pdh)
+    line.delete(ln_pdl)
+    line.delete(ln_pwh)
+    line.delete(ln_pwl)
+    label.delete(lb_pdh)
+    label.delete(lb_pdl)
+    label.delete(lb_pwh)
+    label.delete(lb_pwl)
+    if i_pd and not na(pdh) and not na(pdl)
+        ln_pdh := line.new(bar_index - 30, pdh, bar_index, pdh, xloc=xloc.bar_index, extend=extend.right, color=color.new(c_neut, 30), style=line.style_dotted, width=1)
+        ln_pdl := line.new(bar_index - 30, pdl, bar_index, pdl, xloc=xloc.bar_index, extend=extend.right, color=color.new(c_neut, 30), style=line.style_dotted, width=1)
+        lb_pdh := label.new(bar_index + 12, pdh, "PDH " + f_px(pdh), xloc=xloc.bar_index, style=label.style_label_left, color=c_none, textcolor=c_neut, size=size.tiny)
+        lb_pdl := label.new(bar_index + 12, pdl, "PDL " + f_px(pdl), xloc=xloc.bar_index, style=label.style_label_left, color=c_none, textcolor=c_neut, size=size.tiny)
+    if i_pw and not na(pwh) and not na(pwl)
+        ln_pwh := line.new(bar_index - 30, pwh, bar_index, pwh, xloc=xloc.bar_index, extend=extend.right, color=color.new(c_ema_f, 40), style=line.style_dotted, width=1)
+        ln_pwl := line.new(bar_index - 30, pwl, bar_index, pwl, xloc=xloc.bar_index, extend=extend.right, color=color.new(c_ema_f, 40), style=line.style_dotted, width=1)
+        lb_pwh := label.new(bar_index + 12, pwh, "PWH " + f_px(pwh), xloc=xloc.bar_index, style=label.style_label_left, color=c_none, textcolor=c_ema_f, size=size.tiny)
+        lb_pwl := label.new(bar_index + 12, pwl, "PWL " + f_px(pwl), xloc=xloc.bar_index, style=label.style_label_left, color=c_none, textcolor=c_ema_f, size=size.tiny)
+
+// ═══════════════════════════════════════════════
+// PERFORMANCE TABLE (top left) — unchanged from r17
+// ═══════════════════════════════════════════════
+var table perf_tbl = table.new(position.top_left, 5, 5,
+     bgcolor=color.new(c_dark, 5), border_color=color.new(c_dim, 50), border_width=1,
+     frame_color=color.new(c_amber, 60), frame_width=1)
+
+if i_show_perf and barstate.islast
+    l_tot   = l_w + l_l
+    l_pct   = l_tot > 0 ? math.round(l_w / l_tot * 100) : 0
+    s_tot   = s_w + s_l
+    s_pct   = s_tot > 0 ? math.round(s_w / s_tot * 100) : 0
+    tot_w   = l_w + s_w
+    tot_l   = l_l + s_l
+    tot_tot = tot_w + tot_l
+    tot_pct = tot_tot > 0 ? math.round(tot_w / tot_tot * 100) : 0
+    tot_pnl = l_pnl + s_pnl
+    pf_val  = math.abs(strategy.grossloss) > 0 ? strategy.grossprofit / math.abs(strategy.grossloss) : 999.0
+
+    c_l_pct = l_pct   >= 55 ? c_long : c_short
+    c_s_pct = s_pct   >= 55 ? c_long : c_short
+    c_t_pct = tot_pct >= 55 ? c_long : c_short
+    c_t_pnl = tot_pnl >= 0  ? c_long : c_short
+    c_net   = strategy.netprofit >= 0 ? c_long : c_short
+    c_pf    = pf_val  >= 1.5 ? c_long : c_short
+
+    table.cell(perf_tbl, 0, 0, "IEPro ONE", text_color=c_amber, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 1, 0, "W",         text_color=c_long,  text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 2, 0, "L",         text_color=c_short, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 3, 0, "Win%",      text_color=c_neut,  text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 4, 0, "P&L $",     text_color=c_neut,  text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+    table.cell(perf_tbl, 0, 1, "Long",                            text_color=c_long,  text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 1, 1, str.tostring(l_w),                 text_color=c_long,  text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 2, 1, str.tostring(l_l),                 text_color=c_short, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 3, 1, str.tostring(l_pct) + "%",         text_color=c_l_pct, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 4, 1, str.tostring(math.round(l_pnl,2)), text_color=c_long,  text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    table.cell(perf_tbl, 0, 2, "Short",                           text_color=c_short, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 1, 2, str.tostring(s_w),                 text_color=c_long,  text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 2, 2, str.tostring(s_l),                 text_color=c_short, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 3, 2, str.tostring(s_pct) + "%",         text_color=c_s_pct, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(perf_tbl, 4, 2, str.tostring(math.round(s_pnl,2)), text_color=c_short, text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+    table.cell(perf_tbl, 0, 3, "TOTAL",                            text_color=c_neut,  text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 1, 3, str.tostring(tot_w),                text_color=c_long,  text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 2, 3, str.tostring(tot_l),                text_color=c_short, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 3, 3, str.tostring(tot_pct) + "%",        text_color=c_t_pct, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 4, 3, str.tostring(math.round(tot_pnl,2)),text_color=c_t_pnl, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    table.cell(perf_tbl, 0, 4, "Mode: " + i_mode,                                          text_color=c_amber, text_size=size.tiny, bgcolor=color.new(c_dark2, 0), text_halign=text.align_left)
+    table.cell(perf_tbl, 1, 4, str.tostring(strategy.closedtrades) + " trades",            text_color=c_dim,   text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 2, 4, "$" + str.tostring(math.round(strategy.netprofit, 2)),      text_color=c_net,   text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 3, 4, "MDD $" + str.tostring(math.round(strategy.max_drawdown,0)),text_color=c_short, text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
+    table.cell(perf_tbl, 4, 4, "PF " + str.tostring(math.round(pf_val, 2)),                text_color=c_pf,    text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
+
+// ═══════════════════════════════════════════════
+// IE PRO DASHBOARD (top right) — the five rows are the five legs of the score
+// ═══════════════════════════════════════════════
+var table dash = table.new(position.top_right, 2, 14,
+     bgcolor=color.new(c_dark, 5), border_color=color.new(c_dim, 50), border_width=1,
+     frame_color=color.new(c_long, 60), frame_width=1)
+
+f_row(table t, int r, string k, string v, color vc) =>
+    table.cell(t, 0, r, k, text_color=c_neut, text_size=size.small, bgcolor=color.new(c_dark, 0), text_halign=text.align_left)
+    table.cell(t, 1, r, v, text_color=vc,     text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+if i_dash and barstate.islast
+    string biasTxt = htf_bull ? "BULL" : htf_bear ? "BEAR" : "FLAT"
+    color  biasCol = htf_bull ? c_long : htf_bear ? c_short : c_neut
+    string stageTxt = strategy.position_size != 0 ? "In trade" : (long_signal or short_signal) ? "Signal" : "Watching"
+    bool   bestLong = long_score >= short_score
+    string gradeTxt = math.max(long_score, short_score) >= 4 ? (bestLong ? f_grade(long_score, htf_bull, long_struct_pts) : f_grade(short_score, htf_bear, short_struct_pts)) : "--"
+    string verdict  = strategy.position_size > 0 ? "LONG OPEN" : strategy.position_size < 0 ? "SHORT OPEN" : long_signal ? "LONG" : short_signal ? "SHORT" : "WATCHING"
+    color  verdCol  = strategy.position_size > 0 or long_signal ? c_long : strategy.position_size < 0 or short_signal ? c_short : c_neut
+
+    f_row(dash, 0,  "IE PRO",      syminfo.ticker + " " + timeframe.period, c_amber)
+    f_row(dash, 1,  "15m Bias",    biasTxt,  biasCol)
+    f_row(dash, 2,  "Stage",       stageTxt, c_neut)
+    f_row(dash, 3,  "----------",  "------", c_dim)
+    f_row(dash, 4,  "EMA " + str.tostring(i_ema_fast) + "/" + str.tostring(i_ema_slow), ema_bull ? "bull" : "bear", ema_bull ? c_long : c_short)
+    f_row(dash, 5,  "VWAP",        abv_vwap ? "above" : "below", abv_vwap ? c_long : c_short)
+    f_row(dash, 6,  "RSI " + str.tostring(rsi, "#.0"), rsi_b_ok ? "bull" : rsi_s_ok ? "bear" : "flat", rsi_b_ok ? c_long : rsi_s_ok ? c_short : c_neut)
+    f_row(dash, 7,  "Volume",      vol_ok ? "above" : "below", vol_ok ? c_long : c_neut)
+    f_row(dash, 8,  "Price/EMA" + str.tostring(i_ema_fast), close > ema9 ? "above" : "below", close > ema9 ? c_long : c_short)
+    f_row(dash, 9,  "----------",  "------", c_dim)
+    f_row(dash, 10, "Long score",  str.tostring(long_score)  + "/5", long_score  >= 4 ? c_long  : c_amber)
+    f_row(dash, 11, "Short score", str.tostring(short_score) + "/5", short_score >= 4 ? c_short : c_amber)
+    f_row(dash, 12, "Grade",       gradeTxt, c_amber)
+    f_row(dash, 13, "Verdict",     verdict,  verdCol)
+
+// ═══════════════════════════════════════════════
+// AUTO FIB RETRACEMENT v2.1 — any symbol, scales with the timeframe. Display only.
+// "Latest leg" anchors on the most recent extreme and the furthest price SINCE it.
+// ═══════════════════════════════════════════════
+i_fib_on   = input.bool(true, "Show auto Fib",                                  group="Auto Fib")
+i_fib_mode = input.string("Latest leg", "Anchor on", options=["Latest leg", "Whole window"], group="Auto Fib")
+i_fib_len  = input.int(0,     "Swing lookback in bars (0 = auto by timeframe)", group="Auto Fib", minval=0)
+i_fib_minr = input.bool(true, "Show 0.236 and 0.786",                           group="Auto Fib")
+i_fib_ext  = input.bool(true, "Show targets (-0.272 / -0.618)",                 group="Auto Fib")
+i_fib_zone = input.bool(true, "Shade the 0.5 - 0.618 zone",                     group="Auto Fib")
+i_fib_xr   = input.bool(true, "Extend lines right",                             group="Auto Fib")
+
+fib_auto_len() =>
+    int s = timeframe.in_seconds()
+    s <= 60 ? 240 : s <= 300 ? 156 : s <= 900 ? 130 : s <= 14400 ? 120 : s <= 86400 ? 126 : s <= 604800 ? 52 : 36
+
+fib_want = math.min(480, i_fib_len > 0 ? i_fib_len : fib_auto_len())
+fib_len  = math.max(2, math.min(fib_want, bar_index + 1))
+
+max_bars_back(high, 500)
+max_bars_back(low, 500)
+
+w_hi      = ta.highest(high, fib_len)
+w_lo      = ta.lowest(low, fib_len)
+w_hi_off  = ta.highestbars(high, fib_len)
+w_lo_off  = ta.lowestbars(low, fib_len)
+hi_recent = w_hi_off > w_lo_off
+
+int fib_back = hi_recent ? -w_hi_off : -w_lo_off
+fib_since  = math.max(1, nz(fib_back, 0) + 1)
+leg_lo     = ta.lowest(low, fib_since)
+leg_lo_off = ta.lowestbars(low, fib_since)
+leg_hi     = ta.highest(high, fib_since)
+leg_hi_off = ta.highestbars(high, fib_since)
+
+leg_size = hi_recent ? w_hi - leg_lo : leg_hi - w_lo
+leg_ok   = i_fib_mode == "Latest leg" and fib_since > 1 and leg_size >= 0.15 * (w_hi - w_lo)
+
+f_start   = leg_ok ? (hi_recent ? w_hi : w_lo)         : (hi_recent ? w_lo : w_hi)
+f_end     = leg_ok ? (hi_recent ? leg_lo : leg_hi)     : (hi_recent ? w_hi : w_lo)
+off_start = leg_ok ? (hi_recent ? w_hi_off : w_lo_off) : (hi_recent ? w_lo_off : w_hi_off)
+
+// Hook for later — NOT wired into any signal.
+fib_z382    = f_end + 0.382 * (f_start - f_end)
+fib_z618    = f_end + 0.618 * (f_start - f_end)
+in_fib_zone = close <= math.max(fib_z382, fib_z618) and close >= math.min(fib_z382, fib_z618)
+
+var float[]  fib_lv   = array.from(0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0, -0.272, -0.618)
+var line[]   fib_ln   = array.new<line>()
+var label[]  fib_lb   = array.new<label>()
+var linefill fib_fill = na
+
+if i_fib_on and barstate.islast and not na(f_start) and not na(f_end) and f_start != f_end
+    int x1 = bar_index + off_start
+
+    if array.size(fib_ln) == 0
+        for i = 0 to array.size(fib_lv) - 1
+            array.push(fib_ln, line.new(x1, f_end, bar_index, f_end, xloc=xloc.bar_index, width=1))
+            array.push(fib_lb, label.new(bar_index, f_end, "", style=label.style_label_left, color=c_none, size=size.small))
+
+    for i = 0 to array.size(fib_lv) - 1
+        float r       = array.get(fib_lv, i)
+        bool  isMinor = i == 1 or i == 5
+        bool  isKey   = i == 3 or i == 4
+        bool  isExt   = i >= 7
+        bool  isEnd   = i == 0 or i == 6
+        bool  show    = (not isMinor or i_fib_minr) and (not isExt or i_fib_ext)
+        float px      = f_end + r * (f_start - f_end)
+        color base    = isKey ? c_amber : isExt ? c_long : isEnd ? c_neut : c_ema_s
+        color col     = show ? base : color.new(base, 100)
+        line  ln      = array.get(fib_ln, i)
+        label lb      = array.get(fib_lb, i)
+        line.set_xy1(ln, x1, px)
+        line.set_xy2(ln, bar_index, px)
+        line.set_extend(ln, i_fib_xr ? extend.right : extend.none)
+        line.set_color(ln, col)
+        line.set_style(ln, isKey or isEnd ? line.style_solid : line.style_dashed)
+        label.set_xy(lb, bar_index + 3, px)
+        label.set_text(lb, show ? str.tostring(r, "0.###") + "   " + f_px(px) : "")
+        label.set_textcolor(lb, col)
+
+    if i_fib_zone and na(fib_fill)
+        fib_fill := linefill.new(array.get(fib_ln, 3), array.get(fib_ln, 4), color.new(c_amber, 88))
+
+// ═══════════════════════════════════════════════
+// STRONG / WEAK SWING LABELS + PREMIUM · EQUILIBRIUM · DISCOUNT (uses the fib window's range)
+// In a bearish structure the top is the STRONG high and the bottom the WEAK low; bullish is the mirror.
+// ═══════════════════════════════════════════════
+var label lb_top  = na
+var label lb_bot  = na
+var box   zn_prem = na
+var box   zn_eq   = na
+var box   zn_disc = na
+
+if barstate.islast
+    label.delete(lb_top)
+    label.delete(lb_bot)
+    box.delete(zn_prem)
+    box.delete(zn_eq)
+    box.delete(zn_disc)
+    if i_draw_smc and i_d_swing and not na(w_hi) and not na(w_lo) and w_hi > w_lo
+        int   xs  = bar_index + math.min(w_hi_off, w_lo_off)
+        float rg  = w_hi - w_lo
+        float mid = (w_hi + w_lo) / 2
+        lb_top  := label.new(bar_index + w_hi_off, w_hi, trend == -1 ? "Strong High" : "Weak High", xloc=xloc.bar_index, style=label.style_label_down, color=c_none, textcolor=c_short, size=size.tiny)
+        lb_bot  := label.new(bar_index + w_lo_off, w_lo, trend == 1  ? "Strong Low"  : "Weak Low",  xloc=xloc.bar_index, style=label.style_label_up,   color=c_none, textcolor=c_long,  size=size.tiny)
+        zn_prem := box.new(xs, w_hi, bar_index + 10, w_hi - 0.05 * rg, xloc=xloc.bar_index, border_color=c_none, bgcolor=color.new(c_short, 88), text="Premium", text_color=color.new(c_short, 20), text_size=size.tiny, text_halign=text.align_right)
+        zn_eq   := box.new(xs, mid + 0.025 * rg, bar_index + 10, mid - 0.025 * rg, xloc=xloc.bar_index, border_color=c_none, bgcolor=color.new(c_neut, 90), text="Equilibrium", text_color=color.new(c_neut, 20), text_size=size.tiny, text_halign=text.align_right)
+        zn_disc := box.new(xs, w_lo + 0.05 * rg, bar_index + 10, w_lo, xloc=xloc.bar_index, border_color=c_none, bgcolor=color.new(c_long, 88), text="Discount", text_color=color.new(c_long, 20), text_size=size.tiny, text_halign=text.align_right)
