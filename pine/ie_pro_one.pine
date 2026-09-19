@@ -10,6 +10,8 @@
 //      premium / equilibrium / discount zones
 //   5. previous day and previous week high / low
 //   6. the auto Fib (v2.1), scaled to the timeframe
+//   7. v1.1: a PAPER TRADE TICKET - entry, stop, TP1, TP2, position size for a fixed dollar risk, the
+//      open trade drawn on the chart, a "what is still missing" checklist when flat, and alerts
 //
 // The drawings are original implementations of public concepts. They will look close
 // to, but not identical to, the LuxAlgo tools they replace.
@@ -78,6 +80,17 @@ i_keep      = input.int(8,      "Zones kept per type",              group="SMC d
 
 i_pd        = input.bool(true,  "Previous day high / low",          group="Levels")
 i_pw        = input.bool(true,  "Previous week high / low",         group="Levels")
+
+i_ticket    = input.bool(true,   "Show the paper trade ticket",          group="Trade ticket")
+i_acct      = input.float(25000, "Account size ($)",                     group="Trade ticket", minval=100)
+i_risk_pct  = input.float(0.5,   "Risk per trade (% of account)",        group="Trade ticket", step=0.1, minval=0.05, maxval=5)
+i_stop_mode = input.string("ATR (as backtested)", "Stop placement", options=["ATR (as backtested)", "Structure (last swing + buffer)"], group="Trade ticket",
+     tooltip="ATR is what r17 has always backtested. Structure parks the stop beyond the last confirmed swing plus a buffer, never further than 3 ATR. Changing this changes the Strategy Tester numbers, because the ticket and the backtest always use the same stop.")
+i_stop_buf  = input.float(0.5,   "Structure buffer (x ATR)",             group="Trade ticket", step=0.1, minval=0)
+i_size_bt   = input.bool(false,  "Size the backtest by this risk too",   group="Trade ticket",
+     tooltip="OFF = the backtest keeps r17's 5% of equity per trade. ON = every backtest trade risks the same dollars as the ticket.")
+i_lines     = input.bool(true,   "Draw entry / stop / targets for each trade", group="Trade ticket")
+i_alerts    = input.bool(true,   "Fire alerts carrying the ticket",      group="Trade ticket")
 
 // ═══════════════════════════════════════════════
 // COLORS
@@ -317,12 +330,35 @@ if long_signal or short_signal
 // ═══════════════════════════════════════════════
 // STOP LOSS & TARGETS
 // ═══════════════════════════════════════════════
-long_sl    = close - atr * i_atr_sl
-short_sl   = close + atr * i_atr_sl
+// Stop placement. "ATR" is what r17 has always backtested. "Structure" parks the stop beyond the last
+// confirmed swing plus a buffer - never on the wrong side of price and never further than 3 ATR.
+use_struct   = i_stop_mode != "ATR (as backtested)"
+atr_long_sl  = close - atr * i_atr_sl
+atr_short_sl = close + atr * i_atr_sl
+st_long_sl   = lastSL - atr * i_stop_buf
+st_short_sl  = lastSH + atr * i_stop_buf
+long_sl      = use_struct and not na(lastSL) and st_long_sl  < close and close - st_long_sl  <= atr * 3 ? st_long_sl  : atr_long_sl
+short_sl     = use_struct and not na(lastSH) and st_short_sl > close and st_short_sl - close <= atr * 3 ? st_short_sl : atr_short_sl
 long_risk  = close  - long_sl
 short_risk = short_sl - close
 long_tp    = close + long_risk  * i_tp
 short_tp   = close - short_risk * i_tp
+
+// Position size for a fixed dollar risk: risk dollars / distance to the stop, rounded DOWN.
+f_qty(float entry, float stop) =>
+    float per = math.abs(entry - stop)
+    float q   = per > 0 ? math.floor(i_acct * i_risk_pct / 100 / per) : 0
+    q
+qty_long  = f_qty(close, long_sl)
+qty_short = f_qty(close, short_sl)
+
+// the ticket of the most recent trade (what the lines and the table read)
+var int   tk_side  = 0
+var float tk_entry = na
+var float tk_sl    = na
+var float tk_tp1   = na
+var float tk_tp2   = na
+var float tk_qty   = na
 
 var float locked_long_sl  = na
 var float locked_long_tp  = na
@@ -341,14 +377,32 @@ if long_signal
     locked_long_sl := long_sl
     locked_long_tp := long_tp
     long_be_done   := false
-    strategy.entry("Long", strategy.long, comment="L")
+    tk_side  := 1
+    tk_entry := close
+    tk_sl    := long_sl
+    tk_tp1   := close + long_risk
+    tk_tp2   := long_tp
+    tk_qty   := qty_long
+    if i_size_bt and qty_long > 0
+        strategy.entry("Long", strategy.long, qty=qty_long, comment="L")
+    else
+        strategy.entry("Long", strategy.long, comment="L")
     strategy.exit("LX", "Long", stop=locked_long_sl, limit=locked_long_tp)
 
 if short_signal
     locked_short_sl := short_sl
     locked_short_tp := short_tp
     short_be_done   := false
-    strategy.entry("Short", strategy.short, comment="S")
+    tk_side  := -1
+    tk_entry := close
+    tk_sl    := short_sl
+    tk_tp1   := close - short_risk
+    tk_tp2   := short_tp
+    tk_qty   := qty_short
+    if i_size_bt and qty_short > 0
+        strategy.entry("Short", strategy.short, qty=qty_short, comment="S")
+    else
+        strategy.entry("Short", strategy.short, comment="S")
     strategy.exit("SX", "Short", stop=locked_short_sl, limit=locked_short_tp)
 
 // Breakeven stop after +1R
@@ -553,9 +607,89 @@ if barstate.islast
         lb_pwl := label.new(bar_index + 12, pwl, "PWL " + f_px(pwl), xloc=xloc.bar_index, style=label.style_label_left, color=c_none, textcolor=c_ema_f, size=size.tiny)
 
 // ═══════════════════════════════════════════════
-// PERFORMANCE TABLE (top left) — unchanged from r17
+// THE OPEN TRADE, DRAWN — entry, stop, TP1, TP2 extend while the position lives; the stop line
+// steps to the entry price the moment the strategy moves it to breakeven.
 // ═══════════════════════════════════════════════
-var table perf_tbl = table.new(position.top_left, 5, 5,
+var line tl_e = na
+var line tl_s = na
+var line tl_1 = na
+var line tl_2 = na
+in_pos    = strategy.position_size != 0
+opened    = in_pos and (strategy.position_size[1] == 0 or math.sign(strategy.position_size) != math.sign(strategy.position_size[1]))
+closedNow = not in_pos and strategy.position_size[1] != 0
+be_now    = (long_be_done and not long_be_done[1]) or (short_be_done and not short_be_done[1])
+
+if i_lines and opened and not na(tk_entry)
+    tl_e := line.new(bar_index, tk_entry, bar_index + 1, tk_entry, xloc=xloc.bar_index, color=c_neut,  width=1)
+    tl_s := line.new(bar_index, tk_sl,    bar_index + 1, tk_sl,    xloc=xloc.bar_index, color=c_short, width=2)
+    tl_1 := line.new(bar_index, tk_tp1,   bar_index + 1, tk_tp1,   xloc=xloc.bar_index, color=c_long,  width=1, style=line.style_dashed)
+    tl_2 := line.new(bar_index, tk_tp2,   bar_index + 1, tk_tp2,   xloc=xloc.bar_index, color=c_long,  width=2)
+if i_lines and in_pos and not opened
+    line.set_x2(tl_e, bar_index)
+    line.set_x2(tl_s, bar_index)
+    line.set_x2(tl_1, bar_index)
+    line.set_x2(tl_2, bar_index)
+if i_lines and in_pos and be_now and not na(tk_entry)
+    tl_s := line.new(bar_index, tk_entry, bar_index + 1, tk_entry, xloc=xloc.bar_index, color=c_amber, width=2)
+
+// ═══════════════════════════════════════════════
+// ALERTS — in TradingView: Create Alert -> Condition "IE Pro ONE" -> "Any alert() function call"
+// ═══════════════════════════════════════════════
+if i_alerts and long_signal
+    alert("IE Pro ONE | PAPER | LONG " + syminfo.ticker + " " + timeframe.period + " | E " + f_px(close) + " | SL " + f_px(long_sl) + " | TP1 " + f_px(close + long_risk) + " | TP2 " + f_px(long_tp) + " | size " + str.tostring(qty_long) + " | risk $" + str.tostring(math.round(qty_long * long_risk)), alert.freq_once_per_bar_close)
+if i_alerts and short_signal
+    alert("IE Pro ONE | PAPER | SHORT " + syminfo.ticker + " " + timeframe.period + " | E " + f_px(close) + " | SL " + f_px(short_sl) + " | TP1 " + f_px(close - short_risk) + " | TP2 " + f_px(short_tp) + " | size " + str.tostring(qty_short) + " | risk $" + str.tostring(math.round(qty_short * short_risk)), alert.freq_once_per_bar_close)
+if i_alerts and in_pos and be_now
+    alert("IE Pro ONE | PAPER | " + syminfo.ticker + " reached +1R: move the stop to the entry " + f_px(tk_entry), alert.freq_once_per_bar_close)
+if i_alerts and closedNow
+    alert("IE Pro ONE | PAPER | " + syminfo.ticker + " is FLAT - the trade is closed", alert.freq_once_per_bar_close)
+
+// ═══════════════════════════════════════════════
+// THE PAPER TRADE TICKET (bottom right)
+// In a trade or on a signal bar: the numbers to execute. Flat: what each side is still missing.
+// ═══════════════════════════════════════════════
+var table tick = table.new(position.bottom_right, 2, 9,
+     bgcolor=color.new(c_dark, 5), border_color=color.new(c_dim, 50), border_width=1,
+     frame_color=color.new(c_amber, 60), frame_width=1)
+
+f_ck(bool b) => b ? "Y" : "-"
+f_trow(table t, int r, string k, string v, color vc) =>
+    table.cell(t, 0, r, k, text_color=c_neut, text_size=size.small, bgcolor=color.new(c_dark, 0), text_halign=text.align_left)
+    table.cell(t, 1, r, v, text_color=vc,     text_size=size.small, bgcolor=color.new(c_dark, 0), text_halign=text.align_left)
+
+if i_ticket and barstate.islast
+    table.clear(tick, 0, 0, 1, 8)
+    bool sigNow = long_signal or short_signal
+    if in_pos or sigNow
+        bool   isLong = in_pos ? strategy.position_size > 0 : long_signal
+        bool   beDone = isLong ? long_be_done : short_be_done
+        float  riskPer = math.abs(tk_entry - tk_sl)
+        string head   = in_pos ? (isLong ? "OPEN LONG" : "OPEN SHORT") : (isLong ? "ENTER LONG at this close" : "ENTER SHORT at this close")
+        f_trow(tick, 0, "PAPER TICKET", head, isLong ? c_long : c_short)
+        f_trow(tick, 1, "Entry",  f_px(tk_entry), c_neut)
+        f_trow(tick, 2, "Stop",   beDone ? f_px(tk_entry) + "  (moved to breakeven)" : f_px(tk_sl), beDone ? c_amber : c_short)
+        f_trow(tick, 3, "TP1  +1R", f_px(tk_tp1) + (beDone ? "  reached" : "  then stop -> entry"), c_long)
+        f_trow(tick, 4, "TP2  final", f_px(tk_tp2), c_long)
+        f_trow(tick, 5, "Size",   str.tostring(tk_qty) + " units", c_amber)
+        f_trow(tick, 6, "At risk", "$" + str.tostring(math.round(tk_qty * riskPer)) + "  (" + str.tostring(i_risk_pct) + "% of $" + str.tostring(math.round(i_acct)) + ")", c_amber)
+        f_trow(tick, 7, "Reward : risk", "1 : " + str.tostring(i_tp), c_neut)
+        f_trow(tick, 8, "Stop rule", use_struct ? "structure + buffer" : "ATR x " + str.tostring(i_atr_sl), c_dim)
+    else
+        bool trigL = (i_use_ob and tap_bull_ob) or (i_use_brk and tap_bull_brk) or (i_use_sweep and sweep_bull)
+        bool trigS = (i_use_ob and tap_bear_ob) or (i_use_brk and tap_bear_brk) or (i_use_sweep and sweep_bear)
+        string needL = i_mode == "Confluence" ? "score " + f_ck(long_score >= 5) + "  15m " + f_ck(htf_bull) + "  location " + f_ck(long_struct_pts >= 1) + "  SMC " + f_ck(smc_bull) + "  candle " + f_ck(bull_candle) : "trigger " + f_ck(trigL) + "  structure " + f_ck(trend == 1) + "  candle " + f_ck(bull_candle) + "  15m " + f_ck(htf_bull)
+        string needS = i_mode == "Confluence" ? "score " + f_ck(short_score >= 4) + "  15m " + f_ck(htf_bear) + "  location " + f_ck(short_struct_pts >= 1) + "  SMC " + f_ck(smc_bear) + "  candle " + f_ck(bear_candle) : "trigger " + f_ck(trigS) + "  structure " + f_ck(trend == -1) + "  candle " + f_ck(bear_candle) + "  15m " + f_ck(htf_bear)
+        f_trow(tick, 0, "PAPER TICKET", "NO TRADE", c_neut)
+        f_trow(tick, 1, "Long needs",  allow_long  ? needL : "long side switched off", c_long)
+        f_trow(tick, 2, "Short needs", allow_short ? needS : "short side switched off", c_short)
+        f_trow(tick, 3, "If long now",  "stop " + f_px(long_sl)  + "   size " + str.tostring(qty_long),  c_dim)
+        f_trow(tick, 4, "If short now", "stop " + f_px(short_sl) + "   size " + str.tostring(qty_short), c_dim)
+        f_trow(tick, 5, "Y = in place", "every box must read Y on a closed bar", c_dim)
+
+// ═══════════════════════════════════════════════
+// PERFORMANCE TABLE (bottom left, clear of the legend) — contents unchanged from r17
+// ═══════════════════════════════════════════════
+var table perf_tbl = table.new(position.bottom_left, 5, 5,
      bgcolor=color.new(c_dark, 5), border_color=color.new(c_dim, 50), border_width=1,
      frame_color=color.new(c_amber, 60), frame_width=1)
 
