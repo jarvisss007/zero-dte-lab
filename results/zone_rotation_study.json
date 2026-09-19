@@ -1,0 +1,1295 @@
+{
+ "generated": "2026-09-19T16:42:42",
+ "frame": {
+  "premium_top_pct": 5.0,
+  "equilibrium_half_band_pct": 2.5,
+  "as_of_each_bar": true,
+  "windows": {
+   "5m": 156,
+   "1h": 120
+  }
+ },
+ "benchmark": "a walk with no memory: P(upper first) = (entry - lower) / (upper - lower)",
+ "samples": {
+  "spy_5m_2024_2025": {
+   "what": "SPY 5-minute bars built from 1-minute closes (wicks slightly understated)",
+   "from": "2024-08-20",
+   "to": "2025-11-03",
+   "sessions": 302,
+   "names": [
+    "SPY"
+   ],
+   "questions": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 163,
+     "hit_pct": 56.9,
+     "no_memory_pct": 49.2,
+     "excess_pp": 7.8,
+     "gross_bps_per_trade": 15.1,
+     "n_days": 147,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 2.23,
+     "timeouts": 15,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 90,
+      "hit_pct": 59.5,
+      "no_memory_pct": 49.2,
+      "excess_pp": 10.3,
+      "gross_bps_per_trade": 21.24
+     },
+     "mirror_D": {
+      "n_events": 73,
+      "hit_pct": 53.7,
+      "no_memory_pct": 49.1,
+      "excess_pp": 4.6,
+      "gross_bps_per_trade": 7.53
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 128,
+     "hit_pct": 68.2,
+     "no_memory_pct": 59.6,
+     "excess_pp": 8.6,
+     "gross_bps_per_trade": 16.91,
+     "n_days": 116,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 2.66,
+     "timeouts": 14,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 76,
+      "hit_pct": 67.7,
+      "no_memory_pct": 60.0,
+      "excess_pp": 7.8,
+      "gross_bps_per_trade": 16.51
+     },
+     "mirror_D": {
+      "n_events": 52,
+      "hit_pct": 68.9,
+      "no_memory_pct": 59.0,
+      "excess_pp": 9.8,
+      "gross_bps_per_trade": 17.5
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 122,
+     "hit_pct": 32.9,
+     "no_memory_pct": 33.2,
+     "excess_pp": -0.2,
+     "gross_bps_per_trade": 1.35,
+     "n_days": 110,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.07,
+     "timeouts": 36,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 74,
+      "hit_pct": 31.5,
+      "no_memory_pct": 32.7,
+      "excess_pp": -1.3,
+      "gross_bps_per_trade": 2.18
+     },
+     "mirror_D": {
+      "n_events": 48,
+      "hit_pct": 35.2,
+      "no_memory_pct": 33.9,
+      "excess_pp": 1.3,
+      "gross_bps_per_trade": 0.05
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 56,
+     "hit_pct": 67.9,
+     "no_memory_pct": 55.3,
+     "excess_pp": 12.5,
+     "gross_bps_per_trade": 3.71,
+     "n_days": 53,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 2.03,
+     "timeouts": 0,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 31,
+      "hit_pct": 67.7,
+      "no_memory_pct": 58.8,
+      "excess_pp": 9.0,
+      "gross_bps_per_trade": 2.67
+     },
+     "mirror_D": {
+      "n_events": 25,
+      "hit_pct": 68.0,
+      "no_memory_pct": 51.1,
+      "excess_pp": 16.9,
+      "gross_bps_per_trade": 5.0
+     }
+    }
+   },
+   "events_not_scored": {
+    "gap_past_a_barrier": 7,
+    "no_bounce_before_the_far_zone": 36,
+    "bounce_on_the_last_bar": 1,
+    "days_low_too_close_or_wrong_side": 8
+   },
+   "stability": {
+    "a_at_the_touch": {
+     "first_half": {
+      "to": "2025-03-20",
+      "n_events": 81,
+      "n_days": 73,
+      "excess_pp": 10.9,
+      "t_days": 2.15
+     },
+     "second_half": {
+      "from": "2025-03-20",
+      "n_events": 82,
+      "n_days": 75,
+      "excess_pp": 4.6,
+      "t_days": 1.03
+     },
+     "leave_one_month_out_weakest": {
+      "month_left_out": "2024-10",
+      "excess_pp": 6.3,
+      "t_days": 1.67
+     },
+     "leave_one_month_out_strongest": {
+      "month_left_out": "2024-12",
+      "excess_pp": 8.8,
+      "t_days": 2.45
+     },
+     "months_positive": 10,
+     "months": 15
+    },
+    "b_after_a_bounce_bar": {
+     "first_half": {
+      "to": "2025-04-07",
+      "n_events": 64,
+      "n_days": 57,
+      "excess_pp": 13.2,
+      "t_days": 2.84
+     },
+     "second_half": {
+      "from": "2025-04-09",
+      "n_events": 64,
+      "n_days": 59,
+      "excess_pp": 4.0,
+      "t_days": 1.09
+     },
+     "leave_one_month_out_weakest": {
+      "month_left_out": "2024-10",
+      "excess_pp": 7.4,
+      "t_days": 2.12
+     },
+     "leave_one_month_out_strongest": {
+      "month_left_out": "2025-05",
+      "excess_pp": 10.9,
+      "t_days": 3.09
+     },
+     "months_positive": 12,
+     "months": 15
+    },
+    "c_his_sentence": {
+     "first_half": {
+      "to": "2025-03-20",
+      "n_events": 61,
+      "n_days": 55,
+      "excess_pp": -2.5,
+      "t_days": -0.72
+     },
+     "second_half": {
+      "from": "2025-03-20",
+      "n_events": 61,
+      "n_days": 56,
+      "excess_pp": 2.0,
+      "t_days": 0.72
+     },
+     "leave_one_month_out_weakest": {
+      "month_left_out": "2024-12",
+      "excess_pp": -1.5,
+      "t_days": -0.49
+     },
+     "leave_one_month_out_strongest": {
+      "month_left_out": "2024-09",
+      "excess_pp": 1.3,
+      "t_days": 0.48
+     },
+     "months_positive": 7,
+     "months": 15
+    },
+    "d_at_the_prior_extreme": {
+     "first_half": {
+      "to": "2025-03-28",
+      "n_events": 28,
+      "n_days": 27,
+      "excess_pp": 8.5,
+      "t_days": 0.85
+     },
+     "second_half": {
+      "from": "2025-04-09",
+      "n_events": 28,
+      "n_days": 26,
+      "excess_pp": 16.5,
+      "t_days": 1.98
+     },
+     "leave_one_month_out_weakest": {
+      "month_left_out": "2025-06",
+      "excess_pp": 10.3,
+      "t_days": 1.45
+     },
+     "leave_one_month_out_strongest": {
+      "month_left_out": "2025-08",
+      "excess_pp": 15.9,
+      "t_days": 2.8
+     },
+     "months_positive": 12,
+     "months": 15
+    }
+   },
+   "true_wicks_cross_check": {
+    "what": "the same scan on a TradingView true-OHLC export",
+    "sessions": 31,
+    "from": "2025-07-07",
+    "to": "2025-08-18",
+    "questions": {
+     "a_at_the_touch": {
+      "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+      "n_events": 18,
+      "hit_pct": 58.5,
+      "no_memory_pct": 52.8,
+      "excess_pp": 5.8,
+      "gross_bps_per_trade": 6.12,
+      "n_days": 17,
+      "clustered_by": "session date, all names pooled",
+      "t_days": 0.54,
+      "timeouts": 1,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 13,
+       "hit_pct": 61.5,
+       "no_memory_pct": 51.9,
+       "excess_pp": 9.6,
+       "gross_bps_per_trade": 13.71
+      },
+      "mirror_D": {
+       "n_events": 5,
+       "hit_pct": 50.7,
+       "no_memory_pct": 54.9,
+       "excess_pp": -4.2,
+       "gross_bps_per_trade": -13.62
+      }
+     },
+     "b_after_a_bounce_bar": {
+      "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+      "n_events": 15,
+      "hit_pct": 62.9,
+      "no_memory_pct": 59.8,
+      "excess_pp": 3.1,
+      "gross_bps_per_trade": 2.48,
+      "n_days": 14,
+      "clustered_by": "session date, all names pooled",
+      "t_days": 0.36,
+      "timeouts": 1,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 11,
+       "hit_pct": 63.6,
+       "no_memory_pct": 59.9,
+       "excess_pp": 3.7,
+       "gross_bps_per_trade": 6.82
+      },
+      "mirror_D": {
+       "n_events": 4,
+       "hit_pct": 60.9,
+       "no_memory_pct": 59.7,
+       "excess_pp": 1.2,
+       "gross_bps_per_trade": -9.45
+      }
+     },
+     "c_his_sentence": {
+      "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+      "n_events": 15,
+      "hit_pct": 12.5,
+      "no_memory_pct": 34.2,
+      "excess_pp": -21.6,
+      "gross_bps_per_trade": -11.13,
+      "n_days": 14,
+      "clustered_by": "session date, all names pooled",
+      "t_days": -4.31,
+      "timeouts": 3,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 11,
+       "hit_pct": 10.4,
+       "no_memory_pct": 35.4,
+       "excess_pp": -25.1,
+       "gross_bps_per_trade": -12.56
+      },
+      "mirror_D": {
+       "n_events": 4,
+       "hit_pct": 18.5,
+       "no_memory_pct": 30.7,
+       "excess_pp": -12.2,
+       "gross_bps_per_trade": -7.22
+      }
+     },
+     "d_at_the_prior_extreme": {
+      "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+      "n_events": 8,
+      "hit_pct": 50.0,
+      "no_memory_pct": 53.0,
+      "excess_pp": -3.0,
+      "gross_bps_per_trade": -0.55,
+      "n_days": 7,
+      "clustered_by": "session date, all names pooled",
+      "t_days": -0.53,
+      "timeouts": 0,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 7,
+       "hit_pct": 57.1,
+       "no_memory_pct": 60.2,
+       "excess_pp": -3.0,
+       "gross_bps_per_trade": -0.56
+      },
+      "mirror_D": {
+       "n_events": 1,
+       "hit_pct": 0.0,
+       "no_memory_pct": 2.7,
+       "excess_pp": -2.7,
+       "gross_bps_per_trade": -0.44
+      }
+     }
+    }
+   }
+  },
+  "his_names_5m_last_60d": {
+   "what": "Yahoo 5-minute bars, regular session",
+   "from": "2026-06-25",
+   "to": "2026-09-18",
+   "sessions": 60,
+   "names": [
+    "AAPL",
+    "ARM",
+    "AVAV",
+    "BE",
+    "HWM",
+    "IWM",
+    "NVDA",
+    "ONDS",
+    "QQQ",
+    "RGTI",
+    "SMR",
+    "SNDK",
+    "SOUN",
+    "SPCX",
+    "SPY",
+    "TSLA"
+   ],
+   "dropped": {},
+   "questions": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 480,
+     "hit_pct": 51.2,
+     "no_memory_pct": 51.1,
+     "excess_pp": 0.1,
+     "gross_bps_per_trade": 12.57,
+     "n_days": 58,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.31,
+     "timeouts": 69,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 240,
+      "hit_pct": 48.6,
+      "no_memory_pct": 50.5,
+      "excess_pp": -1.9,
+      "gross_bps_per_trade": 10.46
+     },
+     "mirror_D": {
+      "n_events": 240,
+      "hit_pct": 53.9,
+      "no_memory_pct": 51.7,
+      "excess_pp": 2.1,
+      "gross_bps_per_trade": 14.67
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 389,
+     "hit_pct": 60.1,
+     "no_memory_pct": 59.8,
+     "excess_pp": 0.2,
+     "gross_bps_per_trade": 8.88,
+     "n_days": 58,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.31,
+     "timeouts": 51,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 188,
+      "hit_pct": 58.9,
+      "no_memory_pct": 59.7,
+      "excess_pp": -0.7,
+      "gross_bps_per_trade": 14.78
+     },
+     "mirror_D": {
+      "n_events": 201,
+      "hit_pct": 61.1,
+      "no_memory_pct": 60.0,
+      "excess_pp": 1.1,
+      "gross_bps_per_trade": 3.37
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 382,
+     "hit_pct": 36.0,
+     "no_memory_pct": 35.4,
+     "excess_pp": 0.6,
+     "gross_bps_per_trade": 3.26,
+     "n_days": 58,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.07,
+     "timeouts": 129,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 183,
+      "hit_pct": 35.2,
+      "no_memory_pct": 35.1,
+      "excess_pp": 0.1,
+      "gross_bps_per_trade": -4.94
+     },
+     "mirror_D": {
+      "n_events": 199,
+      "hit_pct": 36.7,
+      "no_memory_pct": 35.6,
+      "excess_pp": 1.1,
+      "gross_bps_per_trade": 10.81
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 143,
+     "hit_pct": 51.0,
+     "no_memory_pct": 55.5,
+     "excess_pp": -4.4,
+     "gross_bps_per_trade": -7.46,
+     "n_days": 52,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.05,
+     "timeouts": 0,
+     "ambiguous_dropped": 4,
+     "his_pattern_P": {
+      "n_events": 66,
+      "hit_pct": 54.5,
+      "no_memory_pct": 57.4,
+      "excess_pp": -2.8,
+      "gross_bps_per_trade": -0.37
+     },
+     "mirror_D": {
+      "n_events": 77,
+      "hit_pct": 48.1,
+      "no_memory_pct": 53.8,
+      "excess_pp": -5.8,
+      "gross_bps_per_trade": -13.55
+     }
+    }
+   },
+   "events_not_scored": {
+    "gap_past_a_barrier": 12,
+    "no_bounce_before_the_far_zone": 99,
+    "bounce_on_the_last_bar": 6,
+    "days_low_too_close_or_wrong_side": 3
+   },
+   "index_funds_only": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 88,
+     "hit_pct": 48.4,
+     "no_memory_pct": 49.9,
+     "excess_pp": -1.5,
+     "gross_bps_per_trade": -3.54,
+     "n_days": 43,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.33,
+     "timeouts": 14,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 44,
+      "hit_pct": 37.9,
+      "no_memory_pct": 50.1,
+      "excess_pp": -12.1,
+      "gross_bps_per_trade": -25.25
+     },
+     "mirror_D": {
+      "n_events": 44,
+      "hit_pct": 58.8,
+      "no_memory_pct": 49.8,
+      "excess_pp": 9.1,
+      "gross_bps_per_trade": 18.18
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 70,
+     "hit_pct": 56.5,
+     "no_memory_pct": 59.6,
+     "excess_pp": -3.1,
+     "gross_bps_per_trade": -6.06,
+     "n_days": 39,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.26,
+     "timeouts": 11,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 33,
+      "hit_pct": 46.0,
+      "no_memory_pct": 60.1,
+      "excess_pp": -14.1,
+      "gross_bps_per_trade": -27.16
+     },
+     "mirror_D": {
+      "n_events": 37,
+      "hit_pct": 65.8,
+      "no_memory_pct": 59.1,
+      "excess_pp": 6.7,
+      "gross_bps_per_trade": 12.76
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 67,
+     "hit_pct": 27.8,
+     "no_memory_pct": 33.1,
+     "excess_pp": -5.3,
+     "gross_bps_per_trade": -7.23,
+     "n_days": 38,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.83,
+     "timeouts": 18,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 31,
+      "hit_pct": 31.7,
+      "no_memory_pct": 32.0,
+      "excess_pp": -0.3,
+      "gross_bps_per_trade": -2.91
+     },
+     "mirror_D": {
+      "n_events": 36,
+      "hit_pct": 24.4,
+      "no_memory_pct": 34.0,
+      "excess_pp": -9.6,
+      "gross_bps_per_trade": -10.94
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 23,
+     "hit_pct": 56.5,
+     "no_memory_pct": 59.7,
+     "excess_pp": -3.2,
+     "gross_bps_per_trade": -4.49,
+     "n_days": 18,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.64,
+     "timeouts": 0,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 10,
+      "hit_pct": 40.0,
+      "no_memory_pct": 59.0,
+      "excess_pp": -19.0,
+      "gross_bps_per_trade": -2.12
+     },
+     "mirror_D": {
+      "n_events": 13,
+      "hit_pct": 69.2,
+      "no_memory_pct": 60.3,
+      "excess_pp": 8.9,
+      "gross_bps_per_trade": -6.31
+     }
+    }
+   },
+   "single_stocks_only": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 392,
+     "hit_pct": 51.9,
+     "no_memory_pct": 51.4,
+     "excess_pp": 0.5,
+     "gross_bps_per_trade": 16.18,
+     "n_days": 58,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.61,
+     "timeouts": 55,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 196,
+      "hit_pct": 51.0,
+      "no_memory_pct": 50.6,
+      "excess_pp": 0.4,
+      "gross_bps_per_trade": 18.48
+     },
+     "mirror_D": {
+      "n_events": 196,
+      "hit_pct": 52.8,
+      "no_memory_pct": 52.2,
+      "excess_pp": 0.6,
+      "gross_bps_per_trade": 13.88
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 319,
+     "hit_pct": 60.8,
+     "no_memory_pct": 59.9,
+     "excess_pp": 0.9,
+     "gross_bps_per_trade": 12.16,
+     "n_days": 57,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.7,
+     "timeouts": 40,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 155,
+      "hit_pct": 61.7,
+      "no_memory_pct": 59.6,
+      "excess_pp": 2.1,
+      "gross_bps_per_trade": 23.71
+     },
+     "mirror_D": {
+      "n_events": 164,
+      "hit_pct": 60.0,
+      "no_memory_pct": 60.2,
+      "excess_pp": -0.1,
+      "gross_bps_per_trade": 1.25
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 315,
+     "hit_pct": 37.7,
+     "no_memory_pct": 35.9,
+     "excess_pp": 1.8,
+     "gross_bps_per_trade": 5.5,
+     "n_days": 57,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.36,
+     "timeouts": 111,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 152,
+      "hit_pct": 35.9,
+      "no_memory_pct": 35.7,
+      "excess_pp": 0.2,
+      "gross_bps_per_trade": -5.36
+     },
+     "mirror_D": {
+      "n_events": 163,
+      "hit_pct": 39.4,
+      "no_memory_pct": 36.0,
+      "excess_pp": 3.4,
+      "gross_bps_per_trade": 15.62
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 120,
+     "hit_pct": 50.0,
+     "no_memory_pct": 54.6,
+     "excess_pp": -4.6,
+     "gross_bps_per_trade": -8.03,
+     "n_days": 51,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.14,
+     "timeouts": 0,
+     "ambiguous_dropped": 4,
+     "his_pattern_P": {
+      "n_events": 56,
+      "hit_pct": 57.1,
+      "no_memory_pct": 57.1,
+      "excess_pp": 0.1,
+      "gross_bps_per_trade": -0.05
+     },
+     "mirror_D": {
+      "n_events": 64,
+      "hit_pct": 43.8,
+      "no_memory_pct": 52.5,
+      "excess_pp": -8.8,
+      "gross_bps_per_trade": -15.01
+     }
+    }
+   }
+  },
+  "his_names_1h_last_2y": {
+   "what": "Yahoo hourly bars, regular session",
+   "from": "2023-10-20",
+   "to": "2026-09-18",
+   "sessions": 730,
+   "names": [
+    "AAPL",
+    "AVAV",
+    "HWM",
+    "IWM",
+    "NVDA",
+    "ONDS",
+    "QQQ",
+    "SNDK",
+    "SPCX",
+    "SPY",
+    "TSLA"
+   ],
+   "dropped": {
+    "RGTI": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "SOUN": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "SMR": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "ARM": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "BE": "a bar-to-bar move above 35% (a split or a bad print) - not trusted"
+   },
+   "questions": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 448,
+     "hit_pct": 51.9,
+     "no_memory_pct": 50.9,
+     "excess_pp": 0.9,
+     "gross_bps_per_trade": -34.02,
+     "n_days": 294,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.64,
+     "timeouts": 51,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 256,
+      "hit_pct": 58.9,
+      "no_memory_pct": 51.5,
+      "excess_pp": 7.5,
+      "gross_bps_per_trade": 50.95
+     },
+     "mirror_D": {
+      "n_events": 192,
+      "hit_pct": 42.4,
+      "no_memory_pct": 50.2,
+      "excess_pp": -7.8,
+      "gross_bps_per_trade": -147.32
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 366,
+     "hit_pct": 60.0,
+     "no_memory_pct": 60.1,
+     "excess_pp": -0.1,
+     "gross_bps_per_trade": -79.22,
+     "n_days": 263,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.19,
+     "timeouts": 39,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 218,
+      "hit_pct": 64.5,
+      "no_memory_pct": 61.0,
+      "excess_pp": 3.4,
+      "gross_bps_per_trade": -20.81
+     },
+     "mirror_D": {
+      "n_events": 148,
+      "hit_pct": 53.4,
+      "no_memory_pct": 58.8,
+      "excess_pp": -5.4,
+      "gross_bps_per_trade": -165.25
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 333,
+     "hit_pct": 27.2,
+     "no_memory_pct": 26.9,
+     "excess_pp": 0.3,
+     "gross_bps_per_trade": -2.08,
+     "n_days": 241,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 1.01,
+     "timeouts": 252,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 197,
+      "hit_pct": 27.1,
+      "no_memory_pct": 27.8,
+      "excess_pp": -0.6,
+      "gross_bps_per_trade": -15.28
+     },
+     "mirror_D": {
+      "n_events": 136,
+      "hit_pct": 27.3,
+      "no_memory_pct": 25.6,
+      "excess_pp": 1.7,
+      "gross_bps_per_trade": 17.04
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 149,
+     "hit_pct": 53.0,
+     "no_memory_pct": 54.4,
+     "excess_pp": -1.4,
+     "gross_bps_per_trade": -0.33,
+     "n_days": 126,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.3,
+     "timeouts": 0,
+     "ambiguous_dropped": 3,
+     "his_pattern_P": {
+      "n_events": 94,
+      "hit_pct": 59.6,
+      "no_memory_pct": 56.2,
+      "excess_pp": 3.4,
+      "gross_bps_per_trade": 14.94
+     },
+     "mirror_D": {
+      "n_events": 55,
+      "hit_pct": 41.8,
+      "no_memory_pct": 51.3,
+      "excess_pp": -9.5,
+      "gross_bps_per_trade": -26.44
+     }
+    }
+   },
+   "events_not_scored": {
+    "gap_past_a_barrier": 2,
+    "no_bounce_before_the_far_zone": 80,
+    "bounce_on_the_last_bar": 32,
+    "days_low_too_close_or_wrong_side": 3
+   },
+   "index_funds_only": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 151,
+     "hit_pct": 57.1,
+     "no_memory_pct": 50.9,
+     "excess_pp": 6.2,
+     "gross_bps_per_trade": 23.77,
+     "n_days": 114,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 1.93,
+     "timeouts": 15,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 85,
+      "hit_pct": 63.1,
+      "no_memory_pct": 51.2,
+      "excess_pp": 12.0,
+      "gross_bps_per_trade": 68.96
+     },
+     "mirror_D": {
+      "n_events": 66,
+      "hit_pct": 49.3,
+      "no_memory_pct": 50.6,
+      "excess_pp": -1.3,
+      "gross_bps_per_trade": -34.44
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 124,
+     "hit_pct": 66.7,
+     "no_memory_pct": 59.6,
+     "excess_pp": 7.1,
+     "gross_bps_per_trade": 21.76,
+     "n_days": 102,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 2.11,
+     "timeouts": 11,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 70,
+      "hit_pct": 71.6,
+      "no_memory_pct": 60.9,
+      "excess_pp": 10.7,
+      "gross_bps_per_trade": 56.51
+     },
+     "mirror_D": {
+      "n_events": 54,
+      "hit_pct": 60.4,
+      "no_memory_pct": 57.9,
+      "excess_pp": 2.4,
+      "gross_bps_per_trade": -23.29
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 110,
+     "hit_pct": 26.4,
+     "no_memory_pct": 25.9,
+     "excess_pp": 0.5,
+     "gross_bps_per_trade": -1.91,
+     "n_days": 90,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.5,
+     "timeouts": 80,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 59,
+      "hit_pct": 26.9,
+      "no_memory_pct": 26.9,
+      "excess_pp": -0.0,
+      "gross_bps_per_trade": -1.68
+     },
+     "mirror_D": {
+      "n_events": 51,
+      "hit_pct": 25.8,
+      "no_memory_pct": 24.7,
+      "excess_pp": 1.1,
+      "gross_bps_per_trade": -2.17
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 60,
+     "hit_pct": 43.3,
+     "no_memory_pct": 54.2,
+     "excess_pp": -10.9,
+     "gross_bps_per_trade": -12.65,
+     "n_days": 51,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -1.74,
+     "timeouts": 0,
+     "ambiguous_dropped": 1,
+     "his_pattern_P": {
+      "n_events": 38,
+      "hit_pct": 47.4,
+      "no_memory_pct": 55.0,
+      "excess_pp": -7.6,
+      "gross_bps_per_trade": -9.07
+     },
+     "mirror_D": {
+      "n_events": 22,
+      "hit_pct": 36.4,
+      "no_memory_pct": 52.9,
+      "excess_pp": -16.5,
+      "gross_bps_per_trade": -18.85
+     }
+    }
+   },
+   "single_stocks_only": {
+    "a_at_the_touch": {
+     "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+     "n_events": 297,
+     "hit_pct": 49.2,
+     "no_memory_pct": 50.9,
+     "excess_pp": -1.7,
+     "gross_bps_per_trade": -63.41,
+     "n_days": 233,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -0.6,
+     "timeouts": 36,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 171,
+      "hit_pct": 56.8,
+      "no_memory_pct": 51.6,
+      "excess_pp": 5.2,
+      "gross_bps_per_trade": 42.0
+     },
+     "mirror_D": {
+      "n_events": 126,
+      "hit_pct": 38.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": -11.1,
+      "gross_bps_per_trade": -206.46
+     }
+    },
+    "b_after_a_bounce_bar": {
+     "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+     "n_events": 242,
+     "hit_pct": 56.5,
+     "no_memory_pct": 60.4,
+     "excess_pp": -3.9,
+     "gross_bps_per_trade": -130.96,
+     "n_days": 198,
+     "clustered_by": "session date, all names pooled",
+     "t_days": -1.19,
+     "timeouts": 28,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 148,
+      "hit_pct": 61.1,
+      "no_memory_pct": 61.1,
+      "excess_pp": 0.0,
+      "gross_bps_per_trade": -57.39
+     },
+     "mirror_D": {
+      "n_events": 94,
+      "hit_pct": 49.4,
+      "no_memory_pct": 59.3,
+      "excess_pp": -9.9,
+      "gross_bps_per_trade": -246.8
+     }
+    },
+    "c_his_sentence": {
+     "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+     "n_events": 223,
+     "hit_pct": 27.6,
+     "no_memory_pct": 27.4,
+     "excess_pp": 0.2,
+     "gross_bps_per_trade": -2.17,
+     "n_days": 187,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 0.43,
+     "timeouts": 172,
+     "ambiguous_dropped": 0,
+     "his_pattern_P": {
+      "n_events": 138,
+      "hit_pct": 27.2,
+      "no_memory_pct": 28.1,
+      "excess_pp": -0.9,
+      "gross_bps_per_trade": -21.1
+     },
+     "mirror_D": {
+      "n_events": 85,
+      "hit_pct": 28.2,
+      "no_memory_pct": 26.2,
+      "excess_pp": 2.1,
+      "gross_bps_per_trade": 28.57
+     }
+    },
+    "d_at_the_prior_extreme": {
+     "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+     "n_events": 89,
+     "hit_pct": 59.6,
+     "no_memory_pct": 54.5,
+     "excess_pp": 5.0,
+     "gross_bps_per_trade": 7.97,
+     "n_days": 86,
+     "clustered_by": "session date, all names pooled",
+     "t_days": 1.05,
+     "timeouts": 0,
+     "ambiguous_dropped": 2,
+     "his_pattern_P": {
+      "n_events": 56,
+      "hit_pct": 67.9,
+      "no_memory_pct": 57.0,
+      "excess_pp": 10.9,
+      "gross_bps_per_trade": 31.23
+     },
+     "mirror_D": {
+      "n_events": 33,
+      "hit_pct": 45.5,
+      "no_memory_pct": 50.3,
+      "excess_pp": -4.8,
+      "gross_bps_per_trade": -31.5
+     }
+    }
+   },
+   "spy_outside_the_5m_span": {
+    "what": "SPY hourly, only dates before 2024-08-20 or after 2025-11-03",
+    "questions": {
+     "a_at_the_touch": {
+      "asks": "at the equilibrium touch: back to the zone it came from, before the far zone?",
+      "n_events": 35,
+      "hit_pct": 54.5,
+      "no_memory_pct": 51.2,
+      "excess_pp": 3.3,
+      "gross_bps_per_trade": 0.67,
+      "n_days": 35,
+      "clustered_by": "session date, all names pooled",
+      "t_days": 0.42,
+      "timeouts": 2,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 19,
+       "hit_pct": 57.9,
+       "no_memory_pct": 49.2,
+       "excess_pp": 8.7,
+       "gross_bps_per_trade": 24.47
+      },
+      "mirror_D": {
+       "n_events": 16,
+       "hit_pct": 50.5,
+       "no_memory_pct": 53.6,
+       "excess_pp": -3.1,
+       "gross_bps_per_trade": -27.58
+      }
+     },
+     "b_after_a_bounce_bar": {
+      "asks": "after a candle closes back beyond the band: back to the zone it came from?",
+      "n_events": 28,
+      "hit_pct": 64.6,
+      "no_memory_pct": 61.1,
+      "excess_pp": 3.5,
+      "gross_bps_per_trade": -4.52,
+      "n_days": 28,
+      "clustered_by": "session date, all names pooled",
+      "t_days": 0.41,
+      "timeouts": 2,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 15,
+       "hit_pct": 66.7,
+       "no_memory_pct": 62.2,
+       "excess_pp": 4.5,
+       "gross_bps_per_trade": 5.23
+      },
+      "mirror_D": {
+       "n_events": 13,
+       "hit_pct": 62.2,
+       "no_memory_pct": 59.7,
+       "excess_pp": 2.5,
+       "gross_bps_per_trade": -15.77
+      }
+     },
+     "c_his_sentence": {
+      "asks": "bounce bar, stop at the day's low (high), target the zone, same session",
+      "n_events": 25,
+      "hit_pct": 25.1,
+      "no_memory_pct": 26.3,
+      "excess_pp": -1.2,
+      "gross_bps_per_trade": -3.73,
+      "n_days": 25,
+      "clustered_by": "session date, all names pooled",
+      "t_days": -0.26,
+      "timeouts": 10,
+      "ambiguous_dropped": 0,
+      "his_pattern_P": {
+       "n_events": 12,
+       "hit_pct": 25.3,
+       "no_memory_pct": 26.1,
+       "excess_pp": -0.8,
+       "gross_bps_per_trade": -4.83
+      },
+      "mirror_D": {
+       "n_events": 13,
+       "hit_pct": 25.0,
+       "no_memory_pct": 26.6,
+       "excess_pp": -1.6,
+       "gross_bps_per_trade": -2.71
+      }
+     },
+     "d_at_the_prior_extreme": {
+      "asks": "back at the old high (low): +1 ATR break before -1 ATR rejection?",
+      "n_events": 10,
+      "hit_pct": 70.0,
+      "no_memory_pct": 55.0,
+      "excess_pp": 15.0,
+      "gross_bps_per_trade": 3.12,
+      "n_days": 9,
+      "clustered_by": "session date, all names pooled",
+      "t_days": 1.6,
+      "timeouts": 0,
+      "ambiguous_dropped": 1,
+      "his_pattern_P": {
+       "n_events": 7,
+       "hit_pct": 85.7,
+       "no_memory_pct": 63.1,
+       "excess_pp": 22.6,
+       "gross_bps_per_trade": 14.28
+      },
+      "mirror_D": {
+       "n_events": 3,
+       "hit_pct": 33.3,
+       "no_memory_pct": 36.0,
+       "excess_pp": -2.7,
+       "gross_bps_per_trade": -22.92
+      }
+     }
+    }
+   }
+  }
+ },
+ "primary_cells_scored": 12,
+ "looks_including_subsets": 36,
+ "chance_of_one_t2_by_luck_primary": 0.43,
+ "chance_of_one_t2_by_luck_all_looks": 0.81,
+ "cells_with_abs_t_2_or_more": [
+  {
+   "sample": "spy_5m_2024_2025",
+   "question": "a_at_the_touch",
+   "t_days": 2.23,
+   "excess_pp": 7.8
+  },
+  {
+   "sample": "spy_5m_2024_2025",
+   "question": "b_after_a_bounce_bar",
+   "t_days": 2.66,
+   "excess_pp": 8.6
+  },
+  {
+   "sample": "spy_5m_2024_2025",
+   "question": "d_at_the_prior_extreme",
+   "t_days": 2.03,
+   "excess_pp": 12.5
+  }
+ ],
+ "verdict": {
+  "rotation_back_to_the_zone_it_came_from": {
+   "spy_5m_2024_2025": [
+    7.8,
+    2.23,
+    163
+   ],
+   "spy_hourly_outside_that_span": [
+    3.3,
+    0.42,
+    35
+   ],
+   "index_funds_5m_last_60d": [
+    -1.5,
+    0.33,
+    88
+   ],
+   "single_stocks_5m_last_60d": [
+    0.5,
+    0.61,
+    392
+   ],
+   "single_stocks_hourly_2y": [
+    -1.7,
+    -0.6,
+    297
+   ],
+   "reads_as": "(excess in points over the no-memory line, day-clustered t, events)"
+  },
+  "his_sentence_stop_at_the_days_low": {
+   "spy_5m_2024_2025": [
+    -0.2,
+    -0.07,
+    122
+   ],
+   "his_names_5m_last_60d": [
+    0.6,
+    -0.07,
+    382
+   ],
+   "his_names_1h_last_2y": [
+    0.3,
+    1.01,
+    333
+   ]
+  },
+  "break_or_reject_at_the_prior_extreme": {
+   "spy_5m_2024_2025": [
+    12.5,
+    2.03,
+    56
+   ],
+   "his_names_5m_last_60d": [
+    -4.4,
+    -0.05,
+    143
+   ],
+   "his_names_1h_last_2y": [
+    -1.4,
+    -0.3,
+    149
+   ]
+  },
+  "status": "DESCRIPTION ONLY - not through edge-refute, nothing registered, no position follows from it"
+ }
+}
