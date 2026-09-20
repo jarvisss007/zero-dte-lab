@@ -1,0 +1,686 @@
+{
+ "generated": "2026-09-19T21:21:11",
+ "rules": {
+  "pivot": 5,
+  "symmetric_barrier_atr": 1.5,
+  "max_structure_stop_atr": 3.0,
+  "reward_to_risk": 2.0
+ },
+ "samples": {
+  "spy_5m_2024_2025": {
+   "what": "SPY 5-minute bars built from 1-minute closes",
+   "sessions": 302,
+   "from": "2024-08-20",
+   "to": "2025-11-03",
+   "questions": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 623,
+      "n_days": 278,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 47.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": -2.2,
+      "t_days": -0.69,
+      "gross_bps_per_trade": 0.35
+     },
+     "BOS_bullish": {
+      "n_events": 347,
+      "n_days": 195,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 48.7,
+      "no_memory_pct": 50.0,
+      "excess_pp": -1.3,
+      "t_days": -1.82,
+      "gross_bps_per_trade": -0.21
+     },
+     "BOS_bearish": {
+      "n_events": 276,
+      "n_days": 166,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 46.7,
+      "no_memory_pct": 50.0,
+      "excess_pp": -3.3,
+      "t_days": -1.38,
+      "gross_bps_per_trade": 1.06
+     },
+     "CHoCH_all": {
+      "n_events": 540,
+      "n_days": 261,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 48.5,
+      "no_memory_pct": 50.0,
+      "excess_pp": -1.5,
+      "t_days": 0.93,
+      "gross_bps_per_trade": 0.51
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 107,
+      "n_days": 90,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 33.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": 0.3,
+      "t_days": 0.12,
+      "gross_bps_per_trade": 4.01
+     },
+     "BOS_bullish": {
+      "n_events": 49,
+      "n_days": 44,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 38.8,
+      "no_memory_pct": 33.3,
+      "excess_pp": 5.4,
+      "t_days": 0.59,
+      "gross_bps_per_trade": 5.11
+     },
+     "BOS_bearish": {
+      "n_events": 58,
+      "n_days": 52,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 29.3,
+      "no_memory_pct": 33.3,
+      "excess_pp": -4.0,
+      "t_days": -0.57,
+      "gross_bps_per_trade": 3.08
+     },
+     "CHoCH_all": {
+      "n_events": 95,
+      "n_days": 78,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.0,
+      "no_memory_pct": 33.3,
+      "excess_pp": -2.3,
+      "t_days": -0.94,
+      "gross_bps_per_trade": 1.23
+     }
+    }
+   },
+   "events_not_scored": {
+    "structure_stop_missing_or_beyond_3_atr": 961,
+    "gap_past_a_barrier": 0
+   }
+  },
+  "his_names_5m_last_60d": {
+   "what": "Yahoo 5-minute bars, regular session",
+   "sessions": 60,
+   "from": "2026-06-25",
+   "to": "2026-09-18",
+   "names": [
+    "AAPL",
+    "ARM",
+    "AVAV",
+    "BE",
+    "HWM",
+    "IWM",
+    "NVDA",
+    "ONDS",
+    "QQQ",
+    "RGTI",
+    "SMR",
+    "SNDK",
+    "SOUN",
+    "SPCX",
+    "SPY",
+    "TSLA"
+   ],
+   "dropped": {},
+   "questions": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 1568,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 47.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": -2.2,
+      "t_days": -1.63,
+      "gross_bps_per_trade": -1.96
+     },
+     "BOS_bullish": {
+      "n_events": 776,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 45.0,
+      "no_memory_pct": 50.0,
+      "excess_pp": -5.0,
+      "t_days": -3.03,
+      "gross_bps_per_trade": -7.54
+     },
+     "BOS_bearish": {
+      "n_events": 792,
+      "n_days": 59,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 50.5,
+      "no_memory_pct": 50.0,
+      "excess_pp": 0.5,
+      "t_days": -1.21,
+      "gross_bps_per_trade": 3.49
+     },
+     "CHoCH_all": {
+      "n_events": 1411,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 51.1,
+      "no_memory_pct": 50.0,
+      "excess_pp": 1.1,
+      "t_days": 0.92,
+      "gross_bps_per_trade": 5.06
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 508,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.2,
+      "no_memory_pct": 33.3,
+      "excess_pp": -2.1,
+      "t_days": -0.51,
+      "gross_bps_per_trade": -7.05
+     },
+     "BOS_bullish": {
+      "n_events": 237,
+      "n_days": 54,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.7,
+      "no_memory_pct": 33.3,
+      "excess_pp": -1.6,
+      "t_days": -1.15,
+      "gross_bps_per_trade": -13.16
+     },
+     "BOS_bearish": {
+      "n_events": 271,
+      "n_days": 57,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 30.8,
+      "no_memory_pct": 33.3,
+      "excess_pp": -2.5,
+      "t_days": 0.07,
+      "gross_bps_per_trade": -1.71
+     },
+     "CHoCH_all": {
+      "n_events": 466,
+      "n_days": 59,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 38.1,
+      "no_memory_pct": 33.3,
+      "excess_pp": 4.7,
+      "t_days": 1.54,
+      "gross_bps_per_trade": 2.95
+     }
+    }
+   },
+   "index_funds_only": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 298,
+      "n_days": 59,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 49.3,
+      "no_memory_pct": 50.0,
+      "excess_pp": -0.7,
+      "t_days": -0.54,
+      "gross_bps_per_trade": -1.56
+     },
+     "BOS_bullish": {
+      "n_events": 142,
+      "n_days": 48,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 45.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": -4.2,
+      "t_days": -1.09,
+      "gross_bps_per_trade": -3.1
+     },
+     "BOS_bearish": {
+      "n_events": 156,
+      "n_days": 47,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 52.6,
+      "no_memory_pct": 50.0,
+      "excess_pp": 2.6,
+      "t_days": -0.53,
+      "gross_bps_per_trade": -0.16
+     },
+     "CHoCH_all": {
+      "n_events": 254,
+      "n_days": 58,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 51.2,
+      "no_memory_pct": 50.0,
+      "excess_pp": 1.2,
+      "t_days": 0.72,
+      "gross_bps_per_trade": 1.15
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 97,
+      "n_days": 47,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 29.9,
+      "no_memory_pct": 33.3,
+      "excess_pp": -3.4,
+      "t_days": -1.13,
+      "gross_bps_per_trade": -5.88
+     },
+     "BOS_bullish": {
+      "n_events": 34,
+      "n_days": 25,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 26.5,
+      "no_memory_pct": 33.3,
+      "excess_pp": -6.9,
+      "t_days": -0.84,
+      "gross_bps_per_trade": -5.86
+     },
+     "BOS_bearish": {
+      "n_events": 63,
+      "n_days": 35,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.7,
+      "no_memory_pct": 33.3,
+      "excess_pp": -1.6,
+      "t_days": -0.58,
+      "gross_bps_per_trade": -5.89
+     },
+     "CHoCH_all": {
+      "n_events": 66,
+      "n_days": 35,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 39.4,
+      "no_memory_pct": 33.3,
+      "excess_pp": 6.1,
+      "t_days": 0.97,
+      "gross_bps_per_trade": 6.42
+     }
+    }
+   },
+   "single_stocks_only": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 1270,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 47.4,
+      "no_memory_pct": 50.0,
+      "excess_pp": -2.6,
+      "t_days": -1.76,
+      "gross_bps_per_trade": -2.06
+     },
+     "BOS_bullish": {
+      "n_events": 634,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 44.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": -5.2,
+      "t_days": -3.09,
+      "gross_bps_per_trade": -8.53
+     },
+     "BOS_bearish": {
+      "n_events": 636,
+      "n_days": 59,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 50.0,
+      "no_memory_pct": 50.0,
+      "excess_pp": -0.0,
+      "t_days": -1.22,
+      "gross_bps_per_trade": 4.39
+     },
+     "CHoCH_all": {
+      "n_events": 1157,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 51.1,
+      "no_memory_pct": 50.0,
+      "excess_pp": 1.1,
+      "t_days": 0.61,
+      "gross_bps_per_trade": 5.92
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 411,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.5,
+      "no_memory_pct": 33.3,
+      "excess_pp": -1.8,
+      "t_days": -0.5,
+      "gross_bps_per_trade": -7.33
+     },
+     "BOS_bullish": {
+      "n_events": 203,
+      "n_days": 54,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 32.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": -0.8,
+      "t_days": -0.89,
+      "gross_bps_per_trade": -14.38
+     },
+     "BOS_bearish": {
+      "n_events": 208,
+      "n_days": 57,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 30.5,
+      "no_memory_pct": 33.3,
+      "excess_pp": -2.8,
+      "t_days": 0.24,
+      "gross_bps_per_trade": -0.44
+     },
+     "CHoCH_all": {
+      "n_events": 400,
+      "n_days": 59,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 37.9,
+      "no_memory_pct": 33.3,
+      "excess_pp": 4.5,
+      "t_days": 1.34,
+      "gross_bps_per_trade": 2.37
+     }
+    }
+   },
+   "events_not_scored": {
+    "structure_stop_missing_or_beyond_3_atr": 2022,
+    "gap_past_a_barrier": 0
+   }
+  },
+  "his_names_1h_last_2y": {
+   "what": "Yahoo hourly bars, regular session",
+   "sessions": 730,
+   "from": "2023-10-20",
+   "to": "2026-09-18",
+   "names": [
+    "AAPL",
+    "AVAV",
+    "HWM",
+    "IWM",
+    "NVDA",
+    "ONDS",
+    "QQQ",
+    "SNDK",
+    "SPCX",
+    "SPY",
+    "TSLA"
+   ],
+   "dropped": {
+    "RGTI": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "SOUN": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "SMR": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "ARM": "a bar-to-bar move above 35% (a split or a bad print) - not trusted",
+    "BE": "a bar-to-bar move above 35% (a split or a bad print) - not trusted"
+   },
+   "questions": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 1268,
+      "n_days": 578,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 50.2,
+      "no_memory_pct": 50.0,
+      "excess_pp": 0.2,
+      "t_days": -0.4,
+      "gross_bps_per_trade": -0.53
+     },
+     "BOS_bullish": {
+      "n_events": 758,
+      "n_days": 416,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 52.0,
+      "no_memory_pct": 50.0,
+      "excess_pp": 2.0,
+      "t_days": 0.09,
+      "gross_bps_per_trade": 21.94
+     },
+     "BOS_bearish": {
+      "n_events": 510,
+      "n_days": 291,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 47.5,
+      "no_memory_pct": 50.0,
+      "excess_pp": -2.5,
+      "t_days": -0.69,
+      "gross_bps_per_trade": -33.93
+     },
+     "CHoCH_all": {
+      "n_events": 1031,
+      "n_days": 503,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 49.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": -0.2,
+      "t_days": 0.21,
+      "gross_bps_per_trade": 4.44
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 278,
+      "n_days": 213,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 34.2,
+      "no_memory_pct": 33.3,
+      "excess_pp": 0.9,
+      "t_days": 0.06,
+      "gross_bps_per_trade": 9.68
+     },
+     "BOS_bullish": {
+      "n_events": 161,
+      "n_days": 136,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 38.2,
+      "no_memory_pct": 33.3,
+      "excess_pp": 4.9,
+      "t_days": 1.15,
+      "gross_bps_per_trade": 59.64
+     },
+     "BOS_bearish": {
+      "n_events": 117,
+      "n_days": 93,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 28.7,
+      "no_memory_pct": 33.3,
+      "excess_pp": -4.6,
+      "t_days": -1.15,
+      "gross_bps_per_trade": -59.08
+     },
+     "CHoCH_all": {
+      "n_events": 218,
+      "n_days": 170,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 33.8,
+      "no_memory_pct": 33.3,
+      "excess_pp": 0.5,
+      "t_days": -0.14,
+      "gross_bps_per_trade": 0.29
+     }
+    }
+   },
+   "index_funds_only": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 401,
+      "n_days": 279,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 46.6,
+      "no_memory_pct": 50.0,
+      "excess_pp": -3.4,
+      "t_days": -2.14,
+      "gross_bps_per_trade": -9.6
+     },
+     "BOS_bullish": {
+      "n_events": 231,
+      "n_days": 168,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 49.4,
+      "no_memory_pct": 50.0,
+      "excess_pp": -0.6,
+      "t_days": -0.86,
+      "gross_bps_per_trade": -1.19
+     },
+     "BOS_bearish": {
+      "n_events": 170,
+      "n_days": 120,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 42.9,
+      "no_memory_pct": 50.0,
+      "excess_pp": -7.1,
+      "t_days": -2.48,
+      "gross_bps_per_trade": -21.04
+     },
+     "CHoCH_all": {
+      "n_events": 340,
+      "n_days": 226,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 50.6,
+      "no_memory_pct": 50.0,
+      "excess_pp": 0.6,
+      "t_days": 0.34,
+      "gross_bps_per_trade": 1.79
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 94,
+      "n_days": 80,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 26.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": -6.7,
+      "t_days": -1.31,
+      "gross_bps_per_trade": -30.47
+     },
+     "BOS_bullish": {
+      "n_events": 50,
+      "n_days": 44,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 30.0,
+      "no_memory_pct": 33.3,
+      "excess_pp": -3.3,
+      "t_days": -0.38,
+      "gross_bps_per_trade": -15.35
+     },
+     "BOS_bearish": {
+      "n_events": 44,
+      "n_days": 37,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 22.7,
+      "no_memory_pct": 33.3,
+      "excess_pp": -10.6,
+      "t_days": -1.71,
+      "gross_bps_per_trade": -47.64
+     },
+     "CHoCH_all": {
+      "n_events": 68,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 41.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": 8.2,
+      "t_days": 1.26,
+      "gross_bps_per_trade": 12.84
+     }
+    }
+   },
+   "single_stocks_only": {
+    "f1_keeps_going": {
+     "BOS_all": {
+      "n_events": 867,
+      "n_days": 511,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 51.8,
+      "no_memory_pct": 50.0,
+      "excess_pp": 1.8,
+      "t_days": 0.37,
+      "gross_bps_per_trade": 3.66
+     },
+     "BOS_bullish": {
+      "n_events": 527,
+      "n_days": 359,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 53.1,
+      "no_memory_pct": 50.0,
+      "excess_pp": 3.1,
+      "t_days": 0.67,
+      "gross_bps_per_trade": 32.08
+     },
+     "BOS_bearish": {
+      "n_events": 340,
+      "n_days": 248,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 49.7,
+      "no_memory_pct": 50.0,
+      "excess_pp": -0.3,
+      "t_days": 0.32,
+      "gross_bps_per_trade": -40.38
+     },
+     "CHoCH_all": {
+      "n_events": 691,
+      "n_days": 442,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 49.4,
+      "no_memory_pct": 50.0,
+      "excess_pp": -0.6,
+      "t_days": -0.01,
+      "gross_bps_per_trade": 5.75
+     }
+    },
+    "f2_the_trade_on_the_card": {
+     "BOS_all": {
+      "n_events": 184,
+      "n_days": 157,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 38.1,
+      "no_memory_pct": 33.3,
+      "excess_pp": 4.8,
+      "t_days": 1.2,
+      "gross_bps_per_trade": 30.18
+     },
+     "BOS_bullish": {
+      "n_events": 111,
+      "n_days": 103,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 41.9,
+      "no_memory_pct": 33.3,
+      "excess_pp": 8.6,
+      "t_days": 1.64,
+      "gross_bps_per_trade": 93.42
+     },
+     "BOS_bearish": {
+      "n_events": 73,
+      "n_days": 64,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 32.4,
+      "no_memory_pct": 33.3,
+      "excess_pp": -1.0,
+      "t_days": -0.05,
+      "gross_bps_per_trade": -65.98
+     },
+     "CHoCH_all": {
+      "n_events": 150,
+      "n_days": 131,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 30.3,
+      "no_memory_pct": 33.3,
+      "excess_pp": -3.0,
+      "t_days": -0.89,
+      "gross_bps_per_trade": -5.41
+     }
+    }
+   },
+   "events_not_scored": {
+    "structure_stop_missing_or_beyond_3_atr": 1809,
+    "gap_past_a_barrier": 0
+   }
+  }
+ },
+ "looks_in_this_file": 56,
+ "looks_today_all_files": 128,
+ "chance_of_one_t2_by_luck_all_looks": 0.997,
+ "status": "DESCRIPTION ONLY - not through edge-refute, nothing registered, no position follows from it"
+}
