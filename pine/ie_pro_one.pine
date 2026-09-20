@@ -12,6 +12,9 @@
 //   6. the auto Fib (v2.1), scaled to the timeframe
 //   7. v1.1: a PAPER TRADE TICKET - entry, stop, TP1, TP2, position size for a fixed dollar risk, the
 //      open trade drawn on the chart, a "what is still missing" checklist when flat, and alerts
+//   8. v1.2: Trade direction defaults to BOTH (his ask, 2026-09-19). r17 shipped Short only; in the lab's
+//      honest SPY 5m backtest short-only was the worst configuration (17 trades, PF 0.57) and both sides
+//      made 51 trades, PF 1.20, t 0.39 - better, and still not distinguishable from zero.
 //
 // The drawings are original implementations of public concepts. They will look close
 // to, but not identical to, the LuxAlgo tools they replace.
@@ -32,10 +35,10 @@ strategy("IE Pro ONE — r17 engine + dashboard + SMC + levels + fib",
      max_boxes_count         = 500)
 
 // ═══════════════════════════════════════════════
-// INPUTS — the r17 engine (same names, same defaults)
+// INPUTS — the r17 engine (same names; same defaults except Trade direction, which is Both since v1.2)
 // ═══════════════════════════════════════════════
 i_mode      = input.string("OB Primary Trigger", "SMC mode", options=["Confluence", "OB Primary Trigger"], group="SMC")
-i_dir       = input.string("Short only", "Trade direction", options=["Both", "Long only", "Short only"], group="SMC")
+i_dir       = input.string("Both", "Trade direction", options=["Both", "Long only", "Short only"], group="SMC")
 i_piv       = input.int(5,      "Swing pivot lookback",  group="SMC",     minval=2)
 i_ob_lookbk = input.int(20,     "OB search depth (bars)", group="SMC",    minval=3)
 i_use_ob    = input.bool(false, "Use Order Blocks",       group="SMC")
