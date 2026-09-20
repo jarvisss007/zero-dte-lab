@@ -15,6 +15,14 @@
 //   8. v1.2: Trade direction defaults to BOTH (his ask, 2026-09-19). r17 shipped Short only; in the lab's
 //      honest SPY 5m backtest short-only was the worst configuration (17 trades, PF 0.57) and both sides
 //      made 51 trades, PF 1.20, t 0.39 - better, and still not distinguishable from zero.
+//   9. v1.3: the scorecard's bottom-left line now prints the LIVE direction ("OB Primary Trigger · Both").
+//      A chart copy keeps its own saved inputs, so changing this file does not change a chart already
+//      loaded - on 2026-09-19 the file said Both while the chart still ran Short only and nothing on the
+//      chart said so. Now one glance shows which way the script is actually allowed to trade.
+//
+// NOT IN THIS SCRIPT, DELIBERATELY: the premium/equilibrium rotation, the day's-high retest, the
+// red-vs-green zone count and BOS follow-through were each counted on 2026-09-19 against the no-memory
+// line (zero-dte-lab/results/*.json) and none beat it. They are drawn as description, never as a trigger.
 //
 // The drawings are original implementations of public concepts. They will look close
 // to, but not identical to, the LuxAlgo tools they replace.
@@ -739,7 +747,7 @@ if i_show_perf and barstate.islast
     table.cell(perf_tbl, 3, 3, str.tostring(tot_pct) + "%",        text_color=c_t_pct, text_size=size.small, bgcolor=color.new(c_dark2, 0))
     table.cell(perf_tbl, 4, 3, str.tostring(math.round(tot_pnl,2)),text_color=c_t_pnl, text_size=size.small, bgcolor=color.new(c_dark2, 0))
 
-    table.cell(perf_tbl, 0, 4, "Mode: " + i_mode,                                          text_color=c_amber, text_size=size.tiny, bgcolor=color.new(c_dark2, 0), text_halign=text.align_left)
+    table.cell(perf_tbl, 0, 4, i_mode + " · " + i_dir,                                     text_color=c_amber, text_size=size.tiny, bgcolor=color.new(c_dark2, 0), text_halign=text.align_left)
     table.cell(perf_tbl, 1, 4, str.tostring(strategy.closedtrades) + " trades",            text_color=c_dim,   text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
     table.cell(perf_tbl, 2, 4, "$" + str.tostring(math.round(strategy.netprofit, 2)),      text_color=c_net,   text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
     table.cell(perf_tbl, 3, 4, "MDD $" + str.tostring(math.round(strategy.max_drawdown,0)),text_color=c_short, text_size=size.tiny, bgcolor=color.new(c_dark2, 0))
