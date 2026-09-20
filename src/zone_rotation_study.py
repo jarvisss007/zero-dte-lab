@@ -236,7 +236,8 @@ def yahoo(names, interval, period):
             continue
         idx = d.index.tz_convert(ET) if d.index.tz is not None else d.index.tz_localize("UTC").tz_convert(ET)
         d = pd.DataFrame({"ts": idx, "open": d["Open"].to_numpy(), "high": d["High"].to_numpy(),
-                          "low": d["Low"].to_numpy(), "close": d["Close"].to_numpy()}).reset_index(drop=True)
+                          "low": d["Low"].to_numpy(), "close": d["Close"].to_numpy(),
+                          "volume": d["Volume"].to_numpy()}).reset_index(drop=True)
         mins = d["ts"].dt.hour * 60 + d["ts"].dt.minute
         d = d[(mins >= 570) & (mins < 960)].reset_index(drop=True)
         jump = (d["close"].pct_change().abs() > 0.35)

@@ -1,0 +1,445 @@
+{
+ "generated": "2026-09-19T17:20:02",
+ "rules": {
+  "pullback_atr": 1.0,
+  "near_atr": 0.1,
+  "min_age_bars": 3,
+  "stop_buffer_atr": 0.1,
+  "reward_to_risk_e2": 2.0
+ },
+ "samples": {
+  "spy_5m_2024_2025": {
+   "what": "SPY 5-minute bars built from 1-minute closes; no volume, so the colour count has no volume blocks",
+   "from": "2024-08-20",
+   "to": "2025-11-03",
+   "sessions": 302,
+   "questions": {
+    "e1_at_the_touch": {
+     "days_high_retest": {
+      "n_events": 576,
+      "n_days": 223,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 46.0,
+      "no_memory_pct": 46.3,
+      "excess_pp": -0.2,
+      "t_days": 0.66,
+      "gross_bps_per_trade": 0.06,
+      "timeouts": 8
+     },
+     "days_low_retest_mirror": {
+      "n_events": 482,
+      "n_days": 196,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 50.6,
+      "no_memory_pct": 47.7,
+      "excess_pp": 2.9,
+      "t_days": 1.58,
+      "gross_bps_per_trade": 0.34,
+      "timeouts": 8
+     },
+     "high_retest_when_more_red": {
+      "n_events": 102,
+      "n_days": 68,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 38.2,
+      "no_memory_pct": 46.4,
+      "excess_pp": -8.1,
+      "t_days": -2.05,
+      "gross_bps_per_trade": -1.24,
+      "timeouts": 0
+     },
+     "high_retest_when_more_green": {
+      "n_events": 452,
+      "n_days": 189,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 47.4,
+      "no_memory_pct": 46.2,
+      "excess_pp": 1.2,
+      "t_days": 1.32,
+      "gross_bps_per_trade": 0.29,
+      "timeouts": 8
+     },
+     "colour_with_vs_against_both_sides": {
+      "gap_pp": -4.2,
+      "se_pp": 3.9,
+      "t_days_bootstrap": -1.06,
+      "n_with": 209,
+      "n_against": 804,
+      "n_days": 294,
+      "clustered_by": "session date (2,000 resamples of days)"
+     },
+     "colour_with_vs_against_high_only": {
+      "gap_pp": -9.4,
+      "se_pp": 5.2,
+      "t_days_bootstrap": -1.8,
+      "n_with": 102,
+      "n_against": 452,
+      "n_days": 221,
+      "clustered_by": "session date (2,000 resamples of days)"
+     }
+    },
+    "e2_after_a_failed_close": {
+     "days_high_retest": {
+      "n_events": 212,
+      "n_days": 146,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 35.8,
+      "no_memory_pct": 33.3,
+      "excess_pp": 2.5,
+      "t_days": 1.47,
+      "gross_bps_per_trade": 0.13,
+      "timeouts": 3
+     },
+     "days_low_retest_mirror": {
+      "n_events": 212,
+      "n_days": 140,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 33.4,
+      "no_memory_pct": 33.3,
+      "excess_pp": 0.0,
+      "t_days": 0.74,
+      "gross_bps_per_trade": 0.16,
+      "timeouts": 5
+     },
+     "high_retest_when_more_red": {
+      "n_events": 31,
+      "n_days": 28,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 41.9,
+      "no_memory_pct": 33.3,
+      "excess_pp": 8.6,
+      "t_days": 0.83,
+      "gross_bps_per_trade": 3.79,
+      "timeouts": 0
+     },
+     "high_retest_when_more_green": {
+      "n_events": 169,
+      "n_days": 121,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 34.3,
+      "no_memory_pct": 33.3,
+      "excess_pp": 1.0,
+      "t_days": 0.75,
+      "gross_bps_per_trade": -0.47,
+      "timeouts": 3
+     },
+     "colour_with_vs_against_both_sides": {
+      "gap_pp": -2.9,
+      "se_pp": 6.0,
+      "t_days_bootstrap": -0.49,
+      "n_with": 90,
+      "n_against": 315,
+      "n_days": 227,
+      "clustered_by": "session date (2,000 resamples of days)"
+     },
+     "colour_with_vs_against_high_only": {
+      "gap_pp": 7.6,
+      "se_pp": 10.1,
+      "t_days_bootstrap": 0.76,
+      "n_with": 31,
+      "n_against": 169,
+      "n_days": 140,
+      "clustered_by": "session date (2,000 resamples of days)"
+     }
+    }
+   },
+   "events_not_scored": {
+    "retest_on_the_last_bar": 16,
+    "gap_past_a_barrier": 283
+   }
+  },
+  "his_names_5m_last_60d": {
+   "what": "Yahoo 5-minute bars with volume, regular session, full colour count",
+   "from": "2026-06-25",
+   "to": "2026-09-18",
+   "sessions": 60,
+   "names": [
+    "AAPL",
+    "ARM",
+    "AVAV",
+    "BE",
+    "HWM",
+    "IWM",
+    "NVDA",
+    "ONDS",
+    "QQQ",
+    "RGTI",
+    "SMR",
+    "SNDK",
+    "SOUN",
+    "SPCX",
+    "SPY",
+    "TSLA"
+   ],
+   "dropped": {},
+   "questions": {
+    "e1_at_the_touch": {
+     "days_high_retest": {
+      "n_events": 1108,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 52.6,
+      "no_memory_pct": 53.2,
+      "excess_pp": -0.6,
+      "t_days": 0.39,
+      "gross_bps_per_trade": -1.49,
+      "timeouts": 6
+     },
+     "days_low_retest_mirror": {
+      "n_events": 1259,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 54.1,
+      "no_memory_pct": 53.9,
+      "excess_pp": 0.2,
+      "t_days": 2.23,
+      "gross_bps_per_trade": -1.67,
+      "timeouts": 18
+     },
+     "high_retest_when_more_red": {
+      "n_events": 357,
+      "n_days": 53,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 52.1,
+      "no_memory_pct": 53.5,
+      "excess_pp": -1.4,
+      "t_days": 1.11,
+      "gross_bps_per_trade": -2.84,
+      "timeouts": 0
+     },
+     "high_retest_when_more_green": {
+      "n_events": 707,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 52.7,
+      "no_memory_pct": 53.1,
+      "excess_pp": -0.4,
+      "t_days": 1.51,
+      "gross_bps_per_trade": -0.75,
+      "timeouts": 6
+     },
+     "colour_with_vs_against_both_sides": {
+      "gap_pp": -1.9,
+      "se_pp": 2.2,
+      "t_days_bootstrap": -0.87,
+      "n_with": 707,
+      "n_against": 1580,
+      "n_days": 60,
+      "clustered_by": "session date (2,000 resamples of days)"
+     },
+     "colour_with_vs_against_high_only": {
+      "gap_pp": -1.0,
+      "se_pp": 3.3,
+      "t_days_bootstrap": -0.29,
+      "n_with": 357,
+      "n_against": 707,
+      "n_days": 60,
+      "clustered_by": "session date (2,000 resamples of days)"
+     }
+    },
+    "e2_after_a_failed_close": {
+     "days_high_retest": {
+      "n_events": 675,
+      "n_days": 60,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 34.1,
+      "no_memory_pct": 33.3,
+      "excess_pp": 0.8,
+      "t_days": 0.74,
+      "gross_bps_per_trade": 1.18,
+      "timeouts": 28
+     },
+     "days_low_retest_mirror": {
+      "n_events": 786,
+      "n_days": 59,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 32.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": -0.7,
+      "t_days": 0.77,
+      "gross_bps_per_trade": -1.76,
+      "timeouts": 24
+     },
+     "high_retest_when_more_red": {
+      "n_events": 228,
+      "n_days": 50,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 34.5,
+      "no_memory_pct": 33.3,
+      "excess_pp": 1.2,
+      "t_days": 0.61,
+      "gross_bps_per_trade": 1.46,
+      "timeouts": 12
+     },
+     "high_retest_when_more_green": {
+      "n_events": 422,
+      "n_days": 56,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 33.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": 0.3,
+      "t_days": 1.65,
+      "gross_bps_per_trade": 0.22,
+      "timeouts": 15
+     },
+     "colour_with_vs_against_both_sides": {
+      "gap_pp": 0.6,
+      "se_pp": 2.6,
+      "t_days_bootstrap": 0.23,
+      "n_with": 457,
+      "n_against": 956,
+      "n_days": 60,
+      "clustered_by": "session date (2,000 resamples of days)"
+     },
+     "colour_with_vs_against_high_only": {
+      "gap_pp": 0.9,
+      "se_pp": 3.5,
+      "t_days_bootstrap": 0.25,
+      "n_with": 228,
+      "n_against": 422,
+      "n_days": 60,
+      "clustered_by": "session date (2,000 resamples of days)"
+     }
+    }
+   },
+   "index_funds_only": {
+    "e1_at_the_touch": {
+     "days_high_retest": {
+      "n_events": 231,
+      "n_days": 50,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 55.7,
+      "no_memory_pct": 53.9,
+      "excess_pp": 1.8,
+      "t_days": 2.18,
+      "gross_bps_per_trade": 0.33,
+      "timeouts": 1
+     },
+     "days_low_retest_mirror": {
+      "n_events": 276,
+      "n_days": 52,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 54.5,
+      "no_memory_pct": 54.5,
+      "excess_pp": 0.0,
+      "t_days": 1.72,
+      "gross_bps_per_trade": -0.07,
+      "timeouts": 6
+     },
+     "high_retest_when_more_red": {
+      "n_events": 73,
+      "n_days": 28,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 49.3,
+      "no_memory_pct": 51.7,
+      "excess_pp": -2.4,
+      "t_days": 0.79,
+      "gross_bps_per_trade": -1.03,
+      "timeouts": 0
+     },
+     "high_retest_when_more_green": {
+      "n_events": 150,
+      "n_days": 39,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 59.1,
+      "no_memory_pct": 55.0,
+      "excess_pp": 4.1,
+      "t_days": 2.32,
+      "gross_bps_per_trade": 1.07,
+      "timeouts": 1
+     },
+     "colour_with_vs_against_both_sides": {
+      "gap_pp": -7.4,
+      "se_pp": 4.2,
+      "t_days_bootstrap": -1.76,
+      "n_with": 160,
+      "n_against": 329,
+      "n_days": 60,
+      "clustered_by": "session date (2,000 resamples of days)"
+     },
+     "colour_with_vs_against_high_only": {
+      "gap_pp": -6.5,
+      "se_pp": 5.8,
+      "t_days_bootstrap": -1.11,
+      "n_with": 73,
+      "n_against": 150,
+      "n_days": 50,
+      "clustered_by": "session date (2,000 resamples of days)"
+     }
+    },
+    "e2_after_a_failed_close": {
+     "days_high_retest": {
+      "n_events": 144,
+      "n_days": 46,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.3,
+      "no_memory_pct": 33.3,
+      "excess_pp": -2.0,
+      "t_days": 1.18,
+      "gross_bps_per_trade": -1.0,
+      "timeouts": 4
+     },
+     "days_low_retest_mirror": {
+      "n_events": 171,
+      "n_days": 50,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 34.6,
+      "no_memory_pct": 33.3,
+      "excess_pp": 1.3,
+      "t_days": 1.8,
+      "gross_bps_per_trade": -0.06,
+      "timeouts": 7
+     },
+     "high_retest_when_more_red": {
+      "n_events": 42,
+      "n_days": 22,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 30.5,
+      "no_memory_pct": 33.3,
+      "excess_pp": -2.8,
+      "t_days": -0.01,
+      "gross_bps_per_trade": -0.94,
+      "timeouts": 2
+     },
+     "high_retest_when_more_green": {
+      "n_events": 98,
+      "n_days": 34,
+      "clustered_by": "session date, all names pooled",
+      "hit_pct": 31.9,
+      "no_memory_pct": 33.3,
+      "excess_pp": -1.5,
+      "t_days": 1.3,
+      "gross_bps_per_trade": -0.92,
+      "timeouts": 2
+     },
+     "colour_with_vs_against_both_sides": {
+      "gap_pp": -2.4,
+      "se_pp": 6.2,
+      "t_days_bootstrap": -0.38,
+      "n_with": 101,
+      "n_against": 203,
+      "n_days": 60,
+      "clustered_by": "session date (2,000 resamples of days)"
+     },
+     "colour_with_vs_against_high_only": {
+      "gap_pp": -1.3,
+      "se_pp": 7.0,
+      "t_days_bootstrap": -0.19,
+      "n_with": 42,
+      "n_against": 98,
+      "n_days": 46,
+      "clustered_by": "session date (2,000 resamples of days)"
+     }
+    }
+   },
+   "events_not_scored": {
+    "retest_on_the_last_bar": 57,
+    "gap_past_a_barrier": 219
+   }
+  }
+ },
+ "looks_in_this_file": 36,
+ "looks_with_the_rotation_study": 72,
+ "chance_of_one_t2_by_luck_all_looks": 0.97,
+ "status": "DESCRIPTION ONLY - not through edge-refute, nothing registered, no position follows from it"
+}
