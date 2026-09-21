@@ -3387,3 +3387,8 @@
 2026-09-21 11:19:26 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 769.17, quotes 2026-09-21T11:03:53)
 2026-09-21 11:24:27 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 769.55, quotes 2026-09-21T11:08:52)
 2026-09-21 11:29:27 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 769.7499, quotes 2026-09-21T11:13:52)
+2026-09-21 11:34:28 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 770.11, quotes 2026-09-21T11:18:53)
+2026-09-21 11:35:17 ET  DRY-RUN fetch ok: 154 contracts parsed for 2026-09-21 (spot 770.16, quotes 2026-09-21T11:19:53) — nothing written
+2026-09-21 11:35:18 ET  DRY-RUN fetch ok: 154 contracts parsed for 2026-09-21 (spot 770.16, quotes 2026-09-21T11:19:53) — nothing written
+2026-09-21 11:39:29 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 770.0, quotes 2026-09-21T11:23:54)
+2026-09-21 11:44:30 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 769.835, quotes 2026-09-21T11:28:53)
