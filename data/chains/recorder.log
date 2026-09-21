@@ -3392,3 +3392,16 @@
 2026-09-21 11:35:18 ET  DRY-RUN fetch ok: 154 contracts parsed for 2026-09-21 (spot 770.16, quotes 2026-09-21T11:19:53) — nothing written
 2026-09-21 11:39:29 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 770.0, quotes 2026-09-21T11:23:54)
 2026-09-21 11:44:30 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 769.835, quotes 2026-09-21T11:28:53)
+2026-09-21 11:49:30 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 769.99, quotes 2026-09-21T11:33:54)
+2026-09-21 11:54:31 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 770.3501, quotes 2026-09-21T11:38:54)
+2026-09-21 11:59:32 ET  wrote 154 rows -> SPY_2026-09-21.csv (spot 770.57, quotes 2026-09-21T11:43:54)
+2026-09-21 12:04:57 ET  FETCH ERROR (attempt incl. 2 retries): gaierror(8, 'nodename nor servname provided, or not known') [consecutive: 1]
+2026-09-21 12:10:23 ET  FETCH ERROR (attempt incl. 2 retries): gaierror(8, 'nodename nor servname provided, or not known') [consecutive: 2]
+2026-09-21 12:15:48 ET  FETCH ERROR (attempt incl. 2 retries): gaierror(8, 'nodename nor servname provided, or not known') [consecutive: 3]
+2026-09-21 12:21:14 ET  FETCH ERROR (attempt incl. 2 retries): gaierror(8, 'nodename nor servname provided, or not known') [consecutive: 4]
+2026-09-21 12:26:39 ET  FETCH ERROR (attempt incl. 2 retries): gaierror(8, 'nodename nor servname provided, or not known') [consecutive: 5]
+2026-09-21 12:32:04 ET  FETCH ERROR (attempt incl. 2 retries): gaierror(8, 'nodename nor servname provided, or not known') [consecutive: 6]
+2026-09-21 12:32:04 ET  FAILURE MARKER written: FAILURE_2026-09-21.txt (6 consecutive failures)
+2026-09-21 12:32:04 ET  full client re-init failed: gaierror(8, 'nodename nor servname provided, or not known')
+2026-09-21 12:37:42 ET  fetch recovered on retry 1 (prior: gaierror(8, 'nodename nor servname provided, or not known'))
+2026-09-21 12:37:42 ET  wrote 156 rows -> SPY_2026-09-21.csv (spot 771.53, quotes 2026-09-21T12:21:55)
