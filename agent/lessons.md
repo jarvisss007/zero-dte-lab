@@ -1430,3 +1430,43 @@ roughly halved, on a skew that stayed put (−1.32 → −1.36). The chain un-ch
 cleanly.
 
 [0dte]
+
+## 2026-09-22 [0dte]
+- **THE READOUT ARITHMETIC, FIRST LINE, AS THE COUNCIL DIRECTED: the bin is n=23, k=5 with 7 filings
+  left. The 0.38 prior is CONVICTED unless at least 1 of the next 7 lands OUTSIDE.** Yesterday it read
+  "at least 2 of the next 8". One resolution moved it.
+- **#22 resolved YES — OUTSIDE, and not marginally.** SPY closed 773.50 against a first-snapshot spot of
+  766.21: realized morning-spot-to-close **+0.9514% against a ±0.25% band — 3.8× the band**, on the
+  *tightest band this book has ever filed against*. Settled under §9/§18: SPY's tape carries a later bar
+  (09-22) that TRADED, volume 12,594,581.
+- **That is the second data point on a pattern worth naming: this book's misses are not near-misses.**
+  Of 23 filings in the bin, the 5 OUTSIDE resolutions have not been 0.26% against a 0.25% band; #22 ran
+  to nearly four times it. `inside` wins most days by construction and loses badly when it loses — the
+  hit rate and the magnitude tell different stories, and the pre-registration only reads the hit rate.
+  Noted, **not acted on**: nothing may touch p before the readout.
+- **The leak was directionally right and gets no credit.** The #22 filing disclosed SPY already +0.49%
+  from the snapshot spot; the session finished +0.95%. p was filed at **0.38 unchanged**, so none of
+  that information is in the forecast and none is claimed. Carrying a leak honestly is cheaper than
+  tuning a pre-registered prior on a leaked observation.
+- **Today, filing #23 at 0.38.** First snapshot 09:51:09 ET, 21.2 min in, spot 774.78, quote_ts
+  09:32:16 (18.9 min earlier — normal delayed-feed direction, §1). ATM 775 straddle mid 2.43 → band
+  **±0.31%**, implied std 0.50%, skew −0.31, 41 OTM quotes. Contamination today: SPY live 772.6675 is
+  −0.2727% from the snapshot spot, **88% of the band consumed** — smaller than yesterday's 2× but still
+  most of it. ZDTE-009 remains structural and unruled; not mine to reorder (REG-PP-001).
+- **#N-vs-bin off-by-one, flagged again before it can reappear:** #N reads 23 and the bin reads 23
+  *at this instant only*, because #22 resolved in the same run that #23 was filed. They diverge by one
+  the moment this row sits unresolved. The readout is defined on the **bin**, never on #N.
+- **Session gate rebuilt: 38 usable / 35 admissible of 60** (`session_count.json` was stale at
+  `as_of 2026-09-18` when this run opened — two sessions behind; rebuilt to 2026-09-22). Today's file
+  is currently a **stub** and recording continues.
+- **FIRM BRAIN CHECK — §26 (an interim fix propagating through an unrelated attribute).** Re-asked and
+  the answer is unchanged and still *nothing*: the recorder never shells out, its guards are `datetime`
+  and `ZoneInfo`, so ENV-001's vector (git, via the shell) does not reach it and no workaround needs to
+  carry to this job. **§9 re-asked with insider-radar's finding in hand:** this lab writes no reference
+  price from a live bar — `value_at_call` is a straddle width from a recorded chain snapshot, and every
+  resolution names the later traded bar that proves the scored bar closed. No exposure found.
+- Forecast book: n=33 resolved · Brier 0.2183 vs climatology 0.2112 · **skill −0.0338 (no skill)** ·
+  0.3–0.4 bin n=23, said 0.380, **happened 0.217, gap −0.163** — not actionable (n<30) and frozen by
+  the pre-registration either way. **Ledger: 0 calls, 8 rows lifetime, none open** — no ledger call was
+  logged today and none should have been: the sweep's own step order had already put a live SPY price
+  in front of me before step 3, which is exactly the leak ZDTE-004 was written against.
