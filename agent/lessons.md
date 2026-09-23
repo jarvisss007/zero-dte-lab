@@ -1470,3 +1470,15 @@ cleanly.
   the pre-registration either way. **Ledger: 0 calls, 8 rows lifetime, none open** — no ledger call was
   logged today and none should have been: the sweep's own step order had already put a live SPY price
   in front of me before step 3, which is exactly the leak ZDTE-004 was written against.
+
+## 2026-09-23 [0dte]
+- **#23 (09-22) → INSIDE (0)**, p 0.38. Realized −0.18% vs ±0.31%. **Bin n=24, k=5: CONVICTED unless ≥1 of
+  the next 6 lands OUTSIDE.** The 0.3–0.4 bin now says 0.380, happened 0.208 (n=24).
+- **Yahoo's DAILY SPY bar for 09-22 is null** (and a period-query returns 666.84 — garbage, not a price).
+  Resolved from two agreeing readers of the settled close (CBOE 16:00 stamp 773.38; Yahoo 1h 773.44) and
+  said so on the row. A named source that fails is a disclosure, never a license to guess.
+- **No chain today.** Recorder first invoked 10:43 ET (Mac asleep), then every snapshot skipped because
+  CBOE's delayed book was still stamped 09-22 16:00 at 11:34 ET. The pre-registered series SKIPS a day with
+  no band; it does not invent one. The mandatory row went to a base-rate SPY size question (p 0.31).
+- **ZDTE-004 recurred**: the sweep showed live SPY (india strip, 768.89) before step 3. Moot today (no chain),
+  named anyway.
