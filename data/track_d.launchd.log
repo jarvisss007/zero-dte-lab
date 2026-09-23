@@ -146,3 +146,13 @@ Track D: scored 0 legs this run; 30 legs over 15 entry days
   +30m         -2.5  10/30
   settle      -12.4  9/30
   NOT READABLE: 15/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
+REFUSED: no chain file for 2026-09-23
+Track D: scored 0 legs this run; 32 legs over 16 entry days
+  horizon    mean%   win     (both legs pooled — direction-free read)
+  +5m          -3.4  12/32
+  +10m         -4.5  14/32
+  +15m         -3.9  12/32
+  +20m         -5.5  14/32
+  +30m         -3.1  11/32
+  settle      -14.1  10/32
+  NOT READABLE: 16/30 entry days. Twelve numbers per session are ONE observation; n_days is the only n.
