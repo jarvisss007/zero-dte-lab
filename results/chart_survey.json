@@ -1,0 +1,63 @@
+{
+ "generated": "2026-09-22T20:25-07:00",
+ "week": "2026-09-14",
+ "rows_added": 0,
+ "registry_is_frozen": "a run never adds a pattern; adding one costs a trial and is Anupam's ruling",
+ "this_week": {
+  "zone_rotation": {
+   "asks": "after a visit to premium (discount) and a pullback to equilibrium, does price get back to the zone it came from before it reaches the far one?",
+   "declared": "2026-09-19",
+   "first_verdict": "SPY 5m 2024-25 +7.8pp t 2.2; NOT replicated out of that span; +0.5pp on his names",
+   "n_events": 21,
+   "n_days": 3,
+   "clustered_by": "session date, all names pooled",
+   "hit_pct": 63.7,
+   "no_memory_pct": 56.2,
+   "excess_pp": 7.5,
+   "t_days": 0.68,
+   "ambiguous_dropped": 0
+  },
+  "day_high_retest": {
+   "asks": "back at the day's high a second time, does it reject (-1 ATR) before it breaks (+1 ATR)?",
+   "declared": "2026-09-19",
+   "first_verdict": "46.0% vs a 46.3% no-memory line on 576 events \u2014 a coin",
+   "n_events": 177,
+   "n_days": 5,
+   "clustered_by": "session date, all names pooled",
+   "hit_pct": 57.0,
+   "no_memory_pct": 52.4,
+   "excess_pp": 4.7,
+   "t_days": 1.61,
+   "ambiguous_dropped": 0
+  },
+  "bos_followthrough": {
+   "asks": "after a break of structure, does price keep going 1.5 ATR before giving back 1.5 ATR?",
+   "declared": "2026-09-22",
+   "first_verdict": "47.8% vs 50% on SPY 5m and on his 16 names \u2014 a coin; bullish breaks faded (t -3.0)",
+   "n_events": 220,
+   "n_days": 5,
+   "clustered_by": "session date, all names pooled",
+   "hit_pct": 53.8,
+   "no_memory_pct": 50.0,
+   "excess_pp": 3.8,
+   "t_days": 0.86,
+   "ambiguous_dropped": 0
+  }
+ },
+ "forward_record": {
+  "zone_rotation": {
+   "weeks": 0
+  },
+  "day_high_retest": {
+   "weeks": 0
+  },
+  "bos_followthrough": {
+   "weeks": 0
+  }
+ },
+ "cells_scored_this_week": 3,
+ "chance_of_one_t2_by_luck_this_week": 0.13,
+ "promotion_bar": "8 weeks of forward evidence AND |t| >= 2.0 on that record alone",
+ "candidates_for_anupam": [],
+ "status": "DESCRIPTION ONLY \u2014 proposes no rule, registers no variant, takes no position"
+}
