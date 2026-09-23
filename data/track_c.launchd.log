@@ -66,3 +66,7 @@ REGISTERED TC-SPY-20260922: BUY 775C @1.10 / BUY 775P @1.34 · debit 2.44 (mid 2
 Track C: scored 0 this run; 14/16 sessions closed
   n=14 sessions (rows ARE independent days) win 5/14 mean -2.1% median -34.0% mean $ -0.25/straddle
   NOT READABLE: 14/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
+REFUSED: no chain file for 2026-09-23 — the recorder did not run
+Track C: scored 0 this run; 15/16 sessions closed
+  n=15 sessions (rows ARE independent days) win 5/15 mean -4.2% median -33.6% mean $ -0.29/straddle
+  NOT READABLE: 15/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
