@@ -73,3 +73,7 @@ Track C: scored 0 this run; 15/16 sessions closed
 error: RPC failed; curl 56 Recv failure: Operation timed out
 send-pack: unexpected disconnect while reading sideband packet
 fatal: the remote end hung up unexpectedly
+REFUSED: no chain file for 2026-09-24 — the recorder did not run
+Track C: scored 0 this run; 15/16 sessions closed
+  n=15 sessions (rows ARE independent days) win 5/15 mean -4.2% median -33.6% mean $ -0.29/straddle
+  NOT READABLE: 15/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
