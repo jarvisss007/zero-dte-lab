@@ -1,0 +1,96 @@
+{
+ "generated": "2026-09-23T18:28-07:00",
+ "status": "DESCRIPTION ONLY - EV-3 stays as Anupam ruled it; this registers nothing and takes no position",
+ "A_refused_straddles": {
+  "n": 0,
+  "reason": "117 rows carry an outcome and every one is 'void' (pre-OPT-020 rows with no price); the 146 PRICED refusals expire 2026-10-09 -> 2026-10-23 and none has settled. Re-run after 2026-10-23."
+ },
+ "A_ruin": {},
+ "B_spy_0dte": {
+  "label": "SPY 0DTE ATM straddles, first snapshot -> close",
+  "n_structures": 1277,
+  "n_days": 17,
+  "clustered_by": "session date",
+  "seller_win_pct": 72.8,
+  "seller_mean_per_share": 0.43,
+  "seller_median_per_share": 0.65,
+  "t_days": 2.65,
+  "premium_collected_total": 2929.82,
+  "net_after_payouts": 549.18,
+  "keep_ratio_pct": 18.7,
+  "worst_single": -9.59,
+  "worst_five": [
+   -9.59,
+   -9.36,
+   -9.25,
+   -8.07,
+   -7.53
+  ],
+  "worst_single_as_pct_of_all_premium_ever_collected": 0.3,
+  "worst_single_vs_mean_win": 9.0,
+  "note": "priced at the buyer's ASK - a ceiling for the seller",
+  "DAY_LEVEL_the_true_n": {
+   "sessions": 17,
+   "days_seller_won": 13,
+   "mean_day": 0.431,
+   "worst_day": -1.091,
+   "worst_day_vs_avg_winning_day": 1.5,
+   "avg_premium_collected_per_share": 2.29,
+   "avg_spy_level": 756.6
+  },
+  "HOW_QUIET_WAS_THE_SAMPLE": {
+   "sample_mean_realized_move_pct": 0.25,
+   "sample_MAX_realized_move_pct": 0.86,
+   "spy_history_sessions": 8180,
+   "spy_history_mean_move_pct": 0.79,
+   "spy_95th_pct_move": 2.33,
+   "spy_99th_pct_move": 4.18,
+   "spy_max_move_pct": 14.52,
+   "share_of_history_days_moving_2pct_or_more": 7.4,
+   "chance_of_drawing_17_days_with_no_2pct_move": 27.0,
+   "verdict": "the sample's LARGEST day was barely above SPY's AVERAGE day; not one of the 17 was a normal-sized down day"
+  },
+  "THE_TAIL_THE_SAMPLE_NEVER_SAW": {
+   "a_95th_percentile_day (about once every 3 weeks)": {
+    "spy_move_pct": 2.33,
+    "payout_per_share": 17.66,
+    "seller_pnl_per_share": -15.37,
+    "average_winning_days_erased": 21.0
+   },
+   "a_99th_percentile_day (about 2-3 a year)": {
+    "spy_move_pct": 4.18,
+    "payout_per_share": 31.64,
+    "seller_pnl_per_share": -29.35,
+    "average_winning_days_erased": 40.2
+   },
+   "the_worst_day_on_file": {
+    "spy_move_pct": 14.52,
+    "payout_per_share": 109.85,
+    "seller_pnl_per_share": -107.56,
+    "average_winning_days_erased": 147.3
+   }
+  }
+ },
+ "B_ruin": {
+  "1_contracts": {
+   "worst_event_usd": 959,
+   "mean_win_usd": 43.0,
+   "events_of_mean_income_erased": 22.3
+  },
+  "5_contracts": {
+   "worst_event_usd": 4795,
+   "mean_win_usd": 215.0,
+   "events_of_mean_income_erased": 22.3
+  },
+  "10_contracts": {
+   "worst_event_usd": 9590,
+   "mean_win_usd": 430.0,
+   "events_of_mean_income_erased": 22.3
+  },
+  "25_contracts": {
+   "worst_event_usd": 23975,
+   "mean_win_usd": 1075.0,
+   "events_of_mean_income_erased": 22.3
+  }
+ }
+}
