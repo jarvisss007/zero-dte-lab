@@ -1,3 +1,26 @@
 {
- "rows": []
+ "rows": [
+  {
+   "week": "2026-09-21",
+   "pattern": "zone_rotation",
+   "measured_on": "2026-09-25",
+   "n_events": 28,
+   "n_days": 3,
+   "hit_pct": 62.7,
+   "no_memory_pct": 52.6,
+   "excess_pp": 10.1,
+   "t_days": 2.33
+  },
+  {
+   "week": "2026-09-21",
+   "pattern": "day_high_retest",
+   "measured_on": "2026-09-25",
+   "n_events": 212,
+   "n_days": 5,
+   "hit_pct": 55.2,
+   "no_memory_pct": 53.8,
+   "excess_pp": 1.4,
+   "t_days": 0.32
+  }
+ ]
 }
