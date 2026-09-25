@@ -1482,3 +1482,17 @@ cleanly.
   no band; it does not invent one. The mandatory row went to a base-rate SPY size question (p 0.31).
 - **ZDTE-004 recurred**: the sweep showed live SPY (india strip, 768.89) before step 3. Moot today (no chain),
   named anyway.
+
+## 2026-09-25 [0dte]
+- **09-23 size row → NO (0)**, p 0.31: Yahoo daily 767.81 → 767.18 = −0.082%, far inside 0.75%. Settled (09-25 traded).
+  Forecast book n=35: Brier 0.2127 vs climatology 0.2041, **skill −0.0424 (no skill)**; 0.3–0.4 bin n=25, said 0.377,
+  happened 0.200 — still not actionable (n<30).
+- **#24 of the frozen 0.38 series FILED** off the 09:48:32 ET first snapshot (18.5 min in, band ±0.34%), before any live
+  price read — ZDTE-004 order held this run. Bin n=24, k=5: CONVICTED unless ≥1 of #24–#30 lands OUTSIDE.
+- **09-24 = missed — late retry.** The retry filed a forward-only size row (09-24 → 09-25) after the close; it stays and
+  resolves at check+1 like any row. It is NOT counted as a pre-session read.
+- **NEW (§19 instance): CBOE's stale book carries a MOVING spot under an old stamp.** 09:33–09:43 ET today the book was
+  stamped 2026-09-24T16:00 but its spot read 769.68 / 769.29 / 768.86 — none is the settled 09-24 close (767.18). So a
+  stale-stamped CBOE spot is NOT a reader of the settled close. 09-23 used exactly that reader (773.38) for #23's 09-22
+  close; re-checked today, Yahoo daily now prints 773.38 — same number, verdict unaffected. Never use it again.
+- Session gate rebuilt: 09-22 completed (was a stub at write time) → **39 usable / 36 admissible of 60**; 09-23 no file, 09-24 stub.
