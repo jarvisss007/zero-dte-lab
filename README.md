@@ -381,3 +381,10 @@ holds/breaks), scores them same-day at the close with no excuses, and appends bl
 takeaways to `agent/lessons.md`. **Honesty note:** calibration only, not trades —
 no claim of edge; the 60+-session straddle-underpricing test remains the project's
 real verdict. Procedure: `agent/AGENT.md`.
+
+## A stale-CBOE day is recorded, labelled, apart (ZDTE-010 (c), ruled by Anupam 2026-09-25)
+
+When CBOE's delayed book is stale (newest trade > 30 min old) the recorder writes the fresh source's SPY chain to
+`data/chains/SPY_<date>.yfinance.csv` — same columns, `source=yfinance` stamped on every row, greeks blank — so the
+session is not lost to research. Tracks A, C and D stay CBOE-only and read `SPY_<date>.csv` only; a fallback file
+feeds no pre-registered book until a ruling names it, per track.

@@ -202,6 +202,59 @@ def write_failure_marker(state: dict, now_et: datetime, err: Exception) -> None:
 
 # ---------------------------------------------------------------- main
 
+def _fallback_record(expiry: str, now_et: datetime, cboe_ts: str) -> None:
+    """ZDTE-010, ruled by Anupam 2026-09-25 (option c): when CBOE serves a stale book, record the same chain from the
+    fresh source to a SEPARATE, labelled file - SPY_<date>.yfinance.csv - so the session is not lost to research.
+    Tracks C and D read SPY_<date>.csv only and stay CBOE-only; a fallback file never feeds a pre-registered book
+    until a ruling names it. On 2026-09-23 and 09-24 CBOE was stale through the morning and both tracks lost the day.
+    Greeks and sizes are blank (the source has none); every row carries source=yfinance in fetched_at_et."""
+    try:
+        import yfinance as yf
+        t = yf.Ticker("SPY")
+        try:
+            spot = float(t.fast_info["last_price"])
+        except Exception:
+            spot = float(t.history(period="1d", interval="1m")["Close"].iloc[-1])
+        oc = t.option_chain(expiry)
+        et = ZoneInfo("America/New_York")
+        rows, newest = [], None
+        lo, hi = spot * (1 - STRIKE_BAND), spot * (1 + STRIKE_BAND)
+        for cp, df in (("C", oc.calls), ("P", oc.puts)):
+            for _, r in df.iterrows():
+                k = float(r.get("strike") or 0)
+                if not lo <= k <= hi:
+                    continue
+                ltd = r.get("lastTradeDate")
+                lt = None
+                if ltd is not None and str(ltd) != "NaT":
+                    try:
+                        lt = ltd.tz_convert(et).replace(tzinfo=None)
+                    except Exception:
+                        lt = None
+                if lt and (newest is None or lt > newest):
+                    newest = lt
+                rows.append({
+                    "fetched_at_et": now_et.strftime("%Y-%m-%d %H:%M:%S") + " source=yfinance",
+                    "quote_ts": lt.strftime("%Y-%m-%dT%H:%M:%S") if lt else "", "spot": spot, "expiry": expiry,
+                    "type": cp, "strike": k, "bid": r.get("bid"), "ask": r.get("ask"), "bid_size": None, "ask_size": None,
+                    "last_trade_price": r.get("lastPrice"), "iv": r.get("impliedVolatility"), "delta": None, "gamma": None,
+                    "theta": None, "vega": None, "rho": None, "volume": r.get("volume"), "open_interest": r.get("openInterest"),
+                })
+        if not rows or newest is None:
+            log(f"fallback: no {expiry} contracts from the fresh source either"); return
+        if now_et.replace(tzinfo=None) - newest > timedelta(minutes=STALE_MIN):
+            log(f"fallback: the fresh source is stale too (newest trade {newest}) - nothing recorded"); return
+        out = OUT_DIR / f"SPY_{expiry}.yfinance.csv"
+        tmp = out.with_suffix(".csv.tmp")
+        with open(tmp, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=FIELDS); w.writeheader(); w.writerows(rows)
+        tmp.replace(out)
+        log(f"fallback: wrote {len(rows)} rows -> {out.name} (source yfinance, newest trade {newest}; CBOE stale at {cboe_ts}) "
+            f"- research only, the tracks read SPY_{expiry}.csv (ZDTE-010 (c))")
+    except Exception as e:
+        log(f"fallback unavailable ({type(e).__name__}: {e}) - CBOE's stale book stands")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true",
@@ -274,6 +327,8 @@ def main() -> int:
             age = now_et.replace(tzinfo=None) - datetime.fromisoformat(quote_ts)
             if age > timedelta(minutes=STALE_MIN):
                 log(f"skip: stale quotes ({quote_ts} ET, spot {spot})")
+                if not args.dry_run:
+                    _fallback_record(args.expiry or now_et.strftime("%Y-%m-%d"), now_et, quote_ts)
                 return 0
         except ValueError:
             pass  # unparseable timestamp: record anyway
