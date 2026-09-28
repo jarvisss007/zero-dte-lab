@@ -135,7 +135,9 @@ def _official_close(day):
         _sp = _iu.spec_from_file_location("_options_settle", os.path.expanduser("~/stock-radar/options_settle.py"))
         _m = _iu.module_from_spec(_sp); _sp.loader.exec_module(_m)
         return _m.close_on("SPY", day)
-    except Exception:
+    except Exception as e:
+        if type(e).__name__ == "NotSettled":   # SETTLE-002: close_on itself refuses an unsettled day; the row waits and says why
+            print(f"  {e}")
         return None
 
 def score(day=None):
@@ -145,6 +147,12 @@ def score(day=None):
     cache = {}
     for r in book:
         if r.get("outcome") or r["session"] > day:
+            continue
+        # SETTLE-002 (Anupam, ruled 2026-09-27): the scorer's gate is SETTLEDNESS, not only the 15:55 ET
+        # snapshot clock below — that clock alone left 15:55-16:05 ET (12:55-13:05 PT) in which today's
+        # still-forming SPY price could come back as the close. The snapshot check still stands for its own data.
+        import sessions
+        if r["session"] > sessions.settled_session().isoformat():
             continue
         if r["session"] not in cache:
             cache[r["session"]] = _snapshots(r["session"])[0]

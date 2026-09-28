@@ -14,13 +14,26 @@ Holidays are listed explicitly (NYSE published calendar); early closes are infor
 MIRROR: zero-dte-lab/src/sessions.py is a byte-identical copy (CI runs that repo alone);
 the resolver check sessions_calendar fails if the two ever differ.
 
-When the list runs out the calendar degrades to weekdays-only and SAYS so on the CLI.
+HORIZON GUARD — SESSION-006 (Anupam, ruled 2026-09-27, option (a) "refuse outside the range,
+staged"). The calendar only KNOWS [CALENDAR_BEGINS, CALENDAR_ENDS]; outside it, "weekday and not a
+listed holiday" is a guess presented as an answer (Christmas 2019 read as a session until
+SESSION-005). The guard is symmetric in both directions, like sessions_nse.py after SESSION-004:
+  * stage 1 (now, until REFUSE_FROM): an out-of-range date still gets the old weekday answer, but
+    every such call WARNS on stderr, naming the date, and is recorded in OUT_OF_RANGE_SEEN — loud,
+    never silent, so any caller that crosses the range is found before the flip;
+  * stage 2 (from REFUSE_FROM, a Saturday before the ruled 2027-06-30 deadline, so the flip never
+    lands mid-session): an out-of-range date RAISES CalendarExhausted. No opt-out exists; set
+    SESSIONS_STRICT=1 to get stage 2 today (the self-test does).
+Caller audit 2026-09-27: every tape starts on/after 2011-09-19, no book or ledger holds a date
+past 2027-12-31, and no code probes a literal out-of-range date — so stage 1 should print nothing.
+Before REFUSE_FROM: extend HOLIDAYS through 2028 (NYSE publishes it) and move CALENDAR_ENDS.
 
 CLI:   python sessions.py            -> status line; exit 0 = session today, 1 = not
        python sessions.py --settled  -> ISO date of the last settled session
        python sessions.py 2026-09-07 -> status for that date
+       python sessions.py --selftest -> asserts the SESSION-006 guard both ways; exit 0 = pass
 """
-import datetime as dt, sys
+import atexit, datetime as dt, os, sys
 
 HOLIDAYS = {
     # SESSION-005 EXTENDED 2026-09-18: coverage pushed back to the price panel's own
@@ -178,22 +191,74 @@ HOLIDAYS = {
     "2027-09-06": "Labor Day", "2027-11-25": "Thanksgiving Day", "2027-12-24": "Christmas Day (observed)",
 }
 EARLY_CLOSES = {"2026-11-27": "13:00 ET", "2026-12-24": "13:00 ET", "2027-11-26": "13:00 ET"}
+CALENDAR_BEGINS = "2011-09-12"   # SESSION-006: the first day of the estate's longest tape (strategy-lab/data/close.csv); SESSION-005 verified holidays from here, not from 2011-01-01
 CALENDAR_ENDS = "2027-12-31"
+REFUSE_FROM = "2027-06-26"       # SESSION-006 stage 2: from this (PT) date an out-of-range date raises instead of warning
 CLOSE_PT = (13, 0)          # 16:00 ET on a full session
 SETTLED_PT = (13, 5)        # the close is settled a few minutes after the bell
 
 
+class CalendarExhausted(ValueError):
+    """SESSION-006: asked about a date this calendar has no evidence for."""
+
+
+OUT_OF_RANGE_SEEN = set()   # SESSION-006 stage 1: every out-of-range date asked this process (the audit trail)
+_WARN_LINES = 5
+
+
+def _now_pt():
+    """The PT wall clock regardless of the machine's zone (SETTLE-002: GitHub runners are UTC, and the
+    settled cutoff is written in PT). Falls back to the local clock only if no tz database exists."""
+    try:
+        import zoneinfo
+        return dt.datetime.now(zoneinfo.ZoneInfo("America/Los_Angeles")).replace(tzinfo=None)
+    except Exception:
+        return dt.datetime.now()
+
+
+def _strict():
+    return os.environ.get("SESSIONS_STRICT") == "1" or _now_pt().date().isoformat() >= REFUSE_FROM
+
+
+def _check_horizon(d):
+    """SESSION-006: symmetric — the floor and the ceiling are treated identically (no one-sided guard)."""
+    iso = d.isoformat()[:10]
+    if CALENDAR_BEGINS <= iso <= CALENDAR_ENDS:
+        return
+    side = "before the floor" if iso < CALENDAR_BEGINS else "past the end"
+    msg = (f"sessions.py has no calendar for {iso} ({side}; it knows {CALENDAR_BEGINS}..{CALENDAR_ENDS}). "
+           f"A weekday outside that range is NOT evidence of a session.")
+    if _strict():
+        raise CalendarExhausted(msg + " Refused (SESSION-006).")
+    if iso not in OUT_OF_RANGE_SEEN:
+        OUT_OF_RANGE_SEEN.add(iso)
+        if len(OUT_OF_RANGE_SEEN) <= _WARN_LINES:
+            print(f"SESSION-006 WARNING: {msg} Answering weekdays-only as a GUESS; from {REFUSE_FROM} this raises "
+                  f"CalendarExhausted. Caller: fix it or extend HOLIDAYS.", file=sys.stderr)
+
+
+@atexit.register
+def _report_out_of_range():
+    if len(OUT_OF_RANGE_SEEN) > _WARN_LINES:
+        print(f"SESSION-006 WARNING: {len(OUT_OF_RANGE_SEEN)} out-of-range dates were answered as guesses this run "
+              f"({min(OUT_OF_RANGE_SEEN)}..{max(OUT_OF_RANGE_SEEN)}); from {REFUSE_FROM} each one raises.", file=sys.stderr)
+
+
 def _d(x):
+    if isinstance(x, dt.datetime):   # SESSION-006 audit: a datetime's isoformat() never matched a HOLIDAYS key, so a holiday datetime read as a session
+        return x.date()
     return x if isinstance(x, dt.date) else dt.date.fromisoformat(str(x)[:10])
 
 
 def is_session(d):
     d = _d(d)
+    _check_horizon(d)   # SESSION-006
     return d.weekday() < 5 and d.isoformat() not in HOLIDAYS
 
 
 def why_closed(d):
     d = _d(d)
+    _check_horizon(d)   # SESSION-006
     if d.weekday() >= 5:
         return "weekend"
     return HOLIDAYS.get(d.isoformat(), "")
@@ -225,7 +290,7 @@ def roll_to_session(d):
 def settled_session(now=None, cutoff=SETTLED_PT):
     """The most recent session whose close is settled (PT clock): today if today is a
     session and the clock is past `cutoff`, else the previous session."""
-    now = now or dt.datetime.now()
+    now = now or _now_pt()   # SETTLE-002: the cutoff is PT, so read the PT clock even on a UTC runner (identical on the Mac)
     d = now.date()
     if is_session(d) and (now.hour, now.minute) >= cutoff:
         return d
@@ -254,7 +319,34 @@ def status_line(d=None):
     return s
 
 
+def _selftest():
+    """SESSION-006: the guard refuses BOTH ends under stage 2 and warns (never silently answers) under stage 1."""
+    global _strict
+    real = _strict
+    try:
+        _strict = lambda: True
+        for w in ("2011-09-09", "2008-12-25", "2028-01-17", "2030-07-04"):
+            for fn in (is_session, why_closed):
+                try:
+                    fn(w)
+                except CalendarExhausted:
+                    continue
+                raise AssertionError(f"{fn.__name__}({w}) answered instead of refusing")
+        assert is_session(CALENDAR_BEGINS) and is_session("2027-12-31") and not is_session("2019-12-25")
+        _strict = lambda: False
+        OUT_OF_RANGE_SEEN.clear()
+        assert is_session("2030-07-04") is True and "2030-07-04" in OUT_OF_RANGE_SEEN   # stage 1: answers, but on the record
+        assert not is_session(dt.datetime(2026, 9, 7, 10, 0))   # Labor Day as a datetime is not a session
+        OUT_OF_RANGE_SEEN.clear()
+    finally:
+        _strict = real
+    print(f"sessions selftest: PASS — {CALENDAR_BEGINS}..{CALENDAR_ENDS}; both ends refuse under stage 2 "
+          f"(from {REFUSE_FROM}); stage 1 warns and records")
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        _selftest(); sys.exit(0)
     if "--settled" in sys.argv:
         print(settled_session().isoformat()); sys.exit(0)
     arg = next((a for a in sys.argv[1:] if not a.startswith("-")), None)
