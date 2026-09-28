@@ -1496,3 +1496,12 @@ cleanly.
   stale-stamped CBOE spot is NOT a reader of the settled close. 09-23 used exactly that reader (773.38) for #23's 09-22
   close; re-checked today, Yahoo daily now prints 773.38 — same number, verdict unaffected. Never use it again.
 - Session gate rebuilt: 09-22 completed (was a stub at write time) → **39 usable / 36 admissible of 60**; 09-23 no file, 09-24 stub.
+
+## 2026-09-28 [0dte]
+- **#24 (09-25) → OUTSIDE (1)**, p 0.38: 771.35 vs 767.98 spot = +0.44% vs ±0.34%. **Bin n=25, k=6 — the pre-registered
+  conviction (k≤5 of 30) is now off the table**; at the readout the 0.38 prior reads as noise, not convicted. Say it plainly:
+  the series survived on one print, not on skill.
+- **09-24 size row → NO (0)**, p 0.31: +0.54% close-to-close. Book n=37: Brier 0.2142 vs clim 0.2089, **skill −0.025 (none)**.
+  0.3–0.4 bin n=27, said 0.375, happened 0.222 — overconfident, still n<30.
+- **ZDTE-009 (a) held on its first run**: #25 filed off the 09:52:00 ET first snapshot (22 min in, ±0.39%) BEFORE any live
+  SPY read. First clean-order filing under the ruling.
