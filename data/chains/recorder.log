@@ -3814,3 +3814,9 @@
 2026-09-29 09:38:13 ET  fallback: the fresh source is stale too (newest trade 2026-09-28 16:14:59) - nothing recorded
 2026-09-29 09:43:14 ET  skip: stale quotes (2026-09-28T16:00:00 ET, spot 766.8)
 2026-09-29 09:43:16 ET  fallback: the fresh source is stale too (newest trade 2026-09-28 16:14:59) - nothing recorded
+2026-09-29 09:48:17 ET  skip: stale quotes (2026-09-28T16:00:00 ET, spot 766.7)
+2026-09-29 09:48:18 ET  fallback: wrote 154 rows -> SPY_2026-09-29.yfinance.csv (source yfinance, newest trade 2026-09-29 09:33:14; CBOE stale at 2026-09-28T16:00:00) - research only, the tracks read SPY_2026-09-29.csv (ZDTE-010 (c))
+2026-09-29 09:53:19 ET  wrote 152 rows -> SPY_2026-09-29.csv (spot 765.675, quotes 2026-09-29T09:37:05)
+2026-09-29 09:58:19 ET  wrote 152 rows -> SPY_2026-09-29.csv (spot 765.6595, quotes 2026-09-29T09:41:51)
+2026-09-29 10:03:20 ET  wrote 154 rows -> SPY_2026-09-29.csv (spot 765.095, quotes 2026-09-29T09:47:52)
+2026-09-29 10:08:21 ET  wrote 152 rows -> SPY_2026-09-29.csv (spot 765.29, quotes 2026-09-29T09:52:48)
