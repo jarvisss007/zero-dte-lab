@@ -1505,3 +1505,13 @@ cleanly.
   0.3–0.4 bin n=27, said 0.375, happened 0.222 — overconfident, still n<30.
 - **ZDTE-009 (a) held on its first run**: #25 filed off the 09:52:00 ET first snapshot (22 min in, ±0.39%) BEFORE any live
   SPY read. First clean-order filing under the ruling.
+
+## 2026-09-29 [0dte]
+- **#25 (09-28) → INSIDE (0)**, p 0.38: 765.61 vs 768.44 spot = -0.368% vs ±0.39%. Bin n=26, k=6 — still off the
+  pre-registered-conviction table (crossed at n=25,k=6), now tracked not diagnostic of the original design.
+- **#26 filed** off the 09:53:19 ET first snapshot (23.3 min in, ±0.40%), BEFORE any live SPY read — ZDTE-009 (a)
+  held again (second clean run under the ruling; this lab ran as step 1 of the sweep both times).
+- Forecast book n=38: Brier 0.2124 vs clim 0.2057, **skill −0.0326 (no skill)**. 0.3–0.4 bin n=28, said 0.375,
+  happened 0.214 — overconfident, gap −0.161, still n<30.
+- Sabha §18 (later-bar-proves-a-trade check): SPY's own tape is never zero-volume, so the carry-forward-print
+  risk this entry warns about is structurally moot for this lab — named explicitly rather than skipped silently.
