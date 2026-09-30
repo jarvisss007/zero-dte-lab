@@ -6,7 +6,7 @@ Each final run was executed once. Checked outside the JSON: on the old data rang
 ## 1. Does holding a bought 0DTE option longer pay on average? No.
 - 45 complete sessions, 5,860 ATM call/put entries bought at the ask and sold at the bid. 48 of 49 grid cells are negative; the exception is 11:00 ET at +30m, +0.4%, one cell of 49.
 - Entry 10:00 ET (07:00 PT): +5m -1.1%, +10m -1.2%, +15m -1.1%, +20m -0.8%, +30m -0.4%; hold to settle -18.0% (32% win). Across entry hours settle runs -43.9% to -12.0%; late-day entries held long lose most.
-- FIRST-GREEN at 10:00 ET wins 74.1% of rows yet averages -6.8%: average win +22.2%, average loss -89.9%, loss/win 4.05x (996 rows, 43 sessions). His own record is 2.8x; the rule is loss-heavy by construction.
+- FIRST-GREEN at 10:00 ET wins 74.1% of rows yet averages -6.8%: average win +22.2%, average loss -89.9%, loss/win 4.05x (996 rows, 43 sessions): the rule is loss-heavy by construction.
 - The 2026-08-31 read (26 sessions), 10:00 ET: short holds -1.3%..-2.1%, settle -25.0%, FIRST-GREEN -8.3%. Same story, slightly kinder now.
 
 ## 2. Does his 07:25 -> 08:05 PT pattern (10:25 -> 11:05 ET) make money on average? Not measurably.
@@ -18,7 +18,7 @@ One entry per session at the snapshot nearest 10:25 ET on the market clock, boug
 | ATM call | +4.9% / -5.8% | 45.2% | +51.0% / -34.7% (0.68x) | -17.6% / 28.6% |
 | 1-strike-OTM call | +6.5% / -10.9% | 45.2% | +61.8% / -39.2% (0.63x) | -15.8% / 21.4% |
 - Puts lose (t -1.02 and -1.11); calls are positive on the mean but negative on the median (t 0.56 and 0.6). Nothing in the +40m column separates from zero; the one cell past |t| 2 is the OTM put held to settle (t -2.48), one of 26 looks today.
-- A timed exit gives loss/win of 1.01x-1.06x on puts. His 2.8x sits between that and FIRST-GREEN's 4.05x, nearer the take-the-small-green, ride-the-red shape than a clock exit.
+- A timed exit gives loss/win of 1.01x-1.06x on puts, against FIRST-GREEN's 4.05x: a clock exit keeps wins and losses the same size; take-the-small-green, ride-the-red does not.
 - Same cells on the grid's own fetch clock (recorder poll at 10:25, market time about 10:09): calls +2.1% / +2.8%, puts -2.1% / -2.2%. Same conclusion.
 
 ## 3. The seller's side, full sample: positive on average in this calm window, but thin for a single first-snapshot sale

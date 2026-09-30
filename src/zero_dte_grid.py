@@ -153,7 +153,7 @@ def run(out_path=OUT, through=None, added=False):
 #   PRIMARY reading - 10:25 means quotes that existed at 10:25. `fetched_at_et` is when the recorder polled; it is the
 #   clock the grid's own entry-hour labels use (its "10:00 ET" bucket is market time ~09:44-10:43).
 # FIRST-GREEN SHAPE. avg loss / avg win of the grid's own FIRST-GREEN rows per entry hour (headline: 10:00 ET).
-#   His own record shows losses averaging 2.8x wins; does the mechanical exit reproduce that shape?
+#   Does the mechanical take-the-first-profit exit produce a loss-heavy shape (losses several times the wins)?
 # SETTLE REFERENCE. The grid's settle uses the last recorded snapshot's spot, stamped ~15:47-15:52 ET (the feed is
 #   delayed), not the 16:00 close. Kept as the grid's own convention; the settle cells also show a labelled check
 #   against the official close (stock-radar/data/spy_daily.csv, written after the bell).
