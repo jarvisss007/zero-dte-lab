@@ -160,7 +160,7 @@ The 2026-08-08 delegated decision above (intraday spec: morning-spot to close) w
 Anupam explicitly at Review #2 and CONFIRMED as his ruling. The metric is unfrozen under
 that definition; this note closes ZDTE-001 in the desk register.
 
-## Call timestamp — the 09:47 snapshot (Anupam, 2026-08-12, ZDTE-002) — SUPERSEDED by ZDTE-003 (ii), 2026-09-29, below
+## Call timestamp — the 09:47 snapshot (Anupam, 2026-08-12, ZDTE-002)
 
 **Stamp every call to the 09:47 ET snapshot, not to the sweep that fires at 11:36.**
 The chain recorder captures from 09:29 every 5 minutes, so the data already exists.
@@ -216,28 +216,6 @@ pretending there is none**. A row stamped 57 minutes into the session is more
 contaminated than one stamped 15 minutes in, and now says so in a field the
 analysis can stratify on. Rows must never be blended across widely different
 `minutes_into_session` without reporting the split.
-
-### RATIFIED 2026-09-29 (ZDTE-003, option ii) — and the unfittable-first-snapshot case
-The 08-13 amendment above was written by the lab itself and never ruled; it is now the rule
-(decided under Anupam's delegation, 2026-09-30T04:34:10Z, in reply to the ZDTE-003 question
-with (ii) recommended; prereg-reviewed). ZDTE-002's 09:47 ET clock time is REPLACED by the
-**first snapshot of the session**: the earliest `fetched_at_et` in the CBOE recorder's
-`data/chains/SPY_<date>.csv`, whatever time it lands, recorded on the row as `snapshot_et`
-and `minutes_into_session`.
-- **Tracks C and D** enter at that first snapshot or refuse the session. They never step to a
-  later snapshot.
-- **This agent ledger**: if the first snapshot carries no fittable book (no usable OTM quotes,
-  or unfittable), stamp the call at the **earliest fittable snapshot** of the session and write
-  the skipped one on the row, in `thesis`, as
-  `[ZDTE-003: first snapshot <HH:MM:SS> unfittable (<reason>); stamped at <HH:MM:SS>]`.
-  Never skip past a fittable snapshot to a later one.
-- Scored rows keep the stamps they were written with (BENCH-002). The 08-12 (x2) and 08-20
-  rows, which already used this fallback, now conform; report rows stamped after a skipped
-  snapshot as their own stratum next to their `minutes_into_session`.
-- Ruled OUT: any clock-time rule; polling faster (that would re-register the Track C/D
-  entries); re-stamping or restating any scored row.
-- Open, not ruled here: the 09-10 first snapshot was fetched 09:46:37 but carries a book
-  stamp of 09:57:14 (Track D's scored 09-10 legs entered on it) — recorded, not resolved.
 
 ## CALIBRATION (2026-08-20) — read your own scorecard before you file
 Before filing any probabilistic forecast, read `~/command-center/council/calibration_table.json`
