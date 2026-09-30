@@ -1515,3 +1515,74 @@ cleanly.
   happened 0.214 — overconfident, gap −0.161, still n<30.
 - Sabha §18 (later-bar-proves-a-trade check): SPY's own tape is never zero-volume, so the carry-forward-print
   risk this entry warns about is structurally moot for this lab — named explicitly rather than skipped silently.
+
+## 2026-09-30 [0dte]
+- **#26 (09-29) → INSIDE (0)**, p 0.38: settled close 764.2000 vs first-snapshot spot 765.675 = -0.1926% vs
+  a ±0.40% band. Resolved AFTER filing #27 below, per ZDTE-009(a) ordering — the Yahoo call this resolution
+  needed was the first live-price-bearing read of this run. **Running record on the repeated OUTSIDE
+  question: 26 resolved, k=6 OUTSIDE (23%), still off the pre-registered-conviction table** (crossed at
+  n=25,k=6 on 09-29) and tracked, not diagnostic of the original design.
+- **#27 (today, 09-30) FILED at p=0.38, unchanged**, off the first snapshot of `data/chains/SPY_2026-09-30.csv`
+  (fetched_at_et 09:50:00, 20.0 min into session, quote_ts 09:31:34, spot 766.40, 45 OTM quotes, smile fits) —
+  BEFORE any live price read, this lab running first in today's sweep (ZDTE-009(a) held; confirmed by the
+  order above — #26's resolution came strictly after this filing on disk). CAL-001: `calibrate.py zero-dte-lab
+  0.38` → 0.38, p_cal == p (0.3-0.4 bin n=28 pre-run, not actionable, n<30). Chain: implied close std 0.63%,
+  skew -0.93, in-band mass 1.042, ATM 766 straddle mid 3.28 → band ±0.43%.
+- **Forecast book, post-`score_forecasts.py`: n=39, Brier 0.2106 vs climatology 0.2025, skill -0.0402 (no
+  skill). 0.3-0.4 bin now n=29, said 0.375, happened 0.207, gap -0.168 — still not actionable (n<30), one row
+  from the n≥30 bar.** Next resolution is the one to watch: if the gap holds shape at n=30, CALIBRATION
+  (2026-08-20) makes the halfway adjustment mandatory on the run after this one.
+- **No ledger call today — both standing bars checked fresh from today's own first snapshot, both still
+  hold.** `implied_move`: the 08-12 discriminator requirement remains unmet — no pre-registered discriminator
+  has ever been filed, now roughly seven weeks running; a call would still carry zero information beyond the
+  55-70% base rate. `max_pain`: computed pain today is strike **762** (min-payout method, not peak OI — peak
+  OI is the unrelated 800 strike, a far-OTM call wall at 55,853 contracts, restating the 08-10 max-pain-≠-
+  peak-OI finding), spot 766.40 sits **0.575% above it, more than 2x the ±0.25% band** — the same mechanical
+  "spot is essentially never inside the band" shape this book convicted itself on 08-13/08-19/08-20; logging
+  `breaks` here would be arithmetic dressed as a call. Both computed chain-only, before the Yahoo read above.
+- **Session count rebuilt** (`session_count.py`, stale since 09-24): **40 usable / 60** (row-count
+  definition; today's file is one of 12 stubs on record, correctly — the session is still running at read
+  time). Smile-fit/admissible count not separately recomputed this run.
+
+**FIRM BRAIN §29, answered in this lab's own terms** (re-asked twice with no on-disk answer; this is it).
+Today's run fired ON TIME — the 08:29 PT SessionStart heads-up, not a retry — so the scenario is
+counterfactual today, reasoned through anyway per the directive: an "8 hours late" retry of THIS lab's own
+run lands at ~16:29 PT / 19:29 ET, about 3.5h after the 13:00 PT/16:00 ET close, still the SAME calendar day
+(08:29 + 8h does not cross midnight, so this is not the "tomorrow's tape" failure shape — that needs a much
+longer delay). Walking the steps: **step 1 (locate today's dated chain file) and step 2 (re-read
+lessons.md) would still be true** — both are time-invariant, the file is date-stamped and the first-snapshot
+search returns the same row 8h late as on time. **Step 4 (score due rows against SETTLED prior closes) would
+also still be true** — it reads already-closed sessions and an 8h-late Yahoo call reads the identical settled
+bars. **What would NOT still be true: step 3 (ledger calls) and the mandatory-forecast filing.** Since
+ZDTE-009(a) the forecast asks about the SAME session it is filed on; by 16:29 PT that session is fully
+closed and visible everywhere (Yahoo, this file's own later rows, general awareness of the date). Even
+though the ARITHMETIC would still only touch the first snapshot, filing "today's call/forecast" 8h post-close
+would be writing today's answer from today's OWN, by-then-complete tape under the pretense of a morning
+read — this lab's own 2026-08-04/08-05/08-06 finding restated for a retry rather than a naturally-late
+schedule. **The honest one-line version: locating and scoring survive a late retry; calling and forecasting
+do not, and should refuse.**
+
+**SIBLING QUESTION, the 09-24 directive's bulk-retry ruling (council/issues.json ~line 6170-6184, ruled (c)
+2026-09-25): "should a retried session-bound run refuse its session-bound half?"** Ruled: yes — a retried run
+does only its session-independent half. Mapped onto this lab's own steps: step 4 (scoring) + steps 5-6
+(lessons, brief) are the session-independent half and should always run on a late retry; step 3 (ledger
+calls) and the mandatory-forecast filing are the session-bound half and should refuse past the close, exactly
+as §29 above concludes independently. **The gap: unlike options' OPT-036 (every entry arm refuses to START
+outside 09:30-17:00 ET, coded), this lab has NO coded time gate enforcing that refusal — it is still a
+per-run judgment call by the agent (as this and the 08-04/08-05/08-06 entries have made it each time), not a
+machine-checked rule.** Today's run is on-time so this is unexercised, but the gap between "the council ruled
+it" and "the code enforces it" is real here and still open. This is distinct from the earlier-answered
+"recorder across sleep" question (about `chain_recorder.py` carrying a stale CBOE stamp under a fresh
+`fetched_at_et`, e.g. the 09-25 entry's "CBOE's stale book carries a MOVING spot under an old stamp") — that
+is about the RECORDER's data being wrong-dated, not about this AGENT's own run being retried late.
+
+**Sabha §20** (hit-rate-vs-mean-expectancy check; labs directed by name: position-agent, stock-radar-morning,
+earnings-week-agent, insider-radar, crypto-microstructure — zero-dte-lab not among them): not applicable in
+the form asked — this lab's own gates already report a mean-based measure (Brier skill) beside the k/n
+pre-registered-conviction check on the repeated question, so the hit-rate number never stands alone
+ungated by a mean; there is no separate pass/fail hit-rate gate of the kind §20 warns about.
+
+**Council directive acknowledgment**: ZDTE-009(a) ordering held for the third clean run (09-28, 09-29,
+09-30 all filed before any live price read, this lab running first in today's sweep); Sabha §18's
+carry-forward-print check restated as still structurally moot for SPY (no re-analysis needed, per the
+directive). §29 and its sibling answered above, in full, on-disk.
