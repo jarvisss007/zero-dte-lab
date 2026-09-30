@@ -141,7 +141,7 @@ def run(out_path=OUT, through=None, added=False):
 # ADDED 2026-09-29 - extra looks, each COUNTED as a look (multiplicity). Nothing below feeds the grid above.
 # Definitions frozen here, before the first number was seen.
 #
-# HIS PATTERN. He enters near 07:25 PT (10:25 ET) and exits near 08:05 PT (+40 min). One entry per session:
+# TIMED ENTRY. One entry per session at the snapshot nearest 10:25 ET, sold +40 min later or held to settle:
 #   ATM call, ATM put, 1-strike-OTM call, 1-strike-OTM put, each bought at the ASK. Everything else is the grid's own:
 #   ATM = the strike nearest spot among strikes whose call AND put pass leg_ok; 1-strike OTM = the next LISTED strike
 #   away (call up, put down) and that leg must itself pass leg_ok; exit = the BID of the same contract at the first
@@ -211,7 +211,7 @@ def _stats(vals):
             "t_days": round(st.mean(vals) / (sd / math.sqrt(n)), 2) if sd > 0 else None}
 
 
-def _his_pattern(sessions, clock, off):
+def _timed_entry(sessions, clock, off):
     """sessions: [(day, snaps, stamps, close)]. One entry per session per structure -> (records, excluded)."""
     recs, excluded = [], defaultdict(list)          # excluded[reason] -> [session]
     for day, snaps, stamps, close in sessions:
@@ -276,8 +276,8 @@ def _his_pattern(sessions, clock, off):
     return recs, excluded
 
 
-def _his_pattern_block(sessions, clock, off):
-    recs, excluded = _his_pattern(sessions, clock, off)
+def _timed_entry_block(sessions, clock, off):
+    recs, excluded = _timed_entry(sessions, clock, off)
     cells = {}
     for name in STRUCTS:
         rs = [r for r in recs if r["structure"] == name]
@@ -322,29 +322,28 @@ def added_cells(files, fg, sess_of):
         "label": "ADDED 2026-09-29 - extra looks, counted as looks; nothing here feeds the grid above",
         "status": "DESCRIPTION ONLY - nothing registered, no position follows from it",
         "session_set_matches_grid": grid_days == {s[0] for s in sessions},
-        "his_pattern": {
-            "definition": f"entry at the snapshot nearest {ENTRY_HHMM} ET (07:25 PT), within {TOL_MIN} min; exit = bid "
-                          f"+{HOLD_MIN} min (08:05 PT) or settle; ATM/1-strike-OTM call and put bought at the ask; "
+        "timed_entry": {
+            "definition": f"entry at the snapshot nearest {ENTRY_HHMM} ET, within {TOL_MIN} min; exit = bid "
+                          f"+{HOLD_MIN} min or settle; ATM/1-strike-OTM call and put bought at the ask; "
                           "grid's own leg_ok, exit-snapshot rule and settle",
-            "PRIMARY_market_clock": _his_pattern_block(sessions, "market", off),
-            "grid_fetch_clock_reading": _his_pattern_block(sessions, "fetch", off)},
+            "PRIMARY_market_clock": _timed_entry_block(sessions, "market", off),
+            "grid_fetch_clock_reading": _timed_entry_block(sessions, "fetch", off)},
         "first_green_shape": {
             "headline_10:00_ET": _fg_shape(fg["10:00 ET"], len(sess_of["10:00 ET"])) if fg.get("10:00 ET")
                                  else {"reason": "no 10:00 ET FIRST-GREEN rows"},
-            "all_entry_hours_context": {hb: _fg_shape(v, len(sess_of[hb])) for hb, v in sorted(fg.items())},
-            "his_own_record_loss_over_win": 2.8},
+            "all_entry_hours_context": {hb: _fg_shape(v, len(sess_of[hb])) for hb, v in sorted(fg.items())}},
         "settle_reference_check": settle_ref,
-        "looks_added": {"his_pattern_market_clock_cells": n_cells,
-                        "his_pattern_settle_vs_official_close_check": len(STRUCTS),
-                        "his_pattern_fetch_clock_cells": n_cells,
+        "looks_added": {"timed_entry_market_clock_cells": n_cells,
+                        "timed_entry_settle_vs_official_close_check": len(STRUCTS),
+                        "timed_entry_fetch_clock_cells": n_cells,
                         "first_green_loss_over_win_ratio_at_10:00_ET": 1,
                         "total": n_cells + len(STRUCTS) + n_cells + 1}}
 
 
 def print_added(a):
-    print("\n  ADDED 2026-09-29 - his pattern (07:25 -> +40 min, or settle), one entry per session")
+    print("\n  ADDED 2026-09-29 - timed entry (10:25 ET -> +40 min, or settle), one entry per session")
     for key in ("PRIMARY_market_clock", "grid_fetch_clock_reading"):
-        b = a["his_pattern"][key]
+        b = a["timed_entry"][key]
         print(f"   [{key}] {b['sessions_with_an_entry']} of {b['sessions_in_grid']} sessions have an entry")
         for name in STRUCTS:
             c = b["cells"][name]
@@ -366,7 +365,7 @@ if __name__ == "__main__":
     ap.add_argument("--out", default=OUT,
                     help="output JSON. The default is the REGISTERED results/entry_exit_grid.json - pass a NEW path to refresh without overwriting it")
     ap.add_argument("--through", default=None, help="cap the DATA RANGE at this session date (YYYY-MM-DD); default: every recorded session")
-    ap.add_argument("--added", action="store_true", help="also compute the cells ADDED 2026-09-29 (his 10:25 pattern; FIRST-GREEN shape)")
+    ap.add_argument("--added", action="store_true", help="also compute the cells ADDED 2026-09-29 (the 10:25 ET timed entry; FIRST-GREEN shape)")
     a = ap.parse_args()
     if (a.added or a.through) and os.path.abspath(a.out) == os.path.abspath(OUT):
         raise SystemExit("REFUSED: --added/--through would overwrite the registered results/entry_exit_grid.json; pass a NEW --out")

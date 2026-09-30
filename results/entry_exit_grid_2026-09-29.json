@@ -275,8 +275,8 @@
   "label": "ADDED 2026-09-29 - extra looks, counted as looks; nothing here feeds the grid above",
   "status": "DESCRIPTION ONLY - nothing registered, no position follows from it",
   "session_set_matches_grid": true,
-  "his_pattern": {
-   "definition": "entry at the snapshot nearest 10:25:00 ET (07:25 PT), within 7.5 min; exit = bid +40 min (08:05 PT) or settle; ATM/1-strike-OTM call and put bought at the ask; grid's own leg_ok, exit-snapshot rule and settle",
+  "timed_entry": {
+   "definition": "entry at the snapshot nearest 10:25:00 ET, within 7.5 min; exit = bid +40 min or settle; ATM/1-strike-OTM call and put bought at the ask; grid's own leg_ok, exit-snapshot rule and settle",
    "PRIMARY_market_clock": {
     "clock": "CBOE book stamp quote_ts (market time of the quotes)",
     "sessions_in_grid": 45,
@@ -6824,8 +6824,7 @@
      "avg_loss_pct": -88.8,
      "loss_over_win_ratio": 4.57
     }
-   },
-   "his_own_record_loss_over_win": 2.8
+   }
   },
   "settle_reference_check": {
    "sessions_compared": 45,
@@ -6839,9 +6838,9 @@
    "note": "the grid's settle spot is the last recorded snapshot's spot, stamped ~15:47-15:52 ET, not 16:00"
   },
   "looks_added": {
-   "his_pattern_market_clock_cells": 8,
-   "his_pattern_settle_vs_official_close_check": 4,
-   "his_pattern_fetch_clock_cells": 8,
+   "timed_entry_market_clock_cells": 8,
+   "timed_entry_settle_vs_official_close_check": 4,
+   "timed_entry_fetch_clock_cells": 8,
    "first_green_loss_over_win_ratio_at_10:00_ET": 1,
    "total": 21
   }

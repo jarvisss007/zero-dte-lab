@@ -9,7 +9,7 @@ Each final run was executed once. Checked outside the JSON: on the old data rang
 - FIRST-GREEN at 10:00 ET wins 74.1% of rows yet averages -6.8%: average win +22.2%, average loss -89.9%, loss/win 4.05x (996 rows, 43 sessions): the rule is loss-heavy by construction.
 - The 2026-08-31 read (26 sessions), 10:00 ET: short holds -1.3%..-2.1%, settle -25.0%, FIRST-GREEN -8.3%. Same story, slightly kinder now.
 
-## 2. Does his 07:25 -> 08:05 PT pattern (10:25 -> 11:05 ET) make money on average? Not measurably.
+## 2. Does a 10:25 ET entry sold 40 minutes later make money on average? Not measurably.
 One entry per session at the snapshot nearest 10:25 ET on the market clock, bought at the ask, sold at the bid 40 min later or held to settle. n = 42 sessions per cell (08-13, 09-10, 09-24 have no snapshot within 7.5 min).
 | cell | +40m mean / median | win | avg win / avg loss (loss/win) | settle mean / win |
 |---|---|---|---|---|
