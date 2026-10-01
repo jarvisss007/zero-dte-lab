@@ -461,11 +461,12 @@
   "entry_basis": "EXECUTABLE (both legs at ask)",
   "mid_debit": 3.5,
   "breakeven_move_pct": 0.459,
-  "settle_close": "",
-  "settle_value": "",
-  "pnl": "",
-  "pnl_pct": "",
-  "outcome": "",
-  "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark."
+  "settle_close": 763.99,
+  "settle_value": 1.01,
+  "pnl": -2.5,
+  "pnl_pct": -71.2,
+  "outcome": "LOSS -71.2% | SETTLE. SPY 763.99 against strike 765 = |763.99-765| = 1.01 against a 3.51 executable debit. Settled at SPY's official close (ZDTE-006); the last chain snapshot read 765.34 at 2026-10-01 16:06:40.",
+  "thesis_why": "Registered forward test of the lab's own retrospective finding: straddle_test measured implied above realized in every bucket, -$43.10/straddle at t=-2.65 over 17 sessions. Expected to LOSE. Entered at the FIRST snapshot of the session (ZDTE-003) at the executable debit; scored at settle as |close - K|, never a mark.",
+  "settle_close_snapshot": 765.34
  }
 ]
