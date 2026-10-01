@@ -1586,3 +1586,34 @@ ungated by a mean; there is no separate pass/fail hit-rate gate of the kind §20
 09-30 all filed before any live price read, this lab running first in today's sweep); Sabha §18's
 carry-forward-print check restated as still structurally moot for SPY (no re-analysis needed, per the
 directive). §29 and its sibling answered above, in full, on-disk.
+
+## 2026-10-01 [0dte]
+
+**CALIBRATION BIN CROSSED n=30 — NOW ACTIONABLE.** `score_forecasts.py` run this run (after today's
+forecast was filed, per ZDTE-009(a) ordering) shows the 0.3-0.4 bin at **n=30, said 0.375, happened
+0.233, gap -0.142** — both conditions (n>=30, |gap|>0.10) now met for the first time. The 09-29/09-30
+directive flagged this bin as "one resolution from the bar"; today's #27 resolution (09-30 row, scored
+OUTSIDE/1 this run) was that resolution. Per CALIBRATION (2026-08-20): the NEXT filing (tomorrow,
+check_date 2026-10-02) must disclose this and move the filed p halfway toward 0.233 — i.e. from 0.38
+toward ~0.307, not further tuned, and today's #28 row (already filed before this score ran) correctly
+stays at 0.38 unadjusted, since the crossing was not visible yet at filing time. Flagging for the
+council/Anupam: this is the "real calibration finding worth its own line" the directive named.
+
+**Scored:** forecast #27 (check_date 09-30) → OUTSIDE (1); SPY settled 762.63 vs first-snapshot spot
+766.40, band ±0.43%, realized move -0.492%. Running record on the repeated OUTSIDE question: 28
+resolved, k=7 (25%).
+
+**One ledger call logged, breaking a multi-week pattern.** `max_pain`: computed max-pain strike **764**
+(not peak-OI 768, confirmed separately) vs first-snapshot spot 764.66 — only 0.09% away, WITHIN the
+±0.25% band for the first time in weeks (prior sessions sat 2x+ outside, making `breaks` arithmetic
+rather than a call, per the 08-20/09-30 lessons). Called `holds`. `implied_move` stays barred — the
+08-12 discriminator requirement is still unmet (seven-plus weeks running).
+
+**Sabha §15** (book-compounds-per-run check): checked this lab's own books for a per-run-not-per-session
+advance pattern. `ledger.csv` and `forecasts.csv` both gate on `check_date <= today AND outcome empty`
+(session-keyed, not run-keyed), and the session count / progress-bar figures are recomputed from file
+contents each time, never incremented blindly. No compounding-per-run defect found here.
+
+**Council directive acknowledgment**: ZDTE-009(a) ordering held for a fourth consecutive clean run —
+today's forecast filed before any live-SPY read (the Yahoo call for #27's resolution happened strictly
+after). The §29/retry answer from 09-30 stands unchanged, not re-litigated.
