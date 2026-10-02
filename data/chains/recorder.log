@@ -4085,3 +4085,4 @@
 2026-10-02 15:56:37 ET  wrote 154 rows -> SPY_2026-10-02.csv (spot 769.75, quotes 2026-10-02T15:40:33)
 2026-10-02 16:01:38 ET  wrote 154 rows -> SPY_2026-10-02.csv (spot 769.69, quotes 2026-10-02T15:45:33)
 2026-10-02 16:06:43 ET  wrote 152 rows -> SPY_2026-10-02.csv (spot 769.5, quotes 2026-10-02T15:50:33)
+2026-10-02 16:11:43 ET  SESSION SUMMARY 2026-10-02: 22 fetches ok, 0 failed
