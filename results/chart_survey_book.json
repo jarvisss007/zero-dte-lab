@@ -21,6 +21,39 @@
    "no_memory_pct": 53.8,
    "excess_pp": 1.4,
    "t_days": 0.32
+  },
+  {
+   "week": "2026-09-28",
+   "pattern": "zone_rotation",
+   "measured_on": "2026-10-02",
+   "n_events": 32,
+   "n_days": 3,
+   "hit_pct": 50.6,
+   "no_memory_pct": 53.4,
+   "excess_pp": -2.8,
+   "t_days": -0.33
+  },
+  {
+   "week": "2026-09-28",
+   "pattern": "day_high_retest",
+   "measured_on": "2026-10-02",
+   "n_events": 180,
+   "n_days": 5,
+   "hit_pct": 58.4,
+   "no_memory_pct": 54.2,
+   "excess_pp": 4.2,
+   "t_days": 0.96
+  },
+  {
+   "week": "2026-09-28",
+   "pattern": "bos_followthrough",
+   "measured_on": "2026-10-02",
+   "n_events": 219,
+   "n_days": 5,
+   "hit_pct": 45.9,
+   "no_memory_pct": 50.0,
+   "excess_pp": -4.1,
+   "t_days": -0.96
   }
  ]
 }

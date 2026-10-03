@@ -1,33 +1,33 @@
 {
- "generated": "2026-09-25T14:51-07:00",
- "week": "2026-09-21",
- "rows_added": 2,
+ "generated": "2026-10-02T14:51-07:00",
+ "week": "2026-09-28",
+ "rows_added": 3,
  "registry_is_frozen": "a run never adds a pattern; adding one costs a trial and is Anupam's ruling",
  "this_week": {
   "zone_rotation": {
    "asks": "after a visit to premium (discount) and a pullback to equilibrium, does price get back to the zone it came from before it reaches the far one?",
    "declared": "2026-09-19",
    "first_verdict": "SPY 5m 2024-25 +7.8pp t 2.2; NOT replicated out of that span; +0.5pp on his names",
-   "n_events": 28,
+   "n_events": 32,
    "n_days": 3,
    "clustered_by": "session date, all names pooled",
-   "hit_pct": 62.7,
-   "no_memory_pct": 52.6,
-   "excess_pp": 10.1,
-   "t_days": 2.33,
+   "hit_pct": 50.6,
+   "no_memory_pct": 53.4,
+   "excess_pp": -2.8,
+   "t_days": -0.33,
    "ambiguous_dropped": 0
   },
   "day_high_retest": {
    "asks": "back at the day's high a second time, does it reject (-1 ATR) before it breaks (+1 ATR)?",
    "declared": "2026-09-19",
    "first_verdict": "46.0% vs a 46.3% no-memory line on 576 events \u2014 a coin",
-   "n_events": 212,
+   "n_events": 180,
    "n_days": 5,
    "clustered_by": "session date, all names pooled",
-   "hit_pct": 55.2,
-   "no_memory_pct": 53.8,
-   "excess_pp": 1.4,
-   "t_days": 0.32,
+   "hit_pct": 58.4,
+   "no_memory_pct": 54.2,
+   "excess_pp": 4.2,
+   "t_days": 0.96,
    "ambiguous_dropped": 0
   },
   "bos_followthrough": {
@@ -37,34 +37,40 @@
    "n_events": 219,
    "n_days": 5,
    "clustered_by": "session date, all names pooled",
-   "hit_pct": 47.4,
+   "hit_pct": 45.9,
    "no_memory_pct": 50.0,
-   "excess_pp": -2.6,
-   "t_days": -0.64,
+   "excess_pp": -4.1,
+   "t_days": -0.96,
    "ambiguous_dropped": 0
   }
  },
  "forward_record": {
   "zone_rotation": {
-   "weeks": 1,
-   "events": 28,
-   "days": 3,
-   "mean_excess_pp": 10.1,
+   "weeks": 2,
+   "events": 60,
+   "days": 6,
+   "mean_excess_pp": 3.65,
    "weeks_positive": 1,
    "t_weeks": null,
-   "weeks_to_promotion": 7
+   "weeks_to_promotion": 6
   },
   "day_high_retest": {
-   "weeks": 1,
-   "events": 212,
-   "days": 5,
-   "mean_excess_pp": 1.4,
-   "weeks_positive": 1,
+   "weeks": 2,
+   "events": 392,
+   "days": 10,
+   "mean_excess_pp": 2.8,
+   "weeks_positive": 2,
    "t_weeks": null,
-   "weeks_to_promotion": 7
+   "weeks_to_promotion": 6
   },
   "bos_followthrough": {
-   "weeks": 0
+   "weeks": 1,
+   "events": 219,
+   "days": 5,
+   "mean_excess_pp": -4.1,
+   "weeks_positive": 0,
+   "t_weeks": null,
+   "weeks_to_promotion": 7
   }
  },
  "cells_scored_this_week": 3,
