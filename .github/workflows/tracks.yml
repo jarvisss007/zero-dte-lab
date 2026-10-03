@@ -5,10 +5,24 @@ name: tracks
 
 on:
   schedule:
-    - cron: '55 13 * * 1-5'   # 09:55 ET register (after the 09:47 first snapshot)
-    - cron: '5 14 * * 1-5'    # retry — GitHub cron is best-effort (the 13:55 fire was missing on 2026-09-03); registration is idempotent
-    - cron: '15 14 * * 1-5'   # second retry; a run after registration is a no-op
-    - cron: '50 20 * * 1-5'   # 16:50 ET score the settled session
+    # AUDIT-013 (3), 2026-10-02. STATUS: this workflow is DISABLED on GitHub (`gh workflow disable tracks`, ZDTE-005, 2026-09-11: the cloud leg and the local
+    # launchd leg both wrote the Track C/D books, and the cloud leg entered hours past the first snapshot). This change does not enable it and nothing in it
+    # does: the DST gate below is dormant groundwork, and enabling the workflow again is a separate ruling that this change does not make.
+    # IF it is ever enabled: GitHub cron is fixed UTC, so the four crons that were right in summer (UTC-4) WOULD fire an hour early in New York from Mon 2026-11-02
+    # (US daylight time ends Sun 2026-11-01): the 09:55 register at 08:55 EST, before the open and before the 09:47 first snapshot exists, and the 16:50 scorer at
+    # 15:50 EST, before the close. So every New York target is scheduled TWICE, once in each season's UTC, and the first step below lets a scheduled run through
+    # only if its line's offset is New York's offset today. The line of the other season starts, says SKIP, and ends in seconds without running a script.
+    # The times are the crons' TARGETS, not a delivery promise: GitHub delivers scheduled runs late (2026-09-04 .. 09-11: the morning crons landed 13:11-14:44 ET, the
+    # evening cron 18:33-19:00 ET). Targets, America/New_York: 09:55 register, 10:05 and 10:15 retries, 16:50 score. Adding a cron here means adding it to the
+    # gate's table as well (an unlisted line fails the run loudly).
+    - cron: '55 13 * * 1-5'   # 09:55 EDT register (after the 09:47 first snapshot)
+    - cron: '55 14 * * 1-5'   # 09:55 EST register
+    - cron: '5 14 * * 1-5'    # 10:05 EDT retry — GitHub cron is best-effort (the 13:55 fire was missing on 2026-09-03); registration is idempotent
+    - cron: '5 15 * * 1-5'    # 10:05 EST retry
+    - cron: '15 14 * * 1-5'   # 10:15 EDT second retry; a run after registration is a no-op
+    - cron: '15 15 * * 1-5'   # 10:15 EST second retry
+    - cron: '50 20 * * 1-5'   # 16:50 EDT score the settled session
+    - cron: '50 21 * * 1-5'   # 16:50 EST score the settled session
   workflow_dispatch:
 
 permissions:
@@ -23,11 +37,41 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # AUDIT-013 (3): the DST gate. A scheduled run proceeds only when this cron line's UTC offset is New York's offset today
+      # (EDT -0400, EST -0500); a manual run (workflow_dispatch) is never gated.
+      - name: DST gate (only the cron line that is the New York target today runs)
+        id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" != "schedule" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+            echo "RUN: manual run ($EVENT), not gated"
+            exit 0
+          fi
+          now_off="$(TZ=America/New_York date +%z)"
+          case "$SCHEDULE" in
+            '55 13 * * 1-5'|'5 14 * * 1-5'|'15 14 * * 1-5'|'50 20 * * 1-5') want='-0400' ;;
+            '55 14 * * 1-5'|'5 15 * * 1-5'|'15 15 * * 1-5'|'50 21 * * 1-5') want='-0500' ;;
+            *) echo "::error::cron line '$SCHEDULE' is not in the DST gate table - add it to the case above"; exit 1 ;;
+          esac
+          if [ "$now_off" = "$want" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+            echo "RUN: cron '$SCHEDULE' is a New York target today (New York is UTC${now_off})"
+          else
+            echo "go=false" >> "$GITHUB_OUTPUT"
+            echo "SKIP: cron '$SCHEDULE' belongs to the other season (New York is UTC${now_off}; this line is for UTC${want})"
+          fi
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'true'
       - uses: actions/setup-python@v5
+        if: steps.gate.outputs.go == 'true'
         with:
           python-version: '3.12'
       - name: Run
+        if: steps.gate.outputs.go == 'true'
         run: |
           export ZDTE_CHAINS=data/chains_ci
           python src/zero_dte_daily.py
@@ -36,6 +80,7 @@ jobs:
           python src/zero_dte_ladder.py --score
 
       - name: Commit and push (rebase-retry, never force)
+        if: steps.gate.outputs.go == 'true'
         run: |
           set -euo pipefail
           git config user.name  "desk-actions[bot]"
