@@ -4095,3 +4095,6 @@
 2026-10-05 09:44:09 ET  skip: stale quotes (2026-10-02T16:00:00 ET, spot 769.21)
 2026-10-05 09:44:11 ET  fallback: the fresh source is stale too (newest trade 2026-10-02 16:14:59) - nothing recorded
 2026-10-05 09:49:12 ET  wrote 156 rows -> SPY_2026-10-05.csv (spot 770.51, quotes 2026-10-05T09:31:24)
+2026-10-05 09:54:12 ET  wrote 156 rows -> SPY_2026-10-05.csv (spot 770.48, quotes 2026-10-05T09:37:45)
+2026-10-05 09:59:13 ET  wrote 154 rows -> SPY_2026-10-05.csv (spot 770.54, quotes 2026-10-05T09:43:29)
+2026-10-05 10:04:14 ET  wrote 154 rows -> SPY_2026-10-05.csv (spot 770.74, quotes 2026-10-05T09:48:35)
