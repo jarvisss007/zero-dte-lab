@@ -4170,3 +4170,4 @@
 2026-10-05 15:55:03 ET  wrote 154 rows -> SPY_2026-10-05.csv (spot 775.995, quotes 2026-10-05T15:39:18)
 2026-10-05 16:00:04 ET  wrote 156 rows -> SPY_2026-10-05.csv (spot 775.665, quotes 2026-10-05T15:43:57)
 2026-10-05 16:05:04 ET  wrote 154 rows -> SPY_2026-10-05.csv (spot 775.09, quotes 2026-10-05T15:48:58)
+2026-10-05 16:10:05 ET  SESSION SUMMARY 2026-10-05: 80 fetches ok, 0 failed
