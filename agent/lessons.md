@@ -1617,3 +1617,39 @@ contents each time, never incremented blindly. No compounding-per-run defect fou
 **Council directive acknowledgment**: ZDTE-009(a) ordering held for a fourth consecutive clean run —
 today's forecast filed before any live-SPY read (the Yahoo call for #27's resolution happened strictly
 after). The §29/retry answer from 09-30 stands unchanged, not re-litigated.
+
+## 2026-10-05 [0dte]
+
+**GAP: no 2026-10-02 sweep ran (SCHED-022/directive).** Friday 10-02 was a session; this lab filed
+no forecast and no ledger row that day because no labs-morning-sweep session fired. Per the
+2026-10-02 council directive, this is NOT backfilled retroactively — pre-registration or it doesn't
+count. The series resumes today with the gap disclosed on both the ledger and forecast rows, not
+patched over.
+
+**Scored:** forecast #28 (check_date 10-01) → INSIDE (0); SPY settled 763.99 vs first-snapshot spot
+764.66, band ±0.46%, realized move -0.088%. Ledger `max_pain` row 10-01 → right (763.99 within
+±0.25% of max-pain 764). Running record on the repeated OUTSIDE question: 29 resolved, k=7 (24.1%).
+
+**Filed #29 at the frozen 0.38, CAL-001 disclosure applied for the first time live.** The 0.3-0.4
+bin crossed n=30 on 10-01 (said 0.375, happened 0.233, gap -0.142, actionable) but the next session
+(10-02) never fired, so this is the first filing to carry the disclosure. Per CAL-001 the registered
+`p` stays frozen at 0.38 — only `p_cal` (0.3065, calibrate.py zero-dte-lab 0.38) is noted. Rescoring
+this run (score_forecasts.py) shows the bin has since drifted to n=31, said 0.375, happened 0.226,
+gap -0.150 — still actionable, still not applied to `p` per CAL-001. 41 total resolved, Brier skill
+-0.0301 (no skill vs base rate, n too small to read).
+
+**One ledger call logged.** `max_pain`: max-pain strike 768 (peak-OI call concentration separately
+at 772, put at 760), spot 770.51 sits 0.33% away (~0.65 sigma against implied std 0.51%) — close
+enough to the band that it's a real test, not the 1.05%/2.1-sigma "trivial distance" case flagged
+08-13. Called `breaks`. `implied_move` stays barred — no discriminator pre-registered since 08-12
+(now 8+ weeks).
+
+**Firm Brain check (§9/§18, later-bar settledness):** reused the standing guard — 10-01 scored only
+once the 10-02 bar (vol 46.3M, real trade, not a copy of 10-01's OHLC) proved 10-01 closed; today's
+own 10-05 bar (vol 11.2M at read time, clearly a live/forming print) was never used to score anything
+dated 10-05 or 10-01. No new defect found; guard held.
+
+**Council directive acknowledgment**: Council: applied (KEEP §29/DIR-005 answer unchanged, not
+re-litigated; NEW — 10-05 catches up overdue scoring only, no retroactive 10-02 forecast filed, per
+above). ZDTE-009(a) ordering held: today's forecast and ledger call were both filed before the Yahoo
+endpoint was ever called (that call happened only to resolve #28, after this run's own filing).
