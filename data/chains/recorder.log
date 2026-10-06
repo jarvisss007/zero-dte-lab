@@ -4171,3 +4171,10 @@
 2026-10-05 16:00:04 ET  wrote 156 rows -> SPY_2026-10-05.csv (spot 775.665, quotes 2026-10-05T15:43:57)
 2026-10-05 16:05:04 ET  wrote 154 rows -> SPY_2026-10-05.csv (spot 775.09, quotes 2026-10-05T15:48:58)
 2026-10-05 16:10:05 ET  SESSION SUMMARY 2026-10-05: 80 fetches ok, 0 failed
+2026-10-06 09:30:49 ET  skip: stale quotes (2026-10-05T15:59:59 ET, spot 778.15)
+2026-10-06 09:30:51 ET  fallback: the fresh source is stale too (newest trade 2026-10-05 16:14:59) - nothing recorded
+2026-10-06 09:35:52 ET  skip: stale quotes (2026-10-05T15:59:59 ET, spot 777.93)
+2026-10-06 09:35:54 ET  fallback: the fresh source is stale too (newest trade 2026-10-05 16:14:59) - nothing recorded
+2026-10-06 09:40:55 ET  skip: stale quotes (2026-10-05T15:59:59 ET, spot 777.879)
+2026-10-06 09:40:57 ET  fallback: the fresh source is stale too (newest trade 2026-10-05 16:14:59) - nothing recorded
+2026-10-06 09:45:58 ET  wrote 156 rows -> SPY_2026-10-06.csv (spot 778.185, quotes 2026-10-06T09:30:25)
