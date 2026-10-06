@@ -1653,3 +1653,35 @@ dated 10-05 or 10-01. No new defect found; guard held.
 re-litigated; NEW — 10-05 catches up overdue scoring only, no retroactive 10-02 forecast filed, per
 above). ZDTE-009(a) ordering held: today's forecast and ledger call were both filed before the Yahoo
 endpoint was ever called (that call happened only to resolve #28, after this run's own filing).
+
+## 2026-10-06 [0dte] — GARUDA (labs-morning-sweep)
+
+**Ledger (1 scored, 0 new).** Scored the overdue `max_pain` row (2026-10-05, `breaks`,
+pin 768): settled close 774.83 vs +/-0.25% band -> OUTSIDE -> **right**. `implied_move`
+stays barred (no discriminator pre-registered since 08-12, now 8+ weeks). No new ledger
+call logged today: computed max-pain strike 772 (peak call-OI 810, peak put-OI 770) from
+the 09:45:57 first snapshot; spot 778.185 sits 0.80% / ~1.74-sigma away (std 0.46%) --
+between 10-05's 0.65-sigma "real test" and the 08-13/08-20 2.1-sigma "trivial distance"
+bar. JUDGMENT CALL: treated as closer to the trivial end and abstained rather than log a
+near-free-win `breaks` call. Flagging the gap explicitly rather than quietly picking a side
+is the point of this note.
+
+**Forecast.** Filed #30 at the frozen p=0.38 (p_cal=0.303, disclosed only, not filed, per
+CAL-001) before any live price was read (ZDTE-009(a) held). Resolved #29 (10-05) after
+filing: realized +0.56% vs +/-0.38% band -> OUTSIDE -> outcome 1. Running record: 30
+resolved, k=8 OUTSIDE (26.7%), still off the pre-registered-conviction table (crossed at
+n=25,k=6). score_forecasts.py: 42 resolved, Brier skill -0.0169 (no skill, n too small).
+0.3-0.4 bin now n=32, said 0.376, happened 0.250, gap -0.126 -- actionable, unchanged p.
+
+**Firm Brain check (S31, live-quote-gated screen called twice):** this run fetched Yahoo's
+chart endpoint exactly once (one curl covering the whole month) and reused that single
+read to score both the pending ledger row and the pending forecast row -- never re-queried
+mid-sitting. No defect found; guard held.
+
+**Sabha S15** (compounds-per-run): zero-dte-lab has no NAV/equity book that advances per
+run -- the ledger and forecasts.csv each key one row per SESSION DATE (not per firing), so
+the compounds-per-run mechanism does not apply here. Checked, not found.
+
+**Council directive acknowledgment:** applied (zero-dte-lab directive 2026-10-05 KEEPs
+unchanged; CAL-001 mechanism's first live bin-crossing disclosure carried forward
+correctly to this filing).
