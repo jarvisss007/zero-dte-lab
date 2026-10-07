@@ -4255,3 +4255,15 @@
 2026-10-06 16:01:51 ET  wrote 156 rows -> SPY_2026-10-06.csv (spot 779.47, quotes 2026-10-06T15:46:42)
 2026-10-06 16:06:52 ET  wrote 156 rows -> SPY_2026-10-06.csv (spot 779.44, quotes 2026-10-06T15:51:42)
 2026-10-06 16:11:52 ET  SESSION SUMMARY 2026-10-06: 80 fetches ok, 0 failed
+2026-10-07 09:33:10 ET  skip: stale quotes (2026-10-06T16:00:00 ET, spot 776.0)
+2026-10-07 09:33:12 ET  fallback: the fresh source is stale too (newest trade 2026-10-06 16:14:59) - nothing recorded
+2026-10-07 09:38:13 ET  skip: stale quotes (2026-10-06T16:00:00 ET, spot 776.03)
+2026-10-07 09:38:15 ET  fallback: the fresh source is stale too (newest trade 2026-10-06 16:14:59) - nothing recorded
+2026-10-07 09:43:16 ET  skip: stale quotes (2026-10-06T16:00:00 ET, spot 775.5085)
+2026-10-07 09:43:17 ET  fallback: the fresh source is stale too (newest trade 2026-10-06 16:14:59) - nothing recorded
+2026-10-07 09:48:18 ET  skip: stale quotes (2026-10-06T16:00:00 ET, spot 775.82)
+2026-10-07 09:48:20 ET  fallback: wrote 150 rows -> SPY_2026-10-07.yfinance.csv (source yfinance, newest trade 2026-10-07 09:33:14; CBOE stale at 2026-10-06T16:00:00) - research only, the tracks read SPY_2026-10-07.csv (ZDTE-010 (c))
+2026-10-07 09:53:21 ET  wrote 154 rows -> SPY_2026-10-07.csv (spot 775.17, quotes 2026-10-07T09:37:43)
+2026-10-07 09:58:22 ET  wrote 156 rows -> SPY_2026-10-07.csv (spot 774.5799, quotes 2026-10-07T09:42:27)
+2026-10-07 10:03:23 ET  wrote 156 rows -> SPY_2026-10-07.csv (spot 774.43, quotes 2026-10-07T09:47:43)
+2026-10-07 10:08:24 ET  wrote 156 rows -> SPY_2026-10-07.csv (spot 774.64, quotes 2026-10-07T09:53:01)
