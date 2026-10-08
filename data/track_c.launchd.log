@@ -113,3 +113,7 @@ REGISTERED TC-SPY-20261007: BUY 775C @1.51 / BUY 775P @1.33 · debit 2.84 (mid 2
 Track C: scored 0 this run; 22/24 sessions closed
   n=22 sessions (rows ARE independent days) win 8/22 mean -8.5% median -32.0% mean $ -0.38/straddle
   NOT READABLE: 22/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
+REGISTERED TC-SPY-20261008: BUY 775C @1.40 / BUY 775P @1.33 · debit 2.73 (mid 2.72) · needs 0.35% by the close · first snapshot 2026-10-08 09:50:04 · book 25 rows
+Track C: scored 0 this run; 23/25 sessions closed
+  n=23 sessions (rows ARE independent days) win 8/23 mean -9.1% median -30.4% mean $ -0.39/straddle
+  NOT READABLE: 23/30 sessions. The lab's retrospective figure is -$43.10 at t=-2.65; this book cannot confirm or contradict it yet.
