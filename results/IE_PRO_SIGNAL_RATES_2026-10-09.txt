@@ -1,0 +1,14 @@
+seed bars 11199 -> clean 8457; sessions 60 (2026-07-17 .. 2026-10-09); rates over the 55 sessions after a 5-session warm-up
+
+v1 IE Pro (ie_pro_trigger, htf=developing)
+  all signals in the sessions: 160 (incl. premarket/untradable)
+  tradable signals: 159 over 55 sessions = 2.89 per session
+  sessions with 0 / 1 / 2 / 3 / 4+ tradable signals: 0 / 1 / 15 / 28 / 11; max per session 4
+  long 76, short 83
+  smallest gap between two tradable signals in one session: 0 days 01:40:00 (spacing rule = 20 bars = 100 min)
+
+IE Pro ONE sweep (ie_pro_one_trigger, htf=developing)
+  all signals in the sessions: 16 (incl. premarket/untradable)
+  tradable signals: 15 over 55 sessions = 0.27 per session
+  sessions with 0 / 1 / 2 / 3 / 4+ tradable signals: 42 / 12 / 0 / 1 / 0; max per session 3
+  long 7, short 8
