@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- PTR-001 weekly report (PREREG_IE_PRO_PAPER.md section 9). Sundays 12:30 PT. Reads data/paper/*.csv; writes
+     results/PAPER_WEEKLY_<date>.md (public, percent only, no profit number before the 60-session / 100-trade gate) and the PRIVATE
+     ~/Desktop/Trading/PAPER_VS_LIVE.md (never committed). Zero Claude credits. Owner: Bhishma (council/roster.json).
+     Install: cp this to ~/Library/LaunchAgents/ && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.anupam.ie-pro-paper-weekly.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.anupam.ie-pro-paper-weekly</string>
+  <key>ProgramArguments</key>
+  <array><string>/opt/anaconda3/bin/python</string><string>/Users/anupampatil/zero-dte-lab/src/paper_report.py</string></array>
+  <key>WorkingDirectory</key><string>/Users/anupampatil/zero-dte-lab</string>
+  <key>StartCalendarInterval</key>
+  <dict><key>Weekday</key><integer>0</integer><key>Hour</key><integer>12</integer><key>Minute</key><integer>30</integer></dict>
+  <key>StandardOutPath</key><string>/Users/anupampatil/zero-dte-lab/data/paper/weekly.launchd.log</string>
+  <key>StandardErrorPath</key><string>/Users/anupampatil/zero-dte-lab/data/paper/weekly.launchd.log</string>
+</dict>
+</plist>

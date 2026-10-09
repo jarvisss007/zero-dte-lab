@@ -14,5 +14,13 @@
    "to": "d7330cef1297b3cd4a92566dc99bbae82b56076f38390a8fda0837b50eed3c1f",
    "why": "catch-up of unprocessed settled sessions in order (a Mac that sleeps through a session would otherwise leave a hole in the bar archive); an older uncapturable day becomes a DATA_GAP row. No counted session existed; the registered rule text is unchanged."
   }
+ ],
+ "report_sha256": "965e296f645b8f097d44a176908df33f9f538547b5151cdf4762baaf9e7f540a",
+ "addenda": [
+  {
+   "at_pt": "2026-10-09T16:14:16-07:00",
+   "what": "weekly report code (section 9 readout written before any counted session) pinned; the registered rule is unchanged",
+   "report_sha256": "965e296f645b8f097d44a176908df33f9f538547b5151cdf4762baaf9e7f540a"
+  }
  ]
 }
