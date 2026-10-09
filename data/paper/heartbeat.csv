@@ -11,3 +11,4 @@ run_at_et,mode,session,status,detail
 2026-10-09T18:28:13-04:00,live,2026-10-09,NO_APPROVAL,no APPROVED stamp: nothing is counted
 2026-10-09T18:30:10-04:00,live,2026-10-09,PRE_APPROVAL,session opened before the stamp 2026-10-09T18:30:00-04:00: not counted
 2026-10-09T18:30:30-04:00,live,,REFUSED,"FROZEN FILE CHANGED: ['src/paper_bars.py'] - a change is a new registered variant, not an edit"
+2026-10-09T18:31:44-04:00,live,2026-10-09,NO_NEW_SESSION,every settled session since the stamp is already recorded

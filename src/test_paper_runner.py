@@ -135,3 +135,12 @@ def test_invalid_books_never_fill():
     books.loc[:, "valid"] = False
     tr, sk = R.process_session(day, pd.DataFrame([sig(day, "10:00")]), rows, books, "T", redact=False)
     assert not tr and sk[0]["reason"] == "NO_BOOK_WINDOW"
+
+
+def test_pending_days_catch_up_in_order_and_never_precede_the_stamp():
+    ap = {"approved_at_et": "2026-10-09T18:30:00-04:00"}
+    assert R.pending_days("2026-10-09", set(), ap) == []                         # 10-09 opened before the stamp
+    assert R.pending_days("2026-10-14", set(), ap) == ["2026-10-12", "2026-10-13", "2026-10-14"]   # weekend skipped, in order
+    assert R.pending_days("2026-10-14", {"2026-10-12"}, ap) == ["2026-10-13", "2026-10-14"]
+    assert R.pending_days("2026-10-14", {"2026-10-12", "2026-10-13", "2026-10-14"}, ap) == []
+    assert R.pending_days("2026-10-09", set(), None) == ["2026-10-09"]            # no stamp: one heartbeat for the settled day

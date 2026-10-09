@@ -322,10 +322,25 @@ def heartbeat(mode: str, day: str, status: str, detail: str = "") -> None:
     print(f"[{now}] {mode} {day}: {status} {detail}")
 
 
+
+def pending_days(settled: str, done: set[str], approval: dict | None) -> list[str]:
+    """Every session after the APPROVED stamp, up to and including the settled one, that has no row yet - in order, so a Mac that
+    slept through a session catches up instead of leaving a hole in the bar archive (every later signal depends on it)."""
+    if approval is None:
+        return [settled] if settled not in done else []
+    ap_at = pd.Timestamp(approval["approved_at_et"])
+    d0, d1 = (pd.Timestamp(approval["approved_at_et"]).date(), pd.Timestamp(settled).date())
+    out = []
+    for k in range((d1 - d0).days + 1):
+        d = d0 + dt.timedelta(days=k)
+        if sessions.is_session(d) and d.isoformat() not in done and day_open(d.isoformat()) > ap_at:
+            out.append(d.isoformat())
+    return out
+
 # =============================================================================================================
 # one session
 # =============================================================================================================
-def run_session(day: str, mode: str) -> str:
+def run_session(day: str, mode: str, latest: bool = True) -> str:
     shake = mode == "shakedown"
     out = PAPER / "shakedown" if shake else PAPER
     label = "SHAKEDOWN - NOT COUNTED" if shake else "COUNTED"
@@ -341,7 +356,16 @@ def run_session(day: str, mode: str) -> str:
         if day_open(day) <= pd.Timestamp(ap["approved_at_et"]):
             heartbeat(mode, day, "PRE_APPROVAL", f"session opened before the stamp {ap['approved_at_et']}: not counted")
             return "PRE_APPROVAL"
-        archive_session_bars(day)
+        try:
+            archive_session_bars(day)
+        except Refuse as e:
+            if not latest:
+                append_rows(out / "sessions.csv", SESS_COLS, [dict(variant=VARIANT, label=label, session=day, status="DATA_GAP", bars_frac=0,
+                                                                   book_frac=0, n_signals=0, n_tradable=0, n_filled=0, n_skipped=0, net="",
+                                                                   cum_net="", note=f"missed session, bars not capturable: {e}")])
+                heartbeat(mode, day, "DATA_GAP", f"missed session, bars not capturable: {e}")
+                return "DATA_GAP"
+            raise
     series = load_series()
     allsig, tradable = session_signals(series, day)
     # stored signals must be reproduced exactly (BENCH-002): a disagreement fails LOUD, nothing is rewritten
@@ -403,11 +427,17 @@ def main() -> int:
                 if sessions.is_session(d):
                     run_session(d.isoformat(), "shakedown")
             return 0
-        day = day or sessions.settled_session().isoformat()
-        if not sessions.is_session(day):
-            heartbeat(mode, day, "NO_NEW_SESSION", "not a session")
+        if day:                                      # --session: exactly that one
+            run_session(day, "live")
             return 0
-        run_session(day, "live")
+        settled = sessions.settled_session().isoformat()
+        done = set(read_csv(PAPER / "sessions.csv")["session"]) if (PAPER / "sessions.csv").exists() else set()
+        days = pending_days(settled, done, read_approval())
+        if not days:
+            heartbeat(mode, settled, "NO_NEW_SESSION", "every settled session since the stamp is already recorded")
+            return 0
+        for d in days:                               # in order; only the newest day may raise (so the 14:20 retry runs)
+            run_session(d, "live", latest=(d == days[-1]))
         return 0
     except Refuse as e:
         heartbeat(mode, day, "REFUSED", str(e))

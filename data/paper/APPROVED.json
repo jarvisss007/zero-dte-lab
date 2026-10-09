@@ -5,6 +5,14 @@
  "prereg": "PREREG_IE_PRO_PAPER.md",
  "prereg_git_commit": "6e96e6f",
  "spec_sha256": "392835c0c6c57526e35a5604abe23eeabac5f871292cc9d92620c1630979cd76",
- "runner_sha256": "4f1193584e68144488cf46903e7c0bb3e1bd030b1009f063062e909fa580d8d2",
- "freeze_file_sha256": "d671954274dac4cd558fca49bfe15916e0710c968b23ee20ee3342f64acd3211"
+ "runner_sha256": "d7330cef1297b3cd4a92566dc99bbae82b56076f38390a8fda0837b50eed3c1f",
+ "freeze_file_sha256": "d671954274dac4cd558fca49bfe15916e0710c968b23ee20ee3342f64acd3211",
+ "runner_repins": [
+  {
+   "at_pt": "2026-10-09T15:31:43-07:00",
+   "from": "4f1193584e68144488cf46903e7c0bb3e1bd030b1009f063062e909fa580d8d2",
+   "to": "d7330cef1297b3cd4a92566dc99bbae82b56076f38390a8fda0837b50eed3c1f",
+   "why": "catch-up of unprocessed settled sessions in order (a Mac that sleeps through a session would otherwise leave a hole in the bar archive); an older uncapturable day becomes a DATA_GAP row. No counted session existed; the registered rule text is unchanged."
+  }
+ ]
 }
