@@ -1,0 +1,293 @@
+//@version=6
+indicator("Institutional Edge Pro", shorttitle="IE Pro", overlay=true, max_labels_count=200, max_lines_count=200, max_boxes_count=200)
+
+// ═══════════════════════════════════════════════════════════════
+// INPUTS
+// ═══════════════════════════════════════════════════════════════
+ema_fast  = input.int(9,    "Fast EMA",                 group="EMA")
+ema_slow  = input.int(21,   "Slow EMA",                 group="EMA")
+rsi_len   = input.int(14,   "RSI Length",               group="RSI")
+rsi_bull  = input.int(55,   "Bull Threshold",           group="RSI")
+rsi_bear  = input.int(45,   "Bear Threshold",           group="RSI")
+vol_len   = input.int(10,   "Volume MA",                group="Volume")
+sl_mult   = input.float(0.5, "SL ATR x",                group="RR", step=0.1)
+tp1_mult  = input.float(1.5, "TP1 ATR x",               group="RR", step=0.1)
+tp2_mult  = input.float(3.0, "TP2 ATR x",               group="RR", step=0.1)
+lbl_off   = input.float(3.0, "Label offset ATR x",      group="RR", step=0.1)
+min_bars  = input.int(20,   "Min bars between signals", group="Filters", minval=1)
+show_hud  = input.bool(true,  "HUD Panel",              group="Display")
+show_htf  = input.bool(true,  "HTF Dots",               group="Display")
+show_ema  = input.bool(true,  "Show EMAs",              group="Display")
+show_vwap = input.bool(true,  "Show VWAP",              group="Display")
+
+// ═══════════════════════════════════════════════════════════════
+// COLORS
+// ═══════════════════════════════════════════════════════════════
+c_long    = color.rgb(0,   201, 167)
+c_short   = color.rgb(255,  71,  87)
+c_neutral = color.rgb(164, 176, 190)
+c_amber   = color.rgb(255, 165,   2)
+c_gold    = color.rgb(255, 215,   0)
+c_ema_f   = color.rgb(236, 204, 104)
+c_ema_s   = color.rgb(87,   96, 111)
+c_dark    = color.rgb(13,   15,  26)
+c_dark2   = color.rgb(18,   21,  31)
+c_dim     = color.rgb(47,   53,  66)
+
+// ═══════════════════════════════════════════════════════════════
+// CALCULATIONS
+// ═══════════════════════════════════════════════════════════════
+ema9        = ta.ema(close, ema_fast)
+ema21       = ta.ema(close, ema_slow)
+vwap_val    = ta.vwap(hlc3)
+rsi         = ta.rsi(close, rsi_len)
+vol_ma      = ta.sma(volume, vol_len)
+atr         = ta.atr(14)
+
+ema_bull    = ema9 > ema21
+ema_bear    = ema9 < ema21
+above_vwap  = close > vwap_val
+below_vwap  = close < vwap_val
+rsi_bull_ok = rsi > rsi_bull
+rsi_bear_ok = rsi < rsi_bear
+rsi_mid     = rsi >= rsi_bear and rsi <= rsi_bull
+vol_ok      = volume > vol_ma
+
+// ═══════════════════════════════════════════════════════════════
+// HTF BIAS — 15min
+// ═══════════════════════════════════════════════════════════════
+htf_ema9  = request.security(syminfo.tickerid, "15", ta.ema(close, 9),  lookahead=barmerge.lookahead_off)
+htf_ema21 = request.security(syminfo.tickerid, "15", ta.ema(close, 21), lookahead=barmerge.lookahead_off)
+htf_rsi   = request.security(syminfo.tickerid, "15", ta.rsi(close, 14), lookahead=barmerge.lookahead_off)
+htf_vwap  = request.security(syminfo.tickerid, "15", ta.vwap(hlc3),     lookahead=barmerge.lookahead_off)
+htf_close = request.security(syminfo.tickerid, "15", close,             lookahead=barmerge.lookahead_off)
+
+htf_bull    = htf_ema9 > htf_ema21 and htf_close > htf_vwap and htf_rsi > 50
+htf_bear    = htf_ema9 < htf_ema21 and htf_close < htf_vwap and htf_rsi < 50
+htf_neutral = not htf_bull and not htf_bear
+
+// ═══════════════════════════════════════════════════════════════
+// SCORES
+// ═══════════════════════════════════════════════════════════════
+long_score  = (ema_bull    ? 1:0) + (above_vwap  ? 1:0) + (rsi_bull_ok ? 1:0) + (vol_ok ? 1:0) + (close > ema9 ? 1:0)
+short_score = (ema_bear    ? 1:0) + (below_vwap  ? 1:0) + (rsi_bear_ok ? 1:0) + (vol_ok ? 1:0) + (close < ema9 ? 1:0)
+
+// ═══════════════════════════════════════════════════════════════
+// ANTI-OVERLAP TRACKER
+// ═══════════════════════════════════════════════════════════════
+var int last_signal_bar = -999
+bars_since = bar_index - last_signal_bar
+gap_ok     = bars_since >= min_bars
+
+// ═══════════════════════════════════════════════════════════════
+// TWO-STAGE SIGNAL SYSTEM
+// ═══════════════════════════════════════════════════════════════
+long_early  = long_score  >= 3 and htf_bull and long_score[1]  < 3 and gap_ok
+short_early = short_score >= 3 and htf_bear and short_score[1] < 3 and gap_ok
+
+long_raw    = long_score  == 5 and htf_bull and not (long_score[1]  == 5)
+short_raw   = short_score == 5 and htf_bear and not (short_score[1] == 5)
+
+long_signal  = long_raw  and gap_ok
+short_signal = short_raw and gap_ok
+
+if long_signal or short_signal
+    last_signal_bar := bar_index
+
+// ═══════════════════════════════════════════════════════════════
+// GRADE SYSTEM
+// ═══════════════════════════════════════════════════════════════
+rsi_strong_bull = rsi > 63
+rsi_strong_bear = rsi < 37
+vol_strong      = volume > vol_ma * 1.5
+ema_sep_bull    = (ema9 - ema21) > atr * 0.3
+ema_sep_bear    = (ema21 - ema9) > atr * 0.3
+
+long_grade  = long_signal  and rsi_strong_bull and vol_strong and ema_sep_bull ? "A+" :
+              long_signal  and (rsi_strong_bull or  vol_strong) ? "A" :
+              long_signal  ? "B" : ""
+
+short_grade = short_signal and rsi_strong_bear and vol_strong and ema_sep_bear ? "A+" :
+              short_signal and (rsi_strong_bear or  vol_strong) ? "A" :
+              short_signal ? "B" : ""
+
+long_gc  = long_grade  == "A+" ? c_gold : long_grade  == "A" ? c_long  : c_amber
+short_gc = short_grade == "A+" ? c_gold : short_grade == "A" ? c_short : c_amber
+
+// ═══════════════════════════════════════════════════════════════
+// PLOTS
+// ═══════════════════════════════════════════════════════════════
+plot(show_ema  ? ema9     : na, "EMA 9",  color=c_ema_f, linewidth=2)
+plot(show_ema  ? ema21    : na, "EMA 21", color=c_ema_s, linewidth=2)
+plot(show_vwap ? vwap_val : na, "VWAP",   color=c_amber,  linewidth=1, style=plot.style_circles)
+
+bgcolor(ema_bull ? color.new(c_long,  97) : color.new(c_short, 97))
+bgcolor(rsi_mid  ? color.new(c_dim,   92) : na)
+
+plotshape(show_htf and htf_bull,    style=shape.square, location=location.top, color=color.new(c_long,    15), size=size.tiny, title="HTF Bull")
+plotshape(show_htf and htf_bear,    style=shape.square, location=location.top, color=color.new(c_short,   15), size=size.tiny, title="HTF Bear")
+plotshape(show_htf and htf_neutral, style=shape.square, location=location.top, color=color.new(c_neutral, 40), size=size.tiny, title="HTF Neutral")
+
+// ═══════════════════════════════════════════════════════════════
+// STAGE 1 — EARLY WARNING + LIMIT ZONE
+// ═══════════════════════════════════════════════════════════════
+if long_early
+    lp = close
+    box.new(bar_index, lp + atr * 0.15, bar_index + min_bars, lp - atr * 0.15,
+         bgcolor=color.new(c_long, 75),
+         border_color=color.new(c_long, 30),
+         border_width=1)
+    label.new(bar_index, low - atr * 1.2,
+         text="LONG ZONE\nLimit: " + str.tostring(math.round(lp, 2)) + "\n3/5 confirmed\nWait for 5/5",
+         color=color.new(c_dark, 5),
+         textcolor=color.new(c_long, 20),
+         style=label.style_label_up,
+         size=size.small,
+         textalign=text.align_left)
+
+if short_early
+    sp = close
+    box.new(bar_index, sp + atr * 0.15, bar_index + min_bars, sp - atr * 0.15,
+         bgcolor=color.new(c_short, 75),
+         border_color=color.new(c_short, 30),
+         border_width=1)
+    label.new(bar_index, high + atr * 1.2,
+         text="SHORT ZONE\nLimit: " + str.tostring(math.round(sp, 2)) + "\n3/5 confirmed\nWait for 5/5",
+         color=color.new(c_dark, 5),
+         textcolor=color.new(c_short, 20),
+         style=label.style_label_down,
+         size=size.small,
+         textalign=text.align_left)
+
+// ═══════════════════════════════════════════════════════════════
+// STAGE 2 — FULL CONFIRMATION
+// ═══════════════════════════════════════════════════════════════
+if long_signal
+    en  = close
+    sl  = low   - atr * sl_mult
+    t1  = close + atr * tp1_mult
+    t2  = close + atr * tp2_mult
+    rr  = str.tostring(math.round(tp2_mult / sl_mult, 1))
+    gd  = long_grade == "A+" ? "All conditions perfect" : long_grade == "A" ? "Strong setup" : "Standard setup"
+    txt = "CONFIRMED LONG [" + long_grade + "]" + "\n" +
+          "----------------" + "\n" +
+          "E    " + str.tostring(math.round(en, 2)) + "\n" +
+          "SL   " + str.tostring(math.round(sl, 2)) + "\n" +
+          "TP1  " + str.tostring(math.round(t1, 2)) + "\n" +
+          "TP2  " + str.tostring(math.round(t2, 2)) + "\n" +
+          "RR   1:" + rr + "\n" +
+          "----------------" + "\n" +
+          gd
+    label.new(bar_index, low - atr * lbl_off,
+         text=txt,
+         color=color.new(c_dark, 5),
+         textcolor=long_gc,
+         style=label.style_label_up,
+         size=size.normal,
+         textalign=text.align_left)
+    line.new(bar_index, en, bar_index + 30, en, color=color.new(c_long,  50), width=1, style=line.style_dotted)
+    line.new(bar_index, sl, bar_index + 30, sl, color=color.new(c_short, 20), width=1, style=line.style_dashed)
+    line.new(bar_index, t1, bar_index + 30, t1, color=color.new(c_long,  50), width=1, style=line.style_dashed)
+    line.new(bar_index, t2, bar_index + 30, t2, color=color.new(c_long,  20), width=2, style=line.style_dashed)
+
+if short_signal
+    en  = close
+    sl  = high  + atr * sl_mult
+    t1  = close - atr * tp1_mult
+    t2  = close - atr * tp2_mult
+    rr  = str.tostring(math.round(tp2_mult / sl_mult, 1))
+    gd  = short_grade == "A+" ? "All conditions perfect" : short_grade == "A" ? "Strong setup" : "Standard setup"
+    txt = "CONFIRMED SHORT [" + short_grade + "]" + "\n" +
+          "----------------" + "\n" +
+          "E    " + str.tostring(math.round(en, 2)) + "\n" +
+          "SL   " + str.tostring(math.round(sl, 2)) + "\n" +
+          "TP1  " + str.tostring(math.round(t1, 2)) + "\n" +
+          "TP2  " + str.tostring(math.round(t2, 2)) + "\n" +
+          "RR   1:" + rr + "\n" +
+          "----------------" + "\n" +
+          gd
+    label.new(bar_index, high + atr * lbl_off,
+         text=txt,
+         color=color.new(c_dark, 5),
+         textcolor=short_gc,
+         style=label.style_label_down,
+         size=size.normal,
+         textalign=text.align_left)
+    line.new(bar_index, en, bar_index + 30, en, color=color.new(c_short, 50), width=1, style=line.style_dotted)
+    line.new(bar_index, sl, bar_index + 30, sl, color=color.new(c_short, 20), width=1, style=line.style_dashed)
+    line.new(bar_index, t1, bar_index + 30, t1, color=color.new(c_long,  50), width=1, style=line.style_dashed)
+    line.new(bar_index, t2, bar_index + 30, t2, color=color.new(c_long,  20), width=2, style=line.style_dashed)
+
+// ═══════════════════════════════════════════════════════════════
+// HUD PANEL
+// ═══════════════════════════════════════════════════════════════
+var table hud = table.new(position.top_right, 2, 14,
+     bgcolor=color.new(c_dark, 10),
+     border_color=color.new(c_dim, 60),
+     border_width=1,
+     frame_color=color.new(c_long, 70),
+     frame_width=1)
+
+if show_hud and barstate.islast
+    table.cell(hud, 0, 0, "  IE PRO  ", text_color=c_long, text_size=size.small, bgcolor=color.new(c_dark, 0), text_halign=text.align_center)
+    table.cell(hud, 1, 0, syminfo.ticker + " " + timeframe.period + "m", text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark, 0), text_halign=text.align_center)
+
+    htf_txt = htf_bull ? "BULL" : htf_bear ? "BEAR" : "FLAT"
+    htf_col = htf_bull ? c_long : htf_bear ? c_short : c_neutral
+    table.cell(hud, 0, 1, "15m Bias",   text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 1, htf_txt,      text_color=htf_col,   text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    stage_txt = long_signal or short_signal ? "2 Confirmed" : long_early or short_early ? "1 Place limit" : "Watching"
+    stage_col = long_signal or short_signal ? c_gold        : long_early or short_early ? c_amber         : c_neutral
+    table.cell(hud, 0, 2, "Stage",      text_color=c_neutral,  text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(hud, 1, 2, stage_txt,    text_color=stage_col,  text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+    table.cell(hud, 0, 3, "--------",   text_color=color.new(c_dim, 0), text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 3, "--------",   text_color=color.new(c_dim, 0), text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    table.cell(hud, 0, 4, "EMA 9/21",   text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(hud, 1, 4, ema_bull ? "bull" : "bear", text_color=ema_bull ? c_long : c_short, text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+    table.cell(hud, 0, 5, "VWAP",       text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 5, above_vwap ? "above" : "below", text_color=above_vwap ? c_long : c_short, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    table.cell(hud, 0, 6, "RSI " + str.tostring(math.round(rsi, 1)), text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(hud, 1, 6, rsi_bull_ok ? "bull" : rsi_bear_ok ? "bear" : "wait", text_color=rsi_bull_ok ? c_long : rsi_bear_ok ? c_short : c_neutral, text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+    table.cell(hud, 0, 7, "Volume",     text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 7, vol_ok ? "above" : "below", text_color=vol_ok ? c_long : c_neutral, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    table.cell(hud, 0, 8, "Price/EMA9", text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark, 0))
+    table.cell(hud, 1, 8, close > ema9 ? "above" : "below", text_color=close > ema9 ? c_long : c_short, text_size=size.small, bgcolor=color.new(c_dark, 0))
+
+    table.cell(hud, 0, 9, "--------",   text_color=color.new(c_dim, 0), text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 9, "--------",   text_color=color.new(c_dim, 0), text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+    l_col = long_score  == 5 ? c_long  : long_score  >= 3 ? c_amber : c_neutral
+    s_col = short_score == 5 ? c_short : short_score >= 3 ? c_amber : c_neutral
+    table.cell(hud, 0, 10, "Long score",  text_color=c_neutral, text_size=size.small,  bgcolor=color.new(c_dark,  0))
+    table.cell(hud, 1, 10, str.tostring(long_score)  + "/5", text_color=l_col, text_size=size.normal, bgcolor=color.new(c_dark, 0))
+    table.cell(hud, 0, 11, "Short score", text_color=c_neutral, text_size=size.small,  bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 11, str.tostring(short_score) + "/5", text_color=s_col, text_size=size.normal, bgcolor=color.new(c_dark2, 0))
+
+    cur_grade     = long_signal ? long_grade : short_signal ? short_grade : "--"
+    cur_grade_col = long_signal ? long_gc    : short_signal ? short_gc    : c_neutral
+    table.cell(hud, 0, 12, "Grade",    text_color=c_neutral,     text_size=size.small,  bgcolor=color.new(c_dark, 0))
+    table.cell(hud, 1, 12, cur_grade,  text_color=cur_grade_col, text_size=size.normal, bgcolor=color.new(c_dark, 0))
+
+    v_txt = long_signal ? "CONFIRMED LONG" : short_signal ? "CONFIRMED SHORT" : long_early ? "PLACE LONG LIMIT" : short_early ? "PLACE SHORT LIMIT" : "WATCHING"
+    v_col = long_signal ? c_long : short_signal ? c_short : long_early ? c_amber : short_early ? c_amber : c_neutral
+    table.cell(hud, 0, 13, "Verdict",  text_color=c_neutral, text_size=size.small, bgcolor=color.new(c_dark2, 0))
+    table.cell(hud, 1, 13, v_txt,      text_color=v_col,     text_size=size.small, bgcolor=color.new(c_dark2, 0))
+
+// ═══════════════════════════════════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════════════════════════════════
+alertcondition(long_early,                           "LONG Stage 1 - Place limit",  "LONG ZONE: 3/5 confirmed. Place limit order now.")
+alertcondition(short_early,                          "SHORT Stage 1 - Place limit", "SHORT ZONE: 3/5 confirmed. Place limit order now.")
+alertcondition(long_signal  and long_grade  == "A+", "LONG A+ Confirmed",           "LONG A+ confirmed. All conditions perfect.")
+alertcondition(long_signal  and long_grade  == "A",  "LONG A Confirmed",            "LONG A confirmed. Strong setup.")
+alertcondition(long_signal  and long_grade  == "B",  "LONG B Confirmed",            "LONG B confirmed. Standard setup.")
+alertcondition(short_signal and short_grade == "A+", "SHORT A+ Confirmed",          "SHORT A+ confirmed. All conditions perfect.")
+alertcondition(short_signal and short_grade == "A",  "SHORT A Confirmed",           "SHORT A confirmed. Strong setup.")
+alertcondition(short_signal and short_grade == "B",  "SHORT B Confirmed",           "SHORT B confirmed. Standard setup.")

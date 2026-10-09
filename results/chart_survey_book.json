@@ -54,6 +54,39 @@
    "no_memory_pct": 50.0,
    "excess_pp": -4.1,
    "t_days": -0.96
+  },
+  {
+   "week": "2026-10-05",
+   "pattern": "zone_rotation",
+   "measured_on": "2026-10-09",
+   "n_events": 16,
+   "n_days": 3,
+   "hit_pct": 57.5,
+   "no_memory_pct": 52.7,
+   "excess_pp": 4.8,
+   "t_days": 0.64
+  },
+  {
+   "week": "2026-10-05",
+   "pattern": "day_high_retest",
+   "measured_on": "2026-10-09",
+   "n_events": 211,
+   "n_days": 5,
+   "hit_pct": 57.3,
+   "no_memory_pct": 56.8,
+   "excess_pp": 0.5,
+   "t_days": 0.21
+  },
+  {
+   "week": "2026-10-05",
+   "pattern": "bos_followthrough",
+   "measured_on": "2026-10-09",
+   "n_events": 205,
+   "n_days": 5,
+   "hit_pct": 53.9,
+   "no_memory_pct": 50.0,
+   "excess_pp": 3.9,
+   "t_days": 0.86
   }
  ]
 }
