@@ -1685,3 +1685,8 @@ the compounds-per-run mechanism does not apply here. Checked, not found.
 **Council directive acknowledgment:** applied (zero-dte-lab directive 2026-10-05 KEEPs
 unchanged; CAL-001 mechanism's first live bin-crossing disclosure carried forward
 correctly to this filing).
+
+## 2026-10-08 [0dte] LATE CATCH-UP (retry 20:16 PT, post-close)
+- Resolved #30 (10-06): INSIDE (+0.12% vs +/-0.33% band) -> NO. OUTSIDE series now 31 resolved, k=8 (25.8%); the 0.38 prior keeps running hot vs a ~0.26 base, exactly what the 0.3-0.4 bin's p_cal (0.303) already says.
+- 10-07 and 10-08 have no straddle-series row: both sweeps missed, and a row written after the close is registered after its outcome (Brain S29). Filed the 09-24 late template instead: |10-08 close -> 10-09 close| > 0.75% at p 0.30 (p_cal 0.275), before any price read.
+- Sabha S9 (bar chosen by date): checked the one outcome written this run -> 10-06 close 779.09 came from the 10-06 daily bar, and the later 10-07 bar (vol 30,989,200) proves it closed. No mark recorded.
