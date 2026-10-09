@@ -30,7 +30,7 @@ TP2 ATR x 3, Label offset 3, Min bars between signals 20, HUD / HTF Dots / EMAs 
 **Why the free run does not match the chart:** the rule is right; the feed is not. Yahoo has zero premarket volume (so no premarket
 signal can ever fire and VWAP is regular-hours only) and its volume is a different feed from the chart's (ratios 0.48-0.89 of
 consolidated), so the volume leg flickers on different bars. The 20-bar spacing then makes the sequence path-dependent: an extra
-signal a few bars early uses up the gap that the chart's later label needed. 13 of the 30 labels are premarket or post-market.
+signal a few bars early uses up the gap that the chart's later label needed. 16 of the 30 labels are premarket or post-market (14 are regular hours).
 
 **How often it fires in regular hours** (what a SPY-option paper trader can use): about 2-3 signals per session in free-run
 (22 over 8 sessions, 15m mode leaky/developing; 16 with `fixed`), against 14 labels in 7 sessions on the chart.
