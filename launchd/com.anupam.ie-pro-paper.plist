@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- PTR-001 (Anupam 2026-10-09, "ok" on PREREG_IE_PRO_PAPER.md). The SIMULATED paper trader's runner: paper only, no broker, no key,
+     zero Claude credits. Weekdays 13:40 PT (= 16:40 ET, the close is settled at 13:05) and a 14:20 PT retry; the second is a no-op
+     when the first recorded the session (idempotent, keyed to the settled session). Owner: Bhishma (council/roster.json).
+     Install: cp this to ~/Library/LaunchAgents/ && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.anupam.ie-pro-paper.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.anupam.ie-pro-paper</string>
+  <key>ProgramArguments</key>
+  <array><string>/opt/anaconda3/bin/python</string><string>/Users/anupampatil/zero-dte-lab/src/paper_runner.py</string></array>
+  <key>WorkingDirectory</key><string>/Users/anupampatil/zero-dte-lab</string>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>13</integer><key>Minute</key><integer>40</integer></dict>
+    <dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>13</integer><key>Minute</key><integer>40</integer></dict>
+    <dict><key>Weekday</key><integer>3</integer><key>Hour</key><integer>13</integer><key>Minute</key><integer>40</integer></dict>
+    <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>13</integer><key>Minute</key><integer>40</integer></dict>
+    <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>13</integer><key>Minute</key><integer>40</integer></dict>
+    <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>14</integer><key>Minute</key><integer>20</integer></dict>
+    <dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>14</integer><key>Minute</key><integer>20</integer></dict>
+    <dict><key>Weekday</key><integer>3</integer><key>Hour</key><integer>14</integer><key>Minute</key><integer>20</integer></dict>
+    <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>14</integer><key>Minute</key><integer>20</integer></dict>
+    <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>14</integer><key>Minute</key><integer>20</integer></dict>
+  </array>
+  <key>StandardOutPath</key><string>/Users/anupampatil/zero-dte-lab/data/paper/launchd.log</string>
+  <key>StandardErrorPath</key><string>/Users/anupampatil/zero-dte-lab/data/paper/launchd.log</string>
+</dict>
+</plist>

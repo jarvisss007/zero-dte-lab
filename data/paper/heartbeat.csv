@@ -1,0 +1,13 @@
+run_at_et,mode,session,status,detail
+2026-10-09T18:26:42-04:00,shakedown,2026-09-30,SHAKEDOWN,signals 3 tradable 3 filled 3 skipped 0 bars 1.00 books 0.97 (outcomes redacted)
+2026-10-09T18:26:43-04:00,shakedown,2026-10-01,SHAKEDOWN,signals 4 tradable 4 filled 4 skipped 0 bars 1.00 books 0.97 (outcomes redacted)
+2026-10-09T18:26:43-04:00,shakedown,2026-10-02,DATA_GAP,signals 2 tradable 2 filled 0 skipped 0 bars 1.00 books 0.31 (outcomes redacted)
+2026-10-09T18:26:44-04:00,shakedown,2026-10-05,SHAKEDOWN,signals 3 tradable 3 filled 3 skipped 0 bars 1.00 books 0.97 (outcomes redacted)
+2026-10-09T18:26:45-04:00,shakedown,2026-10-06,SHAKEDOWN,signals 2 tradable 2 filled 2 skipped 0 bars 1.00 books 1.01 (outcomes redacted)
+2026-10-09T18:26:46-04:00,shakedown,2026-10-07,SHAKEDOWN,signals 3 tradable 3 filled 3 skipped 0 bars 1.00 books 1.00 (outcomes redacted)
+2026-10-09T18:26:47-04:00,shakedown,2026-10-08,SHAKEDOWN,signals 2 tradable 2 filled 2 skipped 0 bars 1.00 books 1.00 (outcomes redacted)
+2026-10-09T18:26:48-04:00,shakedown,2026-10-09,SHAKEDOWN,signals 3 tradable 3 filled 3 skipped 0 bars 1.00 books 0.99 (outcomes redacted)
+2026-10-09T18:27:49-04:00,live,2026-10-09,NO_APPROVAL,no APPROVED stamp: nothing is counted
+2026-10-09T18:28:13-04:00,live,2026-10-09,NO_APPROVAL,no APPROVED stamp: nothing is counted
+2026-10-09T18:30:10-04:00,live,2026-10-09,PRE_APPROVAL,session opened before the stamp 2026-10-09T18:30:00-04:00: not counted
+2026-10-09T18:30:30-04:00,live,,REFUSED,"FROZEN FILE CHANGED: ['src/paper_bars.py'] - a change is a new registered variant, not an edit"

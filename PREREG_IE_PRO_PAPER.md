@@ -1,7 +1,7 @@
 # PREREG — the simulated paper trader on the IE Pro trigger (PTR-001)
 
-**Status: DRAFT v2, 2026-10-09, after the prereg-reviewer pass — NOT REGISTERED. Nothing counts until Anupam's "ok" on THIS
-document (REG-PP-001).** Paper only: nothing here places an order, talks to a broker or holds a key. It is a forward
+**Status: REGISTERED 2026-10-09 (Anupam's "ok" on this document, after the prereg-reviewer pass; see the APPROVED stamp at the
+end). Frozen: any change is a new registered variant (REG-PP-001).** Paper only: nothing here places an order, talks to a broker or holds a key. It is a forward
 *description* of a rule on recorded data, not a claimed edge. The lab's verdicts stand: same-day SPY options showed **no edge
 after costs** (README); the only earlier score of IE Pro labels (7 hand-keyed, Aug 2026) was 1 win in 6.
 **Prior: no edge. The expected readout is FAIL.** It is **not THE ACCOUNT** and never counts toward the Rule 7 gate; its
@@ -139,4 +139,6 @@ twins keep being recorded (a halt on acting must not halt measuring, §24). *(My
 Capital $5,000; n = 60 sessions and 100 trades; the PASS conditions (§9); the KILL line; the 10-minute fill window, the 25-minute lag
 guard and the 90% / 75% coverage thresholds (my proposals, set before any outcome exists); dropping the sweep variant.
 
-APPROVED: _(not yet)_
+APPROVED: 2026-10-09 15:30 PT (18:30 ET) - Anupam's "ok" on this document, given 2026-10-09 in chat.
+Approved text = git commit 6e96e6f, sha256 392835c0c6c57526e35a5604abe23eeabac5f871292cc9d92620c1630979cd76. Runner pinned: src/paper_runner.py sha256 4f1193584e68144488cf46903e7c0bb3e1bd030b1009f063062e909fa580d8d2. Machine copy: data/paper/APPROVED.json.
+Only the two status sentences at the top were edited at the stamp. Counting starts with the first session whose 09:30 ET open is after this stamp.

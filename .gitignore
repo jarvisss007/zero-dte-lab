@@ -10,3 +10,8 @@ data/spy_5m_cache.csv
 data/r19_log.csv
 *.lock
 *.tmp.*
+
+# PTR-001 paper trader: lock files and runtime logs are not the record
+data/paper/*.lock
+data/paper/shakedown/*.lock
+data/paper/launchd.log
