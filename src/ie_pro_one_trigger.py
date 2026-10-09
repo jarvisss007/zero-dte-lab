@@ -201,6 +201,7 @@ def run(df: pd.DataFrame, htf_mode: str = "developing", ties: str = "left_strict
     last_sig = -999
     sweep_b = np.zeros(n, bool); sweep_s = np.zeros(n, bool)
     trend_a = np.zeros(n, int)
+    lsh_a = np.full(n, np.nan); lsl_a = np.full(n, np.nan)
     sig = np.zeros(n, int)
     for i in range(n):
         if not np.isnan(ph[i]):
@@ -215,6 +216,7 @@ def run(df: pd.DataFrame, htf_mode: str = "developing", ties: str = "left_strict
         if cross_dn:
             trend = -1
         trend_a[i] = trend
+        lsh_a[i], lsl_a[i] = last_sh, last_sl
         sweep_b[i] = (not np.isnan(last_sl)) and l[i] < last_sl and c[i] > last_sl
         sweep_s[i] = (not np.isnan(last_sh)) and h[i] > last_sh and c[i] < last_sh
         gap_ok = (i - last_sig) >= MIN_BARS
@@ -229,6 +231,7 @@ def run(df: pd.DataFrame, htf_mode: str = "developing", ties: str = "left_strict
 
     out = pd.concat([df, hb], axis=1)
     out["sweep_bull"], out["sweep_bear"], out["trend"], out["atr"], out["sig"] = sweep_b, sweep_s, trend_a, atr, sig
+    out["lastSH"], out["lastSL"] = lsh_a, lsl_a
     out["E"] = c
     risk = atr * ATR_SL
     out["SL"] = np.where(sig > 0, c - risk, np.where(sig < 0, c + risk, np.nan))
