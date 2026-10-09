@@ -2680,9 +2680,45 @@
   "entry_ask": 1.43,
   "entry_bid_at_entry": 1.42,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 1.36,
+    "at": "09:57:27",
+    "pnl": -0.07,
+    "pnl_pct": -4.9
+   },
+   "+10m": {
+    "exit_bid": 1.07,
+    "at": "10:02:28",
+    "pnl": -0.36,
+    "pnl_pct": -25.2
+   },
+   "+15m": {
+    "exit_bid": 1.06,
+    "at": "10:07:28",
+    "pnl": -0.37,
+    "pnl_pct": -25.9
+   },
+   "+20m": {
+    "exit_bid": 1.09,
+    "at": "10:12:29",
+    "pnl": -0.34,
+    "pnl_pct": -23.8
+   },
+   "+30m": {
+    "exit_bid": 0.97,
+    "at": "10:22:30",
+    "pnl": -0.46,
+    "pnl_pct": -32.2
+   }
+  },
+  "settle_value": 2.57,
+  "outcome": "SETTLE +79.7% | close 778.57 vs 776C -> worth 2.57 against 1.43 at the ask. Settled at SPY's official close (ZDTE-006); last chain snapshot 778.59 at 16:03:27. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_close_snapshot": 778.59,
+  "first_green": {
+   "exit": "settle",
+   "pnl_pct": 79.7
+  }
  },
  {
   "session": "2026-10-09",
@@ -2697,8 +2733,44 @@
   "entry_ask": 1.09,
   "entry_bid_at_entry": 1.08,
   "entry_basis": "EXECUTABLE (bought at the ask)",
-  "ladder": {},
-  "settle_value": "",
-  "outcome": ""
+  "ladder": {
+   "+5m": {
+    "exit_bid": 1.13,
+    "at": "09:57:27",
+    "pnl": 0.04,
+    "pnl_pct": 3.7
+   },
+   "+10m": {
+    "exit_bid": 1.4,
+    "at": "10:02:28",
+    "pnl": 0.31,
+    "pnl_pct": 28.4
+   },
+   "+15m": {
+    "exit_bid": 1.27,
+    "at": "10:07:28",
+    "pnl": 0.18,
+    "pnl_pct": 16.5
+   },
+   "+20m": {
+    "exit_bid": 1.13,
+    "at": "10:12:29",
+    "pnl": 0.04,
+    "pnl_pct": 3.7
+   },
+   "+30m": {
+    "exit_bid": 1.16,
+    "at": "10:22:30",
+    "pnl": 0.07,
+    "pnl_pct": 6.4
+   }
+  },
+  "settle_value": 0.0,
+  "outcome": "SETTLE -100.0% | close 778.57 vs 776P -> worth 0.00 against 1.09 at the ask. Settled at SPY's official close (ZDTE-006); last chain snapshot 778.59 at 16:03:27. Ladder holds the +5/10/15/20/30min executable exits.",
+  "settle_close_snapshot": 778.59,
+  "first_green": {
+   "exit": "09:57:27",
+   "pnl_pct": 3.7
+  }
  }
 ]
