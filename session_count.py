@@ -13,7 +13,9 @@ definition of USABLE belongs to this lab. Here it is, machine-readable:
 Writes data/session_count.json and prints one line. Nothing else reads the chains.
 Run after every recording day; the card and the README quote this number and no other.
 """
-import json, os, statistics, glob, datetime as dt
+import json, os, statistics, glob, sys, datetime as dt
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))   # atomicio lives in src (mirror of stock-radar's)
+from atomicio import atomic_json   # BOOK-001: never truncate a book in place
 BASE = os.path.dirname(os.path.abspath(__file__))
 CH = os.path.join(BASE, "data", "chains")
 USABLE_FRAC = 0.86
@@ -92,7 +94,7 @@ def main():
                                      "— THIS is the count that governs the gate"),
            "admissible_sessions": fits, "unfit_sessions": unfit,
            "unjudged_sessions": unknown}
-    json.dump(out, open(os.path.join(BASE, "data", "session_count.json"), "w"), indent=1)
+    atomic_json(os.path.join(BASE, "data", "session_count.json"), out, indent=1)
     print(f"zero-dte sessions: {len(usable)} usable / {len(counts)} files ({len(stubs)} stubs: {', '.join(stubs)}) "
           f"-> {len(usable)}/{GATE} toward the timing gate")
 

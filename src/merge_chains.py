@@ -32,6 +32,8 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from atomicio import atomic_csv   # BOOK-001: never truncate a book in place (src/atomicio.py = mirror of stock-radar's)
+
 ROOT = Path(__file__).resolve().parent.parent
 LAPTOP_DIR = ROOT / "data" / "chains"
 CLOUD_DIR = ROOT / "data" / "chains_ci"
@@ -121,10 +123,7 @@ def main() -> int:
         per_leg["cloud"] |= {f"{date} {t}" for t in cld_books}
 
         if not args.report:
-            with open(MERGED_DIR / f"SPY_{date}.csv", "w", newline="") as f:
-                w = csv.DictWriter(f, fieldnames=header)
-                w.writeheader()
-                w.writerows(merged)
+            atomic_csv(str(MERGED_DIR / f"SPY_{date}.csv"), header, merged)     # BOOK-001: write beside and replace
 
         rows_out.append((
             date, len(lap_books), len(cld_books),
