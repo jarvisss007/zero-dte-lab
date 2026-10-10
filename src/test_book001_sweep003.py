@@ -55,3 +55,16 @@ def test_merged_session_csv_is_identical(tmp_path):
         w.writerows(merged)
     atomicio.atomic_csv(str(tmp_path / "new"), header, merged)
     assert (tmp_path / "old").read_bytes() == (tmp_path / "new").read_bytes()
+
+ROOT_DIR = ROOT
+LOADABLE = ["session_count.py", "src/merge_chains.py"]
+
+
+def test_each_converted_module_loads_by_path_from_any_cwd(tmp_path):
+    """a resolver check, a bin script or another repo may load these with spec_from_file_location and no sys.path help: the atomicio import must not depend on the
+    caller's path (found by loading every converted module from cwd=/ on 2026-10-09; a bare `from atomicio import` failed for most of them)."""
+    import subprocess
+    code = "import importlib.util as u,sys; s=u.spec_from_file_location('probe', sys.argv[1]); m=u.module_from_spec(s); s.loader.exec_module(m)"
+    for name in LOADABLE:
+        r = subprocess.run([sys.executable, "-c", code, str(ROOT_DIR / name)], cwd=tmp_path, capture_output=True, text=True, timeout=180)
+        assert r.returncode == 0, (name, r.stderr[-300:])
