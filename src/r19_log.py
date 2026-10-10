@@ -36,6 +36,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+import os as _b1_os, sys as _b1_sys; _b1_sys.path.append(_b1_os.path.dirname(_b1_os.path.abspath(__file__)))   # BOOK-001: atomicio sits beside this file (appended: never shadows)
+import atomicio   # BOOK-001: src/atomicio.py, the mirror of stock-radar's
+
 ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "data" / "r19_log.csv"
 TABLE = ROOT / "results" / "rule1_option_space.csv"
@@ -78,7 +81,7 @@ def _load() -> pd.DataFrame:
 
 def _save(df: pd.DataFrame) -> None:
     LOG.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(LOG, index=False)
+    atomicio.atomic_write_text(str(LOG), df.to_csv(index=False))      # BOOK-001: write beside and replace (the idiom paper_runner.py uses)
 
 
 def cmd_add(a) -> None:

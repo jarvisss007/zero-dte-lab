@@ -57,7 +57,7 @@ def test_merged_session_csv_is_identical(tmp_path):
     assert (tmp_path / "old").read_bytes() == (tmp_path / "new").read_bytes()
 
 ROOT_DIR = ROOT
-LOADABLE = ["session_count.py", "src/merge_chains.py"]
+LOADABLE = ["session_count.py", "src/merge_chains.py", "src/r19_log.py"]
 
 
 def test_each_converted_module_loads_by_path_from_any_cwd(tmp_path):
@@ -68,3 +68,15 @@ def test_each_converted_module_loads_by_path_from_any_cwd(tmp_path):
     for name in LOADABLE:
         r = subprocess.run([sys.executable, "-c", code, str(ROOT_DIR / name)], cwd=tmp_path, capture_output=True, text=True, timeout=180)
         assert r.returncode == 0, (name, r.stderr[-300:])
+
+
+def test_r19_log_save_equals_the_old_to_csv(tmp_path, monkeypatch):
+    """r19_log._save: df.to_csv(LOG, index=False) -> atomicio.atomic_write_text(LOG, df.to_csv(index=False)) - the idiom paper_runner.py already uses. df.to_csv is not a call the Sweep sees."""
+    pd = pytest.importorskip("pandas")
+    import r19_log
+    df = pd.DataFrame({"id": [1, 2], "side": ["short", "long"], "E": [776.0, 770.25], "note": ["a,b", 'q"q \u00e9']})
+    df.to_csv(tmp_path / "old.csv", index=False)
+    monkeypatch.setattr(r19_log, "LOG", tmp_path / "sub" / "new.csv")
+    r19_log._save(df)
+    assert (tmp_path / "old.csv").read_bytes() == (tmp_path / "sub" / "new.csv").read_bytes()
+    assert os.listdir(tmp_path / "sub") == ["new.csv"]
