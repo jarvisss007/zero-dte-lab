@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-11T15:41-07:00",
+ "generated": "2026-10-11T15:42-07:00",
  "status": "DESCRIPTION ONLY - nothing registered, no position follows from it",
  "script": "src/exit_runner_study.py",
  "tests": "src/test_exit_runner_study.py",
@@ -200,6 +200,13 @@
        "clock": 185,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.4
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 7.7,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -262,6 +269,13 @@
        "clock": 282,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.4
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 7.7,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -324,6 +338,13 @@
        "clock": 122,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.4
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 18.3,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -386,6 +407,13 @@
        "clock": 246,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.4
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 18.3,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -597,6 +625,13 @@
        "clock": 90,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       44.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 13.9,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -659,6 +694,13 @@
        "clock": 139,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       44.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 13.9,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -721,6 +763,13 @@
        "clock": 60,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       44.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 23.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -783,6 +832,13 @@
        "clock": 137,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       44.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 23.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -994,6 +1050,13 @@
        "clock": 95,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 7.7,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1056,6 +1119,13 @@
        "clock": 143,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 7.7,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1118,6 +1188,13 @@
        "clock": 62,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 18.3,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1180,6 +1257,13 @@
        "clock": 109,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       15.0,
+       25.0,
+       40.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 35.0,
+      "worst_total_result_pct": 18.3,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1391,6 +1475,13 @@
        "clock": 12,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       35.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 25.0,
+      "worst_total_result_pct": 13.9,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1453,6 +1544,13 @@
        "clock": 17,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       35.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 25.0,
+      "worst_total_result_pct": 13.9,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1515,6 +1613,13 @@
        "clock": 10,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       35.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 25.0,
+      "worst_total_result_pct": 25.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1577,6 +1682,13 @@
        "clock": 16,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       35.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 25.0,
+      "worst_total_result_pct": 25.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1788,6 +1900,13 @@
        "clock": 8,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       40.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 20.0,
+      "worst_total_result_pct": 25.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1850,6 +1969,13 @@
        "clock": 10,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       40.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 20.0,
+      "worst_total_result_pct": 25.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1912,6 +2038,13 @@
        "clock": 6,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       40.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 20.0,
+      "worst_total_result_pct": 25.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -1974,6 +2107,13 @@
        "clock": 9,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       25.0,
+       40.0,
+       45.0
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 20.0,
+      "worst_total_result_pct": 25.0,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -2185,6 +2325,13 @@
        "clock": 4,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       23.3,
+       30.0,
+       36.3
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 30.0,
+      "worst_total_result_pct": 13.9,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -2247,6 +2394,13 @@
        "clock": 7,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       23.3,
+       30.0,
+       36.3
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 30.0,
+      "worst_total_result_pct": 13.9,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -2309,6 +2463,13 @@
        "clock": 4,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       23.3,
+       30.0,
+       36.3
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 30.0,
+      "worst_total_result_pct": 27.8,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {
@@ -2371,6 +2532,13 @@
        "clock": 7,
        "settle_fallback": 0
       },
+      "minutes_to_target1_q1_median_q3": [
+       23.3,
+       30.0,
+       36.3
+      ],
+      "minutes_left_on_the_clock_at_target1_median": 30.0,
+      "worst_total_result_pct": 27.8,
       "note": "a decomposition of the same cell, not an extra test"
      },
      "vs_card": {

@@ -103,8 +103,9 @@ CHECK_FIELDS = ("n_trades", "n_sessions", "win_pct", "avg_win_pct", "avg_loss_pc
 
 
 # ------------------------------------------------------------------------------------------- the engine
-def runner_exit(tr, *, t1=T1, t2=1.00, stop=STOP, clock_min=CLOCK_MIN, post="breakeven", trail=0.25, keep_t2=True):
+def runner_exit(tr, *, t1=T1, t2=1.00, stop=STOP, clock_min=CLOCK_MIN, post="breakeven", trail=0.25, keep_t2=True, info=None):
     """One trade, the two-contract card -> (r1, r2, pre, c2), results as fractions of the entry ask.
+    `info`, if a dict, receives info["t1_min"] = minutes from entry to the snapshot where target 1 filled (stage trades only).
 
     pre = the study's reason code for the PAIR up to target 1 (R_STOP / R_TARGET / R_CLOCK / R_SETTLE); c2 = how contract 2
     left once target 1 had filled (C2_*), else C2_NONE. The total result is (r1 + r2) / 2."""
@@ -127,6 +128,8 @@ def runner_exit(tr, *, t1=T1, t2=1.00, stop=STOP, clock_min=CLOCK_MIN, post="bre
         r = b[idx] / ask - 1
         return r, r, R_CLOCK, C2_NONE
     r1 = b[idx] / ask - 1                                   # target 1 fills here; contract 2 keeps running from this snapshot
+    if info is not None:
+        info["t1_min"] = float(ts[idx]) / 60.0
     peak = b[idx]
     for j in range(idx, n):
         bj = b[j]
@@ -147,7 +150,7 @@ def _rng(*key):
     return np.random.default_rng([BOOT_SEED, *key])
 
 
-def runner_cell(tot, pre, c2, r1, r2, sid, card_pnl, gi, ri):
+def runner_cell(tot, pre, c2, r1, r2, sid, card_pnl, t1min, gi, ri):
     """All the numbers for one runner rule in one group."""
     n = len(tot)
     allm = np.ones(n, bool)
@@ -166,6 +169,9 @@ def runner_cell(tot, pre, c2, r1, r2, sid, card_pnl, gi, ri):
             "contract2_beats_contract1_share_pct": round(100 * float((d > 0).mean()), 1),
             "contract2_loses_money_share_pct": round(100 * float((r2[stage] < 0).mean()), 1),
             "contract2_exits": {C2_NAMES[c]: int((c2[stage] == c).sum()) for c in (C2_TARGET, C2_STOP, C2_CLOCK, C2_SETTLE)},
+            "minutes_to_target1_q1_median_q3": [round(float(v), 1) for v in np.percentile(t1min[stage], [25, 50, 75])],
+            "minutes_left_on_the_clock_at_target1_median": round(float(CLOCK_MIN - np.median(t1min[stage])), 1),
+            "worst_total_result_pct": round(100 * float(tot[stage].min()), 1),
             "note": "a decomposition of the same cell, not an extra test"}
     diff = tot - card_pnl                                    # paired, trade by trade; 0 wherever target 1 never filled
     cell["vs_card"] = {
@@ -207,12 +213,16 @@ def main():
     R = {k: np.zeros((N, 2)) for k in RUNNERS}
     PRE = {k: np.zeros(N, int) for k in RUNNERS}
     C2 = {k: np.full(N, C2_NONE, int) for k in RUNNERS}
+    T1MIN = np.full(N, np.nan)
     CMP = {k: np.zeros(N) for k in COMPARE}
     CMPC = {k: np.zeros(N, int) for k in COMPARE}
     parsed = {name: next(r for r in ers.rules() if r[0] == name) for name in COMPARE.values()}
     for k, tr in enumerate(trades):
         for rk, prm in RUNNER_PARAMS.items():
-            r1, r2, pre, c2 = runner_exit(tr, **{kk: vv for kk, vv in prm.items() if vv is not None})
+            info = {}
+            r1, r2, pre, c2 = runner_exit(tr, info=info, **{kk: vv for kk, vv in prm.items() if vv is not None})
+            if "t1_min" in info:
+                T1MIN[k] = info["t1_min"]
             R[rk][k] = (r1, r2)
             PRE[rk][k], C2[rk][k] = pre, c2
         for ck, name in COMPARE.items():
@@ -236,7 +246,7 @@ def main():
         for ri, rk in enumerate(RUNNERS):
             tot = R[rk][sel].mean(1)
             block["runners"][rk] = runner_cell(tot, PRE[rk][sel], C2[rk][sel], R[rk][sel][:, 0], R[rk][sel][:, 1], s,
-                                               card[sel], gi, ri)
+                                               card[sel], T1MIN[sel], gi, ri)
         allm = np.ones(int(sel.sum()), bool)
         for ci, (ck, name) in enumerate(COMPARE.items()):
             mine = ers.rule_stats(CMP[ck][sel] * 1.0, CMPC[ck][sel], s)
@@ -260,6 +270,9 @@ def main():
 
     n_groups, n_rules = len(GROUPS), len(RUNNERS)
     calm = study["data"]["calm_window"]
+    ivs = [(g, rk, c["vs_card"]["ci90_pct"]) for g, b in results.items() for rk, c in b["runners"].items()]
+    clear = [f"{g} | {rk}" for g, rk, (lo, hi) in ivs if lo > 0.05 or hi < -0.05]       # the interval is rounded to 0.1: +/-0.05 counts as touching zero
+    touch = [f"{g} | {rk}" for g, rk, (lo, hi) in ivs if not (lo > 0.05 or hi < -0.05) and (abs(lo) <= 0.05 or abs(hi) <= 0.05)]
     out = {
         "generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),
         "status": "DESCRIPTION ONLY - nothing registered, no position follows from it",
@@ -289,7 +302,10 @@ def main():
                   "note": "the brief named three rules (a, b, c); c was ambiguous (does the +100% target survive the trailing stop?) so both readings are run "
                           "and counted: the brief's three rules alone would be 3 x 6 = 18 cells + 18 paired differences = 36 looks. "
                           "The runner-stage decomposition and the comparison cells (re-read from the study) are not counted as new looks.",
-                  "groups_reported": list(GROUPS)},
+                  "groups_reported": list(GROUPS),
+                  "paired_90pct_intervals_excluding_zero": {"count": len(clear), "of": len(ivs), "cells": clear,
+                                                             "expected_by_chance_at_90pct": round(0.10 * len(ivs), 1),
+                                                             "touching_zero_at_the_rounded_edge": touch}},
         "results": results,
     }
     atomic_json(a.out, out, indent=1)
