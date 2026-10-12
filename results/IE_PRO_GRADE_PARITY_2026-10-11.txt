@@ -1,0 +1,46 @@
+30 labels; matched to a bar 27; unmatched 3 (post-close labels)
+
+== REGULAR HOURS (the only tradable ones): n 14, grade equal 12
+port   A  A+  B
+chart          
+A      7   1  0
+A+     0   3  0
+B      1   0  2
+chart A+ 3 -> port A+ on 3; port A+ 4 -> chart A+ on 3
+
+== PREMARKET (volume is 0 in the free feed): n 13, grade equal 5
+port   A  B
+chart      
+A      2  3
+A+     5  0
+B      0  3
+chart A+ 5 -> port A+ on 0; port A+ 0 -> chart A+ on 0
+
+  day bar_pt side chart port   rth note
+09-30  03:25    S     B    B False     
+09-30  06:30    L     A    A  True     
+09-30  09:00    L     B    B  True     
+09-30  12:15    S     B    A  True     
+10-01  06:40    S    A+   A+  True     
+10-01  04:45    L     B    B False     
+10-01  11:20    L     B    B  True     
+10-02  02:15    L    A+    A False     
+10-02  04:10    L     A    B False     
+10-02  06:00    L     A    A False     
+10-05  02:40    S     A    A False     
+10-05  05:15    L     A    B False     
+10-05  08:20    L     A    A  True     
+10-05  10:15    L     A   A+  True     
+10-07  02:20    S    A+    A False     
+10-07  04:00    S    A+    A False     
+10-07  06:00    S     B    B False     
+10-07  07:45    S     A    A  True     
+10-07  10:20    L     A    A  True     
+10-08  02:10    S    A+    A False     
+10-08  04:00    S    A+    A False     
+10-08  10:20    S     A    A  True     
+10-08  07:20    L    A+   A+  True     
+10-09  04:45    L     A    B False     
+10-09  08:00    L     A    A  True     
+10-09  09:45    L     A    A  True     
+10-09  11:45    L    A+   A+  True     
