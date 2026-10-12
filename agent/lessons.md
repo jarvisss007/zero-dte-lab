@@ -1690,3 +1690,10 @@ correctly to this filing).
 - Resolved #30 (10-06): INSIDE (+0.12% vs +/-0.33% band) -> NO. OUTSIDE series now 31 resolved, k=8 (25.8%); the 0.38 prior keeps running hot vs a ~0.26 base, exactly what the 0.3-0.4 bin's p_cal (0.303) already says.
 - 10-07 and 10-08 have no straddle-series row: both sweeps missed, and a row written after the close is registered after its outcome (Brain S29). Filed the 09-24 late template instead: |10-08 close -> 10-09 close| > 0.75% at p 0.30 (p_cal 0.275), before any price read.
 - Sabha S9 (bar chosen by date): checked the one outcome written this run -> 10-06 close 779.09 came from the 10-06 daily bar, and the later 10-07 bar (vol 30,989,200) proves it closed. No mark recorded.
+
+## 2026-10-12 [0dte] — GARUDA (labs-morning-sweep, 08:29 PT)
+- Scored 10-09 `max_pain breaks` (pin 773): settled close 778.57, outside +/-0.25% -> **right**. max_pain now 6/8 right; the sub-1-sigma "real test" stratum (10-01, 10-05, 10-09) is 3/3, still n=3.
+- Resolved #31 (10-09 straddle series): +0.28% vs +/-0.32% -> INSIDE -> 0. Series 32 resolved, k=8 (25.0%). Resolved the 10-08 late-template row: |10-09/10-08| = 0.60% <= 0.75% -> 0 (p 0.30 leaned right).
+- First snapshot 09:46:25 was the opening book (quote_ts 09:30:03, iv=0 on all 144 rows): unfittable. ZDTE-003(ii) fallback used, stamped at 09:51:27. Pattern to watch: when the recorder's first fetch lands on the 09:30 print, the first book carries no IVs — that is a recorder-side fact, not a reason to step further than the next snapshot.
+- New: #32 filed at 0.38 (p_cal 0.311) and `max_pain breaks` (pin 776, ~0.95 sigma) before any live read. Implied band today is narrow (+/-0.26%).
+- Sabha §30 (cap in loop order): this lab files max 2 ledger calls, one per metric, and implied_move stays barred — no candidate-vs-slot ordering exists, so no hidden selection rule. Checked, not found.
