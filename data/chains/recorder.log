@@ -4591,3 +4591,5 @@
 2026-10-12 15:58:01 ET  wrote 146 rows -> SPY_2026-10-12.csv (spot 777.82, quotes 2026-10-12T15:42:43)
 2026-10-12 16:03:02 ET  wrote 146 rows -> SPY_2026-10-12.csv (spot 777.82, quotes 2026-10-12T15:47:44)
 2026-10-12 16:08:03 ET  SESSION SUMMARY 2026-10-12: 79 fetches ok, 0 failed
+2026-10-13 09:33:48 ET  skip: stale quotes (2026-10-12T16:00:00 ET, spot 777.42)
+2026-10-13 09:33:52 ET  fallback: the fresh source is stale too (newest trade 2026-10-12 16:14:59) - nothing recorded
