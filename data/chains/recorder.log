@@ -4595,3 +4595,5 @@
 2026-10-13 09:33:52 ET  fallback: the fresh source is stale too (newest trade 2026-10-12 16:14:59) - nothing recorded
 2026-10-13 09:38:54 ET  skip: stale quotes (2026-10-12T16:00:00 ET, spot 777.26)
 2026-10-13 09:38:56 ET  fallback: the fresh source is stale too (newest trade 2026-10-12 16:14:59) - nothing recorded
+2026-10-13 09:43:57 ET  skip: stale quotes (2026-10-12T16:00:00 ET, spot 777.27)
+2026-10-13 09:44:00 ET  fallback: the fresh source is stale too (newest trade 2026-10-12 16:14:59) - nothing recorded
