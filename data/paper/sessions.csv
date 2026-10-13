@@ -1,2 +1,3 @@
 variant,label,session,status,bars_frac,book_frac,n_signals,n_tradable,n_filled,n_skipped,net,cum_net,note
 PTR-001,COUNTED,2026-10-12,COUNTED,1.0,0.974,3,3,3,0,-1123.4,-1123.4,
+PTR-001,COUNTED,2026-10-13,COUNTED,1.0,1.0,2,2,2,0,-145.06,-1268.46,
