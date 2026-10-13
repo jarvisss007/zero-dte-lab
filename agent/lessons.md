@@ -1697,3 +1697,10 @@ correctly to this filing).
 - First snapshot 09:46:25 was the opening book (quote_ts 09:30:03, iv=0 on all 144 rows): unfittable. ZDTE-003(ii) fallback used, stamped at 09:51:27. Pattern to watch: when the recorder's first fetch lands on the 09:30 print, the first book carries no IVs — that is a recorder-side fact, not a reason to step further than the next snapshot.
 - New: #32 filed at 0.38 (p_cal 0.311) and `max_pain breaks` (pin 776, ~0.95 sigma) before any live read. Implied band today is narrow (+/-0.26%).
 - Sabha §30 (cap in loop order): this lab files max 2 ledger calls, one per metric, and implied_move stays barred — no candidate-vs-slot ordering exists, so no hidden selection rule. Checked, not found.
+
+## 2026-10-13 [0dte] — GARUDA (labs-morning-sweep, 08:30 PT, PREP SPLIT day 1)
+- Scored 10-12 `max_pain breaks` (pin 776): settled close 778.10, outside +/-0.25% -> **right**. max_pain 7/9; sub-1-sigma "real test" stratum 4/4, still tiny n.
+- Resolved #32 (10-12): -0.10% vs +/-0.26% -> INSIDE -> 0. Series 33 resolved, k=8 (24.2%).
+- New: #33 at 0.38 (p_cal 0.3045) and `max_pain breaks` (pin 777, spot INSIDE the band at 0.44 sigma — the first 'breaks' called from inside the band; implied density holds-mass ~0.45). First snapshot 09:54:03 fittable, no fallback.
+- Watch: four straight 'breaks' calls on max_pain — the metric is drifting toward the mechanical-'breaks' base rate flagged 08-20. Report holds-vs-breaks call mix next to the hit rate.
+- session_count.json (directive): written ONLY by `session_count.py`, by hand; no launchd job, scheduled task or workflow calls it, so it stays at 2026-09-30 until someone runs it. Proposal for Anupam: run it in the post-close slot (it reads chains only). Not hand-edited.
