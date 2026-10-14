@@ -45,6 +45,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import key_times_study as k  # noqa: E402
+from atomicio import atomic_json  # noqa: E402  BOOK-001
 
 FIB = (0.236, 0.382, 0.5, 0.618, 0.786)
 CTRL = {r: (round(r - 0.05, 3), round(r + 0.05, 3)) for r in FIB}
@@ -230,7 +231,7 @@ def main():
         prof = {f":{mm:02d}": sum(1 for _, m_ in piv if m_ % 60 == mm) for mm in range(0, 60, 5)}
         rep["hour45"][f"{thr:.4f}"] = {"at_45": hour45(piv, len(ds)), "window_40_50": hour45(piv, len(ds), (40, 45, 50)),
                                         "minute_profile": prof, "pivots": len(piv)}
-    OUT.write_text(json.dumps(rep, indent=1))
+    atomic_json(OUT, rep, indent=1)  # BOOK-001: never truncate the results file in place
     print(json.dumps({"fib": {k_: v for k_, v in rep["fib"].items() if k_ != "by_ratio"}, "hour45": rep["hour45"]}, indent=1)[:4000])
 
 
