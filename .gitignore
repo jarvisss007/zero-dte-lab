@@ -15,3 +15,5 @@ data/r19_log.csv
 data/paper/*.lock
 data/paper/shakedown/*.lock
 data/paper/*.log
+results/.chrome/
+results/FIB_HOUR45_STUDY.html
