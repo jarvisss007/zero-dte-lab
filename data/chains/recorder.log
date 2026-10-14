@@ -4683,3 +4683,5 @@
 2026-10-14 09:41:10 ET  fallback: the fresh source is stale too (newest trade 2026-10-13 16:14:59) - nothing recorded
 2026-10-14 09:46:10 ET  wrote 148 rows -> SPY_2026-10-14.csv (spot 774.82, quotes 2026-10-14T09:30:51)
 2026-10-14 09:51:11 ET  wrote 148 rows -> SPY_2026-10-14.csv (spot 775.44, quotes 2026-10-14T09:34:12)
+2026-10-14 09:56:12 ET  wrote 148 rows -> SPY_2026-10-14.csv (spot 775.765, quotes 2026-10-14T09:40:33)
+2026-10-14 10:01:13 ET  wrote 148 rows -> SPY_2026-10-14.csv (spot 775.36, quotes 2026-10-14T09:45:56)
