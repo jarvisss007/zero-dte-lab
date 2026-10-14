@@ -13,13 +13,17 @@ definition of USABLE belongs to this lab. Here it is, machine-readable:
 Writes data/session_count.json and prints one line. Nothing else reads the chains.
 Run after every recording day; the card and the README quote this number and no other.
 """
-import json, os, statistics, glob, sys, datetime as dt
+import json, os, re, statistics, glob, sys, datetime as dt
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))   # atomicio lives in src (mirror of stock-radar's)
 from atomicio import atomic_json   # BOOK-001: never truncate a book in place
 BASE = os.path.dirname(os.path.abspath(__file__))
 CH = os.path.join(BASE, "data", "chains")
 USABLE_FRAC = 0.86
 GATE = 60
+# ZDTE-013 audit 2026-10-14: the recorder's SPY_<date>.yfinance.csv sidecars matched SPY_*.csv and
+# overwrote that date's row count (144 rows), so full sessions were counted as stubs.
+# Same filter as src/zero_dte_grid.py and src/naked_selling_study.py.
+SESSION_FILE = re.compile(r"^SPY_(\d{4}-\d{2}-\d{2})\.csv$")   # plain CBOE session files only
 
 
 def first_snapshot_fits(path):
@@ -65,7 +69,7 @@ def first_snapshot_fits(path):
 
 
 def main():
-    files = sorted(glob.glob(os.path.join(CH, "SPY_*.csv")))
+    files = sorted(f for f in glob.glob(os.path.join(CH, "SPY_*.csv")) if SESSION_FILE.match(os.path.basename(f)))
     counts = {}
     for f in files:
         with open(f) as fh:
