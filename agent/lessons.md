@@ -1704,3 +1704,9 @@ correctly to this filing).
 - New: #33 at 0.38 (p_cal 0.3045) and `max_pain breaks` (pin 777, spot INSIDE the band at 0.44 sigma — the first 'breaks' called from inside the band; implied density holds-mass ~0.45). First snapshot 09:54:03 fittable, no fallback.
 - Watch: four straight 'breaks' calls on max_pain — the metric is drifting toward the mechanical-'breaks' base rate flagged 08-20. Report holds-vs-breaks call mix next to the hit rate.
 - session_count.json (directive): written ONLY by `session_count.py`, by hand; no launchd job, scheduled task or workflow calls it, so it stays at 2026-09-30 until someone runs it. Proposal for Anupam: run it in the post-close slot (it reads chains only). Not hand-edited.
+
+## 2026-10-14 [0dte] — GARUDA (labs-morning-sweep, 08:30 PT, prep DONE 14/14)
+- Scored 10-13 `max_pain breaks` (pin 777): settled close 778.01, INSIDE 775.06-778.94 -> **wrong**. max_pain 7/10; sub-1-sigma "real test" stratum now 4/5. The one breaks call made from INSIDE the band at the snapshot is the one that lost — n=1, but it is the case the 08-20 warning was about.
+- Resolved #33 (10-13): -0.04% vs +/-0.27% -> INSIDE -> 0. Series 34 resolved, k=8 (23.5%).
+- New: #34 at 0.38 (p_cal 0.301) and `max_pain breaks` (pin 777, spot 0.58 sigma below; implied holds-mass ~0.34). First snapshot 09:46:10 carried quote_ts 09:30:51 yet was fittable (121 rows with iv) — the opening book is not always iv=0 (contrast 10-12).
+- Call mix: 5 straight 'breaks'. Report holds-vs-breaks next to the hit rate; no 'holds' since 10-01.
