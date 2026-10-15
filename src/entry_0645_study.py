@@ -106,7 +106,7 @@ def main():
                             for y, v in yr.items()}
     rep["last_20"] = rows[-20:]
     rep["today"] = rows[-1]
-    OUT.write_text(json.dumps(rep, indent=1, default=str))
+    OUT.write_text(json.dumps(rep, indent=1, default=str))  # BOOK-001: research one-off; sole writer, no reader of this file (grep 2026-10-15)
     print(json.dumps({k_: rep[k_] for k_ in ("data", "all_days", "big_open_days", "by_year_close", "today")}, indent=1,
                      default=str)[:6000])
 

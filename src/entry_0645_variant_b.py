@@ -25,7 +25,7 @@ out = {}
 for name, sample in (("all_days", rows), ("big_move_days", [r for r in rows if abs(r["gap_pct"]) >= 0.003])):
     out[name] = {ex: e.summarize(sample, "b_" + ex) for ex in ("15", "60", "2h", "close")}
 out["today"] = rows[-1]
-json.dump(out, open('/Users/anupampatil/zero-dte-lab/results/entry_0645_variant_b.json', 'w'), indent=1)
+json.dump(out, open('/Users/anupampatil/zero-dte-lab/results/entry_0645_variant_b.json', 'w'), indent=1)  # BOOK-001: research one-off; sole writer, no reader (grep 2026-10-15)
 for name in ("all_days", "big_move_days"):
     for ex in ("15", "60", "2h", "close"):
         m = out[name][ex]; print(name, ex, "n", m["n"], "win %.1f%%" % (100 * m["win"]), "mean $%.3f" % m["mean_usd"], "t %.2f" % m["t"], "total $%.0f" % m["total_usd"])
