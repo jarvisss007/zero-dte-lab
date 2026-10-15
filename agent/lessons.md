@@ -1710,3 +1710,9 @@ correctly to this filing).
 - Resolved #33 (10-13): -0.04% vs +/-0.27% -> INSIDE -> 0. Series 34 resolved, k=8 (23.5%).
 - New: #34 at 0.38 (p_cal 0.301) and `max_pain breaks` (pin 777, spot 0.58 sigma below; implied holds-mass ~0.34). First snapshot 09:46:10 carried quote_ts 09:30:51 yet was fittable (121 rows with iv) — the opening book is not always iv=0 (contrast 10-12).
 - Call mix: 5 straight 'breaks'. Report holds-vs-breaks next to the hit rate; no 'holds' since 10-01.
+
+## 2026-10-15 [0dte] — GARUDA (labs-morning-sweep, 08:30 PT, prep DONE 14/14)
+- Scored 10-14 `max_pain breaks` (pin 777): settled close 769.60, 0.95% below the pin -> **right**. max_pain 8/11; sub-1-sigma "real test" stratum 5/6.
+- Resolved #34 (10-14): -0.67% vs +/-0.37% -> OUTSIDE -> **1**, the first YES since k=8. Series 35 resolved, k=9 (25.7%); the 0.38 prior still runs hot.
+- New: #35 at 0.38 (p_cal 0.298) and `max_pain breaks` (pin 770, spot 0.72 sigma below; implied holds-mass ~0.19). First snapshot 09:52:54 fittable; band widened to +/-0.48% after yesterday's -1.2% day.
+- Call mix: 6 straight 'breaks'. The low holds-mass readings justify each one, but the mix still says this metric is reading a base rate more than a pin.
