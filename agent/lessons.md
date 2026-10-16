@@ -1716,3 +1716,10 @@ correctly to this filing).
 - Resolved #34 (10-14): -0.67% vs +/-0.37% -> OUTSIDE -> **1**, the first YES since k=8. Series 35 resolved, k=9 (25.7%); the 0.38 prior still runs hot.
 - New: #35 at 0.38 (p_cal 0.298) and `max_pain breaks` (pin 770, spot 0.72 sigma below; implied holds-mass ~0.19). First snapshot 09:52:54 fittable; band widened to +/-0.48% after yesterday's -1.2% day.
 - Call mix: 6 straight 'breaks'. The low holds-mass readings justify each one, but the mix still says this metric is reading a base rate more than a pin.
+
+## 2026-10-16 [0dte] — GARUDA (labs-morning-sweep, 08:30 PT, prep DONE 14/14)
+- Scored 10-15 `max_pain breaks` (pin 770): settled close 771.79, INSIDE 768.08-771.93 -> **wrong**. max_pain 8/12; sub-1-sigma "real test" stratum 5/7. Holds-mass was ~0.19 at the snapshot and it still pinned — a low density reading is a probability, not a verdict.
+- Resolved #35 (10-15): +0.79% vs +/-0.48% -> OUTSIDE -> **1**. Series 36 resolved, k=10 (27.8%); two YES in a row after a -1.2% and a +0.3% reversal day.
+- New: #36 at 0.38 (p_cal 0.3085) and `max_pain breaks` (pin 770, spot 0.65 sigma above, holds-mass ~0.33). First snapshot 09:49:40 fittable, no fallback.
+- Call mix: 7 straight 'breaks', now 2 wrong in the last 3. Both losses closed inside the band — the base-rate drift flagged 10-13 is showing up in the hit rate.
+- ZDTE-013 (directive): closed 10-14 by the resolver's `zdte013_session_count_current` test after a one-off run of session_count.py (it also fixed the yfinance-sidecar stub miscount). Nothing schedules the script, so the count does NOT update on its own: it sat at as_of 10-14 until this run executed it (now 51/60, as_of 10-16; today's file counts as a stub until the session ends).

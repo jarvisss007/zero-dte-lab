@@ -13,4 +13,5 @@ date,metric,call,thesis,value_at_call,check_date,value_at_check,outcome,snapshot
 2026-10-12,max_pain,breaks,"[0dte] [tech] 09:51 spot 778.88 sits 0.37% above max-pain 776 (~0.95 sigma); real test [ZDTE-003: first snapshot 09:46:25 unfittable (0 usable OTM quotes, iv=0 on 09:30:03 opening book); stamped at 09:51:27]",776,2026-10-12,778.10,right,09:51:27,21.5,0
 2026-10-13,max_pain,breaks,"[0dte] [tech] 09:54 spot 778.34 sits 0.17% above max-pain 777 (~0.44 sigma), inside band; implied density gives holds ~0.45; real test",777,2026-10-13,778.01,wrong,09:54:03,24.1,0
 2026-10-14,max_pain,breaks,[0dte] [tech] 09:46 spot 774.82 sits 0.28% below max-pain 777 (~0.58 sigma); implied density holds ~0.34; real test; 5th straight breaks call,777,2026-10-14,769.60,right,09:46:10,16.2,0
-2026-10-15,max_pain,breaks,[0dte] [tech] 09:52 spot 765.74 sits 0.55% below max-pain 770 (~0.72 sigma); implied density holds ~0.19; real test,770,2026-10-15,,,09:52:54,22.9,0
+2026-10-15,max_pain,breaks,[0dte] [tech] 09:52 spot 765.74 sits 0.55% below max-pain 770 (~0.72 sigma); implied density holds ~0.19; real test,770,2026-10-15,771.79,wrong,09:52:54,22.9,0
+2026-10-16,max_pain,breaks,[0dte] [tech] 09:49 spot 772.50 sits 0.32% above max-pain 770 (~0.65 sigma); implied density holds ~0.33; real test,770,2026-10-16,,,09:49:40,19.7,0
