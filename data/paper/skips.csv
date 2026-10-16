@@ -2,3 +2,6 @@ variant,label,session,decision_et,side,reason,detail
 PTR-001,COUNTED,2026-10-15,2026-10-15T09:35:00-04:00,short,RETIRED_SHADOW,kill line reached; recording only
 PTR-001,COUNTED,2026-10-15,2026-10-15T11:20:00-04:00,long,RETIRED_SHADOW,kill line reached; recording only
 PTR-001,COUNTED,2026-10-15,2026-10-15T13:50:00-04:00,long,RETIRED_SHADOW,kill line reached; recording only
+PTR-001,COUNTED,2026-10-16,2026-10-16T11:05:00-04:00,short,RETIRED_SHADOW,kill line reached; recording only
+PTR-001,COUNTED,2026-10-16,2026-10-16T12:45:00-04:00,short,RETIRED_SHADOW,kill line reached; recording only
+PTR-001,COUNTED,2026-10-16,2026-10-16T14:35:00-04:00,short,RETIRED_SHADOW,kill line reached; recording only
