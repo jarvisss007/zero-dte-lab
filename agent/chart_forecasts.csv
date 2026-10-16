@@ -7,3 +7,6 @@ date,p,outcome,pattern,n_events,n_days
 2026-10-05,0.527,1,zone_rotation,16,3
 2026-10-05,0.568,1,day_high_retest,211,5
 2026-10-05,0.5,1,bos_followthrough,205,5
+2026-10-12,0.486,1,zone_rotation,19,3
+2026-10-12,0.507,0,day_high_retest,261,5
+2026-10-12,0.5,1,bos_followthrough,227,5
