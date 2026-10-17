@@ -65,11 +65,13 @@ jobs:
           set -euo pipefail
           git config user.name  "chain-recorder[bot]"
           git config user.email "chain-recorder@users.noreply.github.com"
-          if [ -z "$(git status --porcelain data/chains_ci)" ]; then
+          if [ -z "$(git status --porcelain data/chains_ci data/chains_ci_weekly)" ]; then
             echo "nothing written (out of window, stale book, or fetch failed)"
             exit 0
           fi
           git add data/chains_ci
+          # weekly leg (2026-10-17): the Friday expiry, closing window only, its own folder
+          if [ -d data/chains_ci_weekly ]; then git add data/chains_ci_weekly; fi
           git commit -m "chain-recorder: snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
           # The laptop leg pushes to this repo too. Rebase-retry rather than
           # force: a push race must never discard the other leg's snapshot.

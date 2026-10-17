@@ -44,6 +44,14 @@ starts empty every run, so the consecutive-failure counter and the
 FAILURE_*.txt marker are effectively laptop-only — a dark stretch in the cloud
 leg shows up as absent rows in the merge report, not as a marker.
 
+Weekly leg (2026-10-17, his "yes" to recording the Friday expiry for the VRP study): in the closing window
+(the last 20 min of the session to 6 min after the close, early closes included) the same fetch also records the
+next weekly expiry - the first session after today that is the last session of its ISO week (Fri; Thu when
+Friday is a holiday) - with a +/-10% strike band, to a SIBLING folder: data/chains_weekly/SPY_<expiry>.csv
+(data/chains_ci_weekly on the cloud leg). Never into data/chains: files there are named by expiry, so a weekly
+row would land in that Friday's 0DTE file, which Tracks C and D read. The weekly write runs after the 0DTE
+write and any error in it is logged, never raised, so it cannot cost a 0DTE snapshot.
+
 Run once by hand:  /opt/anaconda3/bin/python src/chain_recorder.py [--force]
                    [--expiry YYYY-MM-DD] (test on a non-0DTE expiry)
                    [--dry-run] (fetch + parse, write nothing, touch no state)
@@ -69,6 +77,9 @@ URL = f"https://{HOST}/api/global/delayed_quotes/options/SPY.json"
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "chains"
 STRIKE_BAND = 0.05  # keep strikes within +/-5% of spot
 STALE_MIN = 30
+WEEKLY_BAND = 0.10     # weekly leg: +/-2 one-week moves reach ~11% only in a crash
+WEEKLY_LEAD_MIN = 20   # weekly leg records from this many minutes before the close ...
+WEEKLY_TAIL_MIN = 6    # ... to this many after it (the RTH window's own buffer)
 
 FAIL_THRESHOLD = 6      # consecutive failed snapshots (30 min) -> marker + re-init
 BACKOFF_S = (5, 20)     # sleeps between the in-invocation retry attempts
@@ -198,6 +209,91 @@ def write_failure_marker(state: dict, now_et: datetime, err: Exception) -> None:
             f"CSV is verified complete.\n")
     log(f"FAILURE MARKER written: {marker.name} "
         f"({state['consecutive_failures']} consecutive failures)")
+
+
+# ---------------------------------------------------------------- weekly leg
+
+def weekly_dir() -> Path:
+    return OUT_DIR.parent / f"{OUT_DIR.name}_weekly"
+
+
+def weekly_expiry(today) -> str | None:
+    """The first session after `today` that is the last session of its ISO week (Fri; Thu if Fri is a holiday)."""
+    d = today + timedelta(days=1)
+    for _ in range(21):
+        if sessions.is_session(d):
+            nxt = d + timedelta(days=1)
+            while not sessions.is_session(nxt):
+                nxt += timedelta(days=1)
+            if nxt.isocalendar()[:2] != d.isocalendar()[:2]:
+                return d.isoformat()
+        d += timedelta(days=1)
+    return None
+
+
+def session_close_min(day) -> int:
+    """Minutes after midnight ET of the close: 16:00, or the EARLY_CLOSES time from the house calendar."""
+    early = sessions.EARLY_CLOSES.get(day.isoformat())
+    if early:
+        h, m = early.split()[0].split(":")
+        return int(h) * 60 + int(m)
+    return 16 * 60
+
+
+def in_weekly_window(now_et: datetime) -> bool:
+    close = session_close_min(now_et.date())
+    t = now_et.hour * 60 + now_et.minute
+    return close - WEEKLY_LEAD_MIN <= t <= close + WEEKLY_TAIL_MIN
+
+
+def record_weekly(data: dict, now_et: datetime, fetched: str, quote_ts: str, dry_run: bool, force: bool) -> None:
+    """Weekly leg. Kept apart from the 0DTE loop on purpose, so the rows the tracks read stay exactly as they were."""
+    try:
+        if not force and not in_weekly_window(now_et):
+            return
+        expiry = weekly_expiry(now_et.date())
+        if expiry is None:
+            log("weekly: no weekly expiry found in the next 3 weeks (calendar?)")
+            return
+        spot = data["current_price"]
+        want = expiry[2:4] + expiry[5:7] + expiry[8:10]
+        lo, hi = spot * (1 - WEEKLY_BAND), spot * (1 + WEEKLY_BAND)
+        rows = []
+        for o in data["options"]:
+            m = OCC_RE.match(o["option"])
+            if not m or m.group(1) != want:
+                continue
+            strike = int(m.group(3)) / 1000.0
+            if not lo <= strike <= hi:
+                continue
+            rows.append({
+                "fetched_at_et": fetched, "quote_ts": quote_ts, "spot": spot,
+                "expiry": expiry, "type": m.group(2), "strike": strike,
+                "bid": o.get("bid"), "ask": o.get("ask"),
+                "bid_size": o.get("bid_size"), "ask_size": o.get("ask_size"),
+                "last_trade_price": o.get("last_trade_price"), "iv": o.get("iv"),
+                "delta": o.get("delta"), "gamma": o.get("gamma"),
+                "theta": o.get("theta"), "vega": o.get("vega"), "rho": o.get("rho"),
+                "volume": o.get("volume"), "open_interest": o.get("open_interest"),
+            })
+        if not rows:
+            log(f"weekly: no contracts for expiry {expiry} in the book")
+            return
+        if dry_run:
+            log(f"DRY-RUN weekly ok: {len(rows)} contracts parsed for {expiry} - nothing written")
+            return
+        wd = weekly_dir()
+        wd.mkdir(parents=True, exist_ok=True)
+        out = wd / f"SPY_{expiry}.csv"
+        new_file = not out.exists()
+        with open(out, "a", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=FIELDS)
+            if new_file:
+                w.writeheader()
+            w.writerows(rows)
+        log(f"weekly: wrote {len(rows)} rows -> {wd.name}/{out.name} (spot {spot}, quotes {quote_ts})")
+    except Exception as e:
+        log(f"weekly: error ({type(e).__name__}: {e}) - the 0DTE snapshot is unaffected")
 
 
 # ---------------------------------------------------------------- main
@@ -359,22 +455,22 @@ def main() -> int:
 
     if not rows:
         log(f"skip: no contracts for expiry {expiry} (holiday?)")
-        return 0
-
-    if args.dry_run:
+    elif args.dry_run:
         log(f"DRY-RUN fetch ok: {len(rows)} contracts parsed for {expiry} "
             f"(spot {spot}, quotes {quote_ts}) — nothing written")
-        return 0
+    else:
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        out = OUT_DIR / f"SPY_{expiry}.csv"
+        new_file = not out.exists()
+        with open(out, "a", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=FIELDS)
+            if new_file:
+                w.writeheader()
+            w.writerows(rows)
+        log(f"wrote {len(rows)} rows -> {out.name} (spot {spot}, quotes {quote_ts})")
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out = OUT_DIR / f"SPY_{expiry}.csv"
-    new_file = not out.exists()
-    with open(out, "a", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=FIELDS)
-        if new_file:
-            w.writeheader()
-        w.writerows(rows)
-    log(f"wrote {len(rows)} rows -> {out.name} (spot {spot}, quotes {quote_ts})")
+    if args.expiry is None:   # an --expiry test run records that expiry only
+        record_weekly(data, now_et, fetched, quote_ts, args.dry_run, args.force)
     return 0
 
 
