@@ -231,6 +231,68 @@ def naked(L, S, ST):
     return (credit - pay) / S
 
 
+def chain_check(cal):
+    """ADDED 2026-10-17 (descriptive, not counted): the same +-1/+-2 iron condor on the recorded SPY 0DTE chains,
+    with REAL executable quotes (sell at bid, buy at ask) at the first valid snapshot, settled on SPY's close.
+    Also the model's credit/width on the same day, with sigma*sqrt(T) set to the chain's own 1-sd move, so the
+    check isolates the model's skew + cost shape from the level k."""
+    import yfinance as yf
+    spy = yf.download("SPY", start="2026-07-01", end="2026-10-17", auto_adjust=False, progress=False)
+    if isinstance(spy.columns, pd.MultiIndex):
+        spy.columns = spy.columns.get_level_values(0)
+    rows = []
+    for f in sorted(CHAINS.glob("SPY_*.csv")):
+        day = f.stem.split("_")[1]
+        df = pd.read_csv(f)
+        df = df[(df.expiry == day) & (df.quote_ts.astype(str).str[:10] == day)]
+        if df.empty or pd.Timestamp(day) not in spy.index:
+            continue
+        snap = df[df.fetched_at_et == df.fetched_at_et.min()].copy()
+        S = float(snap.spot.iloc[0])
+        snap["mid"] = (snap.bid + snap.ask) / 2
+        strikes = np.sort(snap.strike.unique())
+        katm = strikes[np.argmin(np.abs(strikes - S))]
+        c = snap[(snap.strike == katm) & (snap.type == "C")]
+        pz = snap[(snap.strike == katm) & (snap.type == "P")]
+        if c.empty or pz.empty:
+            continue
+        em = float(c.mid.iloc[0] + pz.mid.iloc[0]) / math.sqrt(2 / math.pi)
+        leg = {}
+        for z in KNOTS:
+            side = "P" if z < 0 else "C"
+            kz = S * math.exp(z * em / S)
+            x = snap[snap.type == side]
+            leg[z] = x.iloc[int(np.argmin(np.abs(x.strike.values - kz)))]
+        credit = (leg[-1.0].bid - leg[-2.0].ask) + (leg[1.0].bid - leg[2.0].ask)
+        wp, wc = leg[-1.0].strike - leg[-2.0].strike, leg[2.0].strike - leg[1.0].strike
+        width = max(wp, wc)
+        ST = float(spy.loc[pd.Timestamp(day), "Close"])
+        pay = (max(leg[-1.0].strike - ST, 0) - max(leg[-2.0].strike - ST, 0)
+               + max(ST - leg[1.0].strike, 0) - max(ST - leg[2.0].strike, 0))
+        # model on the same day, same strikes, sigma*sqrt(T) = chain 1-sd move
+        T = 1 / 365
+        sig = em / S / math.sqrt(T)
+        mcredit = 0.0
+        for z, sgn in ((-1.0, 1), (-2.0, -1), (1.0, 1), (2.0, -1)):
+            K = float(leg[z].strike)
+            zz = math.log(K / S) / (em / S)
+            px = bs(S, K, T, sig * skew_ratio(zz, cal, "measured"), call=z > 0)
+            h = cal[f"h_{z:+.0f}"]
+            mcredit += sgn * px * (1 - h) if sgn > 0 else sgn * px * (1 + h)
+        rows.append({"day": day, "credit": credit, "width": width, "credit_over_width": credit / width,
+                     "model_credit_over_width": mcredit / width, "pnl_r": (credit - pay) / (width - credit) if credit > 0 else None,
+                     "move_pct": (ST / S - 1) * 100})
+    d = pd.DataFrame(rows)
+    x = d.pnl_r.dropna()
+    return {"sessions": len(d), "first": d.day.min(), "last": d.day.max(),
+            "real_credit_over_width_median": round(float(d.credit_over_width.median()), 4),
+            "model_credit_over_width_median": round(float(d.model_credit_over_width.median()), 4),
+            "real_minus_model_median": round(float((d.credit_over_width - d.model_credit_over_width).median()), 4),
+            "real_ic_mean_r": round(float(x.mean()), 4), "real_ic_nw_t": round(nw_t(x.values), 2),
+            "real_ic_win_pct": round(float((x > 0).mean()) * 100, 1), "real_ic_worst_r": round(float(x.min()), 3),
+            "skipped_no_credit": int(d.pnl_r.isna().sum())}
+
+
 # ------------------------------------------------------------------ stats
 def nw_t(x, lag=4):
     x = np.asarray(x, float)
@@ -394,6 +456,7 @@ def run():
         audit[s]["crash_years_sum_r"] = {y: audit[s]["by_year_sum_r"].get(y) for y in CRASH_YEARS}
     res["crash_audit"] = audit
     res["luck_tally"] = {"looks_this_study": 4, "family_n_for_deflation": N_TRIALS}
+    res["chain_check"] = chain_check(cal)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(res, indent=1, default=str))
     base.to_csv(ROOT / "results" / "vrp_defined_risk_weeks.csv", index=False)
@@ -416,3 +479,5 @@ if __name__ == "__main__":
 #    (flat smile -> exactly 1.0, which checks the integral). The frozen value is kept in the JSON, marked invalid.
 #  - C2 (skew ratios) and C3 (spread fractions) are convention-free ratios and stand as frozen.
 #  - The bar, the grid (0.9k, k, 1.0) and every other rule are unchanged.
+#  - chain_check() (descriptive, after the first P&L run): the +-1/+-2 iron condor on the recorded 0DTE chains with
+#    real bid/ask, settled on SPY's close, plus the model's credit/width on the same strikes with the chain's own move.

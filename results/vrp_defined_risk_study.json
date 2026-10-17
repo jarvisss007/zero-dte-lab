@@ -918,5 +918,18 @@
  "luck_tally": {
   "looks_this_study": 4,
   "family_n_for_deflation": 150
+ },
+ "chain_check": {
+  "sessions": 63,
+  "first": "2026-07-17",
+  "last": "2026-10-16",
+  "real_credit_over_width_median": 0.126,
+  "model_credit_over_width_median": 0.1313,
+  "real_minus_model_median": -0.0053,
+  "real_ic_mean_r": 0.0332,
+  "real_ic_nw_t": 0.94,
+  "real_ic_win_pct": 81.0,
+  "real_ic_worst_r": -1.0,
+  "skipped_no_credit": 0
  }
 }
