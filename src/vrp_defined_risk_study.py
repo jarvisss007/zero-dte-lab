@@ -157,6 +157,17 @@ def calibrate():
     return out, cal
 
 
+def mf_k(cal, sigma=0.15, T=7 / 365):
+    """ADDED 2026-10-17 (C1'): ATM vol / model-free vol for a smile shaped like the measured r(z).
+    VIX9D is a model-free variance index (it integrates every OTM strike), so ATM = k' * VIX9D."""
+    sd = sigma * math.sqrt(T)
+    z = np.linspace(-10, 10, 40001)
+    K = np.exp(z * sd)
+    dK = np.gradient(K)
+    px = np.array([bs(1.0, kk, T, sigma * skew_ratio(zz, cal, "measured"), call=zz > 0) for kk, zz in zip(K, z)])
+    return float(sigma / math.sqrt(2 / T * np.sum(px / K ** 2 * dK)))
+
+
 def vix9d_map(vix, vix9d):
     j = pd.concat([vix.Close.rename("v"), vix9d.Close.rename("v9")], axis=1).dropna()
     b, a = np.polyfit(np.log(j.v), np.log(j.v9), 1)
@@ -304,6 +315,10 @@ def summarize(df, col):
 def run():
     gspc, vix, vix9d = load("gspc.csv"), load("vix.csv"), load("vix9d.csv")
     cal, cal_df = calibrate()
+    cal["k_c1_frozen_INVALID"] = cal["k"]
+    cal["k_c1_frozen_iqr"] = cal.pop("k_iqr")
+    cal["k"] = round(mf_k(cal), 4)
+    cal["k_source"] = "C1' model-free consistency (ADDED 2026-10-17); frozen C1 was a time-convention artifact"
     a, b, n_fit = vix9d_map(vix, vix9d)
     est = np.exp(a + b * np.log(vix.Close))
     sig = vix9d.Close.reindex(vix.index).fillna(est) / 100
@@ -390,3 +405,14 @@ if __name__ == "__main__":
     if "--fetch" in sys.argv:
         fetch()
     run()
+
+
+# ADDED 2026-10-17, after the data pull and calibration, BEFORE any P&L was computed (labelled as added):
+#  - C1 as frozen is INVALID. It gave k = 2.14 (IQR 2.06-2.23): the 0DTE straddle at ~09:49 ET looked 2.1x the
+#    VIX1D move. That is a time-convention mismatch (VIX1D does not annualize intraday time as plain calendar
+#    minutes), not a premium; using it would price every weekly option at ~2x and hand the seller a fake win.
+#  - Replaced by C1': k = ATM vol / model-free vol of a smile shaped like the measured r(z) (mf_k). VIX9D is a
+#    model-free variance index, so this is the consistent mapping. Result 0.939, stable from 10% to 30% vol
+#    (flat smile -> exactly 1.0, which checks the integral). The frozen value is kept in the JSON, marked invalid.
+#  - C2 (skew ratios) and C3 (spread fractions) are convention-free ratios and stand as frozen.
+#  - The bar, the grid (0.9k, k, 1.0) and every other rule are unchanged.
