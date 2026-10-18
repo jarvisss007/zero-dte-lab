@@ -85,7 +85,10 @@ def load_cboe(x):
     df = pd.read_csv(DATA / f"{x}.csv")
     df.columns = [c.strip().upper() for c in df.columns]
     s = pd.Series(pd.to_numeric(df[x], errors="coerce").values, index=pd.to_datetime(df["DATE"], format="%m/%d/%Y"))
-    return s.dropna().sort_index()
+    s = s.dropna().sort_index()
+    gaps = s.index.to_series().diff().dt.days
+    big = gaps[gaps > 10]                       # ADDED: start after the last gap > 10 days (PUT is sparse to 2007)
+    return s[s.index >= big.index[-1]] if len(big) else s
 
 
 def load_close(fn):
@@ -216,3 +219,9 @@ if __name__ == "__main__":
     if "--fetch" in sys.argv:
         fetch()
     run()
+
+
+# ADDED 2026-10-17, after the data pull, BEFORE any result (labelled as added; the rules above are unchanged):
+#  - The PUT file holds only 1-2 rows a year before 2007 (gaps of ~3 years), then daily from 2007-01-03. Weekly returns
+#    forward-filled across those gaps would be meaningless, so every index now starts after its last gap > 10 days.
+#    Effect: PUT is tested 2007-01-03..2026-10-16, not 1991-2026. WPUT, BXM and CNDR have no such gap.
