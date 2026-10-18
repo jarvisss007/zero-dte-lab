@@ -210,6 +210,12 @@ def run():
                                       else "NOT SUPPORTED")
     v["R5_reading"] = "model price level stands" if k_star >= 0.9 * K_FROZEN else "model was too generous; condor judged at k*"
     res["verdicts"] = v
+    # ADDED (output only): the weekly series the live card draws, so the card reads results and nothing else
+    ser = pd.DataFrame({"wput_real_excess": real, "model_putwrite_k_frozen": m0, "model_putwrite_k_star": mstar})
+    cndr = weekly(idx["CNDR"], week_ends(idx["CNDR"].index)).pct_change()
+    cndr_ex = (cndr - cash_returns(irx, week_ends(idx["CNDR"].index)).reindex(cndr.index)).dropna()
+    ser = ser.join(cndr_ex.rename("cndr_real_excess"), how="outer")
+    ser.rename_axis("week_end").to_csv(ROOT / "results" / "cboe_index_check_weekly.csv")
     res["luck_tally"] = {"looks": 5}
     OUT.write_text(json.dumps(res, indent=1, default=str))
     print(f"wrote {OUT}")
@@ -225,3 +231,4 @@ if __name__ == "__main__":
 #  - The PUT file holds only 1-2 rows a year before 2007 (gaps of ~3 years), then daily from 2007-01-03. Weekly returns
 #    forward-filled across those gaps would be meaningless, so every index now starts after its last gap > 10 days.
 #    Effect: PUT is tested 2007-01-03..2026-10-16, not 1991-2026. WPUT, BXM and CNDR have no such gap.
+#  - After the first run (output only, no number changed): results/cboe_index_check_weekly.csv for the live card.
