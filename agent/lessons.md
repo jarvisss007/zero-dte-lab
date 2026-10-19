@@ -1723,3 +1723,11 @@ correctly to this filing).
 - New: #36 at 0.38 (p_cal 0.3085) and `max_pain breaks` (pin 770, spot 0.65 sigma above, holds-mass ~0.33). First snapshot 09:49:40 fittable, no fallback.
 - Call mix: 7 straight 'breaks', now 2 wrong in the last 3. Both losses closed inside the band — the base-rate drift flagged 10-13 is showing up in the hit rate.
 - ZDTE-013 (directive): closed 10-14 by the resolver's `zdte013_session_count_current` test after a one-off run of session_count.py (it also fixed the yfinance-sidecar stub miscount). Nothing schedules the script, so the count does NOT update on its own: it sat at as_of 10-14 until this run executed it (now 51/60, as_of 10-16; today's file counts as a stub until the session ends).
+
+## 2026-10-19 [0dte] — GARUDA (labs-morning-sweep, 08:30 PT, prep DONE 14/14)
+- Scored 10-16 `max_pain breaks` (pin 770): settled close 763.25, 0.88% below the pin -> **right**. max_pain 9/13; sub-1-sigma "real test" stratum 6/8.
+- Resolved #36 (10-16): -1.20% vs +/-0.35% -> OUTSIDE -> **1**. Series 37 resolved, k=11 (29.7%); three YES in a row (10-14, 10-15, 10-16) after fourteen straight NO — a streak, not a regime; the 0.38 prior still runs hot against the 0.3-0.4 bin (n=39, happened 0.256, now ACTIONABLE, p_cal 0.318).
+- New: #37 at 0.38 (p_cal 0.318) and `max_pain breaks` (pin 766, spot 0.23% / 0.35 sigma ABOVE, INSIDE the +/-0.25% band at the snapshot; holds-mass ~0.29). This is the second breaks call made from inside the band; the first (10-13) lost. Reported as its own stratum: inside-band breaks 0/1 before today.
+- First snapshot 09:47:48 (quote_ts 09:32:30) fittable, 125 of 154 rows with iv, no fallback. Implied band +/-0.42%, skew -1.56 (the most negative skew of the month after Friday's -1.2%).
+- Call mix: 8 straight 'breaks' (12 breaks / 1 holds all-time). The metric is still a base-rate read; report the mix beside the hit rate until a 'holds' is actually warranted by the density.
+- Sabha §2 (a claim recorded before it is true): grepped this lab's two writers (forecasts notes, ledger thesis) for promise text -> the forecast notes say "#36 is scored LATER THIS RUN" at filing time; that is a sequencing disclosure, and the scoring did happen this run (outcome written). No row describes an action taken elsewhere. Found none that rot.
