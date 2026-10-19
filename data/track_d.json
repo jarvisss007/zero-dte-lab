@@ -3302,5 +3302,39 @@
    "exit": "09:54:40",
    "pnl_pct": 6.3
   }
+ },
+ {
+  "session": "2026-10-19",
+  "structure_id": "TD-SPY-20261019-C",
+  "track": "D",
+  "underlying": "SPY",
+  "expiry": "2026-10-19",
+  "type": "C",
+  "strike": 768.0,
+  "spot_at_entry": 767.75,
+  "entered_at_snapshot": "2026-10-19 09:47:48",
+  "entry_ask": 1.48,
+  "entry_bid_at_entry": 1.47,
+  "entry_basis": "EXECUTABLE (bought at the ask)",
+  "ladder": {},
+  "settle_value": "",
+  "outcome": ""
+ },
+ {
+  "session": "2026-10-19",
+  "structure_id": "TD-SPY-20261019-P",
+  "track": "D",
+  "underlying": "SPY",
+  "expiry": "2026-10-19",
+  "type": "P",
+  "strike": 768.0,
+  "spot_at_entry": 767.75,
+  "entered_at_snapshot": "2026-10-19 09:47:48",
+  "entry_ask": 1.73,
+  "entry_bid_at_entry": 1.72,
+  "entry_basis": "EXECUTABLE (bought at the ask)",
+  "ladder": {},
+  "settle_value": "",
+  "outcome": ""
  }
 ]
