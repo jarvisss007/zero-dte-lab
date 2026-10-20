@@ -144,3 +144,6 @@ Track C: scored 0 this run; 29/31 sessions closed
 REGISTERED TC-SPY-20261019: BUY 768C @1.48 / BUY 768P @1.73 · debit 3.21 (mid 3.2) · needs 0.42% by the close · first snapshot 2026-10-19 09:47:48 · book 32 rows
 Track C: scored 0 this run; 30/32 sessions closed
   n=30 sessions (rows ARE independent days) win 12/30 mean -0.6% median -26.1% mean $ -0.08/straddle
+REGISTERED TC-SPY-20261020: BUY 765C @1.88 / BUY 765P @1.48 · debit 3.36 (mid 3.35) · needs 0.44% by the close · first snapshot 2026-10-20 09:49:29 · book 33 rows
+Track C: scored 0 this run; 31/33 sessions closed
+  n=31 sessions (rows ARE independent days) win 12/31 mean -2.3% median -30.4% mean $ -0.13/straddle
