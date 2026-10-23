@@ -5374,3 +5374,4 @@
 2026-10-23 16:00:24 ET  weekly: wrote 302 rows -> chains_weekly/SPY_2026-10-30.csv (spot 760.18, quotes 2026-10-23T15:43:30)
 2026-10-23 16:05:25 ET  wrote 152 rows -> SPY_2026-10-23.csv (spot 760.215, quotes 2026-10-23T15:49:40)
 2026-10-23 16:05:25 ET  weekly: wrote 302 rows -> chains_weekly/SPY_2026-10-30.csv (spot 760.215, quotes 2026-10-23T15:49:40)
+2026-10-23 16:10:25 ET  SESSION SUMMARY 2026-10-23: 80 fetches ok, 0 failed
