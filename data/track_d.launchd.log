@@ -361,3 +361,12 @@ Track D: scored 0 legs this run; 68 legs over 34 entry days
   +20m         -5.7  27/68
   +30m         -2.9  25/68
   settle       -8.1  22/68
+REGISTERED 2026-10-23: naked 760C @2.60 + naked 760P @2.07 (spot 760.48, first snapshot 2026-10-23 09:49:34) — one entry day, ladder scores at +5/10/15/20/30min and settle
+Track D: scored 0 legs this run; 70 legs over 35 entry days
+  horizon    mean%   win     (both legs pooled — direction-free read)
+  +5m          -2.1  25/70
+  +10m         -3.3  30/70
+  +15m         -4.5  26/70
+  +20m         -5.6  28/70
+  +30m         -3.0  25/70
+  settle       -8.2  23/70
