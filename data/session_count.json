@@ -1,8 +1,8 @@
 {
- "as_of": "2026-10-19",
+ "as_of": "2026-10-23",
  "definition": "rows >= 86% of full-session median (11444 rows -> need 9841)",
- "files": 65,
- "usable": 52,
+ "files": 69,
+ "usable": 56,
  "stubs": 13,
  "gate": 60,
  "usable_sessions": [
@@ -57,7 +57,11 @@
   "2026-10-13",
   "2026-10-14",
   "2026-10-15",
-  "2026-10-16"
+  "2026-10-16",
+  "2026-10-19",
+  "2026-10-20",
+  "2026-10-21",
+  "2026-10-22"
  ],
  "stub_sessions": [
   "2026-07-08",
@@ -72,9 +76,9 @@
   "2026-09-10",
   "2026-09-24",
   "2026-10-02",
-  "2026-10-19"
+  "2026-10-23"
  ],
- "admissible": 48,
+ "admissible": 52,
  "admissible_definition": "complete AND first snapshot fits the smile (>=8 usable OTM quotes, implied_density.py's own bar) \u2014 THIS is the count that governs the gate",
  "admissible_sessions": [
   "2026-07-17",
@@ -124,7 +128,11 @@
   "2026-10-13",
   "2026-10-14",
   "2026-10-15",
-  "2026-10-16"
+  "2026-10-16",
+  "2026-10-19",
+  "2026-10-20",
+  "2026-10-21",
+  "2026-10-22"
  ],
  "unfit_sessions": [
   "2026-08-07",
